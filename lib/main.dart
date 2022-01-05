@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'qr_demo.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -45,6 +47,14 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const QRViewExample(),
+                ));
+              },
+              child: const Text('qrView'),
+            ),
             const Text(
               'You have pushed the button this many times:',
             ),
