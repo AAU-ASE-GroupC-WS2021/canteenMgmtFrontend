@@ -4,6 +4,15 @@ Frontend for our canteen management system.
 
 ## Running
 
+### Web (desktop)
+
+[jsQR](https://github.com/cozmo/jsQR) (used by qr_code_scanner for web) only works with the HTML renderer.
+Add `--web-renderer html` to run/build args.
+
+Note: the HTML renderer is used by default on mobile devices.
+
+### Web (mobile)
+
 To test the web app on a mobile device, use
 
 ```sh

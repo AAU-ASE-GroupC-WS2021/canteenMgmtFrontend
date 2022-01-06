@@ -38,10 +38,10 @@ class _QRViewExampleState extends State<QRViewExample> {
           Column(
             children: <Widget>[
               const Expanded(flex: 4, child: SizedBox()),
-              Container(
-                color: Colors.white,
-                child: Expanded(
-                  flex: 1,
+              Expanded(
+                flex: 1,
+                child: Container(
+                  color: Colors.white,
                   child: Center(
                     child: FittedBox(
                       fit: BoxFit.contain,
