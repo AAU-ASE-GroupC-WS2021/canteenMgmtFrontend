@@ -1,0 +1,20 @@
+version: 2.1
+
+orbs:
+  flutter: circleci/flutter@1.0.1
+
+jobs:
+  build:
+    docker:
+      - image: cimg/base:2021.12
+    steps:
+      - checkout
+      - flutter/install_sdk_and_pub
+      - run:
+          name: Build web
+          command: flutter build web --web-renderer html
+
+workflows:
+  do-stuff:
+    jobs:
+      - build
