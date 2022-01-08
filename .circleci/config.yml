@@ -11,9 +11,9 @@ jobs:
 #      - image: cimg/android:2021.10.2-browsers # has browsers (including chromedriver) preinstalled
     steps:
       - checkout
-      - browser-tools/install-browser-tools
-      - flutter/install_sdk_and_pub:
-          flutter_version: 2.8.1
+#      - flutter/install_sdk:
+#          version: 2.8.1
+      - flutter/install_pub
       - run:
           name: Build web
           command: flutter build web --web-renderer html
@@ -29,9 +29,7 @@ jobs:
       - image: cirrusci/flutter:2.8.1
     steps:
       - checkout
-      - browser-tools/install-browser-tools
-      - flutter/install_sdk_and_pub:
-          flutter_version: 2.8.1
+      - flutter/install_pub
       - run:
           name: Create reports directory
           command: mkdir reports
@@ -74,9 +72,10 @@ jobs:
       - image: cirrusci/flutter:2.8.1
     steps:
       - checkout
-      - browser-tools/install-browser-tools
-      - flutter/install_sdk_and_pub:
-          flutter_version: 2.8.1
+      - browser-tools/install-browser-tools:
+          install-firefox: false # if firefox is needed, install jq first: `sudo apt-get -y update && sudo apt-get -y install jq`
+          install-geckodriver: false
+      - flutter/install_pub
       - run:
           name: Start chromedriver
           command: chromedriver --port=4444
