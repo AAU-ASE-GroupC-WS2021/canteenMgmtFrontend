@@ -1,4 +1,4 @@
-name: canteen_mgmt_frontend # dart package names must be in snake_case
+name: canteen_mgmt_frontend
 description: Frontend for our canteen management system.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -23,6 +23,9 @@ dev_dependencies:
   # static analysis tools
   flutter_lints: ^1.0.0
   dart_code_metrics: ^4.8.1
+
+  # convert flutter test results (json) to JUnit format
+  junitreport: ^2.0.2
 
 flutter:
   uses-material-design: true

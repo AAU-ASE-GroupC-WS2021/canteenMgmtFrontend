@@ -9,6 +9,7 @@ jobs:
     docker:
       # has browsers (including chromedriver) preinstalled
       - image: cimg/android:2021.10.2-browsers
+      # alternative: cirrusci/flutter:2.8.1 see https://hub.docker.com/r/cirrusci/flutter/
     steps:
       - checkout
       - browser-tools/install-browser-tools
@@ -37,26 +38,30 @@ jobs:
           command: mkdir reports
       - run:
           name: Run Widget tests
-          # creates test report (reports/tests.json) and coverage report (coverage/lcov.info)
+          # creates test report (reports/tests.jsonl) and coverage report (coverage/lcov.info)
           # note coverage will not be reported for files that are not tested at all (see )
-          command: flutter test --coverage --reporter json > reports/tests.json
+          command: flutter test --coverage --reporter json > reports/tests.jsonl
 
       - store_artifacts:
-          path: reports/tests.json
+          # regarding format, see https://github.com/dart-lang/test/blob/master/pkgs/test/doc/json_reporter.md
+          path: reports/tests.jsonl
       - run:
-          name: Get JUnit formatter
+          name: Generate JUnit XML report
           # see https://pub.dev/packages/junitreport
-          command: dart pub global activate junitreport
-      - run:
-          name: Generate JUnix XML report
-          command: $HOME/.pub-cache/bin/tojunit -i reports/tests.json -o reports/tests.xml
+          command: flutter pub run junitreport:tojunit -i reports/tests.jsonl -o reports/tests.xml
       - store_test_results:
+          path: reports/tests.xml
+      - store_artifacts:
           path: reports/tests.xml
 
       - store_artifacts:
           path: coverage/lcov.info
       - run:
+          name: Install lcov (for genhtml)
+          command: sudo apt-get -y update && sudo apt-get -y install lcov
+      - run:
           name: Generate HTML coverage report
+          # see https://stackoverflow.com/questions/50789578/how-can-the-code-coverage-data-from-flutter-tests-be-displayed
           command: genhtml coverage/lcov.info -o coverage/html
       - run:
           name: Compress Artifacts
@@ -80,10 +85,11 @@ jobs:
       - run:
           name: Run Integration tests
           # `flutter drive` does not support machine-readable reports
+          # regarding coverage see also https://stackoverflow.com/questions/57933204/flutter-driver-test-coverage-report
           command: flutter drive --driver=test_driver/integration_test.dart --target=integration_test/demo_test.dart -d web-server --web-renderer html
 
 workflows:
-  do-stuff:
+  test-and-build:
     jobs:
       - run-widget-tests
       - run-integration-tests
