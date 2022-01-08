@@ -4,15 +4,17 @@ orbs:
   flutter: circleci/flutter@1.0.1
   browser-tools: circleci/browser-tools@1.2.3
 
+# TODO extract flutter version into variable
+
 jobs:
   build:
     docker:
       - image: cirrusci/flutter:2.8.1 # see https://hub.docker.com/r/cirrusci/flutter/
-#      - image: cimg/android:2021.10.2-browsers # has browsers (including chromedriver) preinstalled
+    #  - image: cimg/android:2021.10.2-browsers # has browsers (including chromedriver) preinstalled
     steps:
       - checkout
-#      - flutter/install_sdk:
-#          version: 2.8.1
+      #- flutter/install_sdk:
+      #    version: 2.8.1
       - flutter/install_pub
       - run:
           name: Build web
@@ -53,9 +55,9 @@ jobs:
 
       - store_artifacts:
           path: coverage/lcov.info
-#      - run:
-#          name: Install lcov (for genhtml)
-#          command: sudo apt-get -y update && sudo apt-get -y install lcov
+      #- run:
+      #    name: Install lcov (for genhtml)
+      #    command: sudo apt-get -y update && sudo apt-get -y install lcov
       - run:
           name: Generate HTML coverage report
           # see https://stackoverflow.com/questions/50789578/how-can-the-code-coverage-data-from-flutter-tests-be-displayed
@@ -78,7 +80,7 @@ jobs:
       - flutter/install_pub
       - run:
           name: Start chromedriver
-          command: chromedriver --port=4444
+          command: chromedriver --port=4444 # default port used by `flutter drive`
           background: true
       - run:
           name: Run Integration tests
@@ -86,9 +88,27 @@ jobs:
           # regarding coverage see also https://stackoverflow.com/questions/57933204/flutter-driver-test-coverage-report
           command: flutter drive --driver=test_driver/integration_test.dart --target=integration_test/demo_test.dart -d web-server --web-renderer html
 
+  analyze:
+    docker:
+      - image: cirrusci/flutter:2.8.1
+    steps:
+      - checkout
+      - flutter/install_pub
+      - run:
+          name: Create reports directory
+          command: mkdir reports
+      - run:
+          name: Run static analysis
+          # for now, do not treat infos and warnings as job failure
+          command: flutter analyze --write=reports/static_analysis.txt --no-fatal-infos --no-fatal-warnings
+      - store_artifacts:
+          path: reports/static_analysis.txt
+      # TODO run dart_code_metrics
+
 workflows:
   test-and-build:
     jobs:
       - run-widget-tests
       - run-integration-tests
+      - analyze
       - build
