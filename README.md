@@ -16,7 +16,7 @@ See also dart/flutter [package layout conventions](https://dart.dev/tools/pub/pa
 - `web/`, `android/`, `ios/` base files for respective device builds
 - `test/`, `integration_test/` test code for widget and integration tests, resp.
 - `test_driver/` setup for `flutter drive` (integration) tests
-- `.idea/` IntelliJ configuration files
+- `.idea/`, `.circleci/` configuration files for IntelliJ and CircleCI resp.
 
 ## Building from Source
 

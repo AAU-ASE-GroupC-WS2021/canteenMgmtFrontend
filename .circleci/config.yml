@@ -2,20 +2,89 @@ version: 2.1
 
 orbs:
   flutter: circleci/flutter@1.0.1
+  browser-tools: circleci/browser-tools@1.2.3
 
 jobs:
   build:
     docker:
-      - image: cimg/base:2021.12
+      # has browsers (including chromedriver) preinstalled
+      - image: cimg/android:2021.10.2-browsers
     steps:
       - checkout
+      - browser-tools/install-browser-tools
       - flutter/install_sdk_and_pub:
           flutter_version: 2.8.1
       - run:
           name: Build web
           command: flutter build web --web-renderer html
+      - run:
+          name: Compress Artifacts
+          command: zip -r web.zip .
+          working_directory: build/web
+      - store_artifacts:
+          path: build/web/web.zip
+
+  run-widget-tests:
+    docker:
+      - image: cimg/android:2021.10.2-browsers
+    steps:
+      - checkout
+      - browser-tools/install-browser-tools
+      - flutter/install_sdk_and_pub:
+          flutter_version: 2.8.1
+      - run:
+          name: Create reports directory
+          command: mkdir reports
+      - run:
+          name: Run Widget tests
+          # creates test report (reports/tests.json) and coverage report (coverage/lcov.info)
+          # note coverage will not be reported for files that are not tested at all (see )
+          command: flutter test --coverage --reporter json > reports/tests.json
+
+      - store_artifacts:
+          path: reports/tests.json
+      - run:
+          name: Get JUnit formatter
+          # see https://pub.dev/packages/junitreport
+          command: dart pub global activate junitreport
+      - run:
+          name: Generate JUnix XML report
+          command: $HOME/.pub-cache/bin/tojunit -i reports/tests.json -o reports/tests.xml
+      - store_test_results:
+          path: reports/tests.xml
+
+      - store_artifacts:
+          path: coverage/lcov.info
+      - run:
+          name: Generate HTML coverage report
+          command: genhtml coverage/lcov.info -o coverage/html
+      - run:
+          name: Compress Artifacts
+          command: zip -r coverage.zip .
+          working_directory: coverage/html
+      - store_artifacts:
+          path: coverage/html/coverage.zip
+
+  run-integration-tests:
+    docker:
+      - image: cimg/android:2021.10.2-browsers
+    steps:
+      - checkout
+      - browser-tools/install-browser-tools
+      - flutter/install_sdk_and_pub:
+          flutter_version: 2.8.1
+      - run:
+          name: Start chromedriver
+          command: chromedriver --port=4444
+          background: true
+      - run:
+          name: Run Integration tests
+          # `flutter drive` does not support machine-readable reports
+          command: flutter drive --driver=test_driver/integration_test.dart --target=integration_test/demo_test.dart -d web-server --web-renderer html
 
 workflows:
   do-stuff:
     jobs:
+      - run-widget-tests
+      - run-integration-tests
       - build
