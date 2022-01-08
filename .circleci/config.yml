@@ -7,9 +7,8 @@ orbs:
 jobs:
   build:
     docker:
-      # has browsers (including chromedriver) preinstalled
-      - image: cimg/android:2021.10.2-browsers
-      # alternative: cirrusci/flutter:2.8.1 see https://hub.docker.com/r/cirrusci/flutter/
+      - image: cirrusci/flutter:2.8.1 # see https://hub.docker.com/r/cirrusci/flutter/
+#      - image: cimg/android:2021.10.2-browsers # has browsers (including chromedriver) preinstalled
     steps:
       - checkout
       - browser-tools/install-browser-tools
@@ -27,7 +26,7 @@ jobs:
 
   run-widget-tests:
     docker:
-      - image: cimg/android:2021.10.2-browsers
+      - image: cirrusci/flutter:2.8.1
     steps:
       - checkout
       - browser-tools/install-browser-tools
@@ -39,7 +38,7 @@ jobs:
       - run:
           name: Run Widget tests
           # creates test report (reports/tests.jsonl) and coverage report (coverage/lcov.info)
-          # note coverage will not be reported for files that are not tested at all (see )
+          # note coverage will not be reported for files that are not tested at all (see https://github.com/flutter/flutter/issues/27997)
           command: flutter test --coverage --reporter json > reports/tests.jsonl
 
       - store_artifacts:
@@ -56,9 +55,9 @@ jobs:
 
       - store_artifacts:
           path: coverage/lcov.info
-      - run:
-          name: Install lcov (for genhtml)
-          command: sudo apt-get -y update && sudo apt-get -y install lcov
+#      - run:
+#          name: Install lcov (for genhtml)
+#          command: sudo apt-get -y update && sudo apt-get -y install lcov
       - run:
           name: Generate HTML coverage report
           # see https://stackoverflow.com/questions/50789578/how-can-the-code-coverage-data-from-flutter-tests-be-displayed
@@ -72,7 +71,7 @@ jobs:
 
   run-integration-tests:
     docker:
-      - image: cimg/android:2021.10.2-browsers
+      - image: cirrusci/flutter:2.8.1
     steps:
       - checkout
       - browser-tools/install-browser-tools
