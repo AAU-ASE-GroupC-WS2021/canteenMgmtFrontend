@@ -13,6 +13,7 @@ dependencies:
     sdk: flutter
 
   qr_code_scanner: ^0.6.1
+  http: ^0.13.4
 
 dev_dependencies:
   integration_test:
@@ -29,3 +30,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - canteen.p12
