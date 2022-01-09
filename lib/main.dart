@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:html';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:canteen_mgmt_frontend/dish_service.dart';
+import 'package:canteen_mgmt_frontend/widget_dish_table.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -42,12 +43,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String _result = '';
+  DishService dishService = DishService();
   late Future<List<Dish>> futureDishes;
 
   @override
   void initState() {
     super.initState();
-    futureDishes = fetchDishes();
+    futureDishes = dishService.fetchDishes();
   }
 
   @override
@@ -83,9 +85,8 @@ class _MyHomePageState extends State<MyHomePage> {
               future: futureDishes,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return Text(snapshot.data!.toString());
+                  return DishTableWidget(dishes: snapshot.data!);
                 } else if (snapshot.hasError) {
-                  print(snapshot.stackTrace);
                   return Text('${snapshot.error}');
                 }
 
@@ -96,25 +97,5 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
     );
-  }
-}
-
-Future<List<Dish>> fetchDishes() async {
-  var client = http.Client();
-  final response = await client.get(Uri.parse('https://localhost:8443/dish'));
-
-  if (response.statusCode == 200) {
-    // If the server did return a 200 OK response,
-    // then parse the JSON.
-    final stringData = response.body;
-    var responseJson = json.decode(stringData);
-    // TODO: might not work - can not really test while http request fails
-    return (responseJson as List)
-        .map((p) => Dish.fromJson(p))
-        .toList();
-  } else {
-    // If the server did not return a 200 OK response,
-    // then throw an exception.
-    throw Exception('Failed to load dishes');
   }
 }

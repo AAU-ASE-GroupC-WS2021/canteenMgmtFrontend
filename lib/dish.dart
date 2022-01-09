@@ -19,4 +19,9 @@ class Dish {
       type: json['type'],
     );
   }
+
+  @override
+  String toString() {
+    return 'Dish{id: $id, name: $name, price: $price, type: $type}';
+  }
 }
