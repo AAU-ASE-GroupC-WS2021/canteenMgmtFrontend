@@ -42,6 +42,7 @@ class DishTableWidget extends StatelessWidget {
           DataCell(Text(dish.type)),
         ]));
     }
+
     return rows;
   }
 }

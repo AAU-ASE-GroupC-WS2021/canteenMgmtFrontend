@@ -15,6 +15,7 @@ class DishService extends AbstractService {
       // then parse the JSON.
       final stringData = response.body;
       var responseJson = json.decode(stringData);
+
       return (responseJson as List)
           .map((p) => Dish.fromJson(p))
           .toList();

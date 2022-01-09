@@ -8,6 +8,7 @@ abstract class AbstractService {
 
   Uri getUri(String path) {
     String uriString = _getProtocol() + "://" + _restURL + path;
+
     return Uri.parse(uriString);
   }
 }
