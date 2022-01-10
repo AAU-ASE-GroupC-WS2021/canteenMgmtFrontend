@@ -2,6 +2,7 @@ include: package:flutter_lints/flutter.yaml
 
 linter:
   rules:
+    - prefer_relative_imports # makes it easier to differentiate local and library imports at a glance
 
 analyzer:
   plugins:
