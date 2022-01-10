@@ -6,7 +6,7 @@ import 'qr_demo.dart';
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
-  static const route = 'home';
+  static const route = '/';
 
   @override
   Widget build(BuildContext context) {

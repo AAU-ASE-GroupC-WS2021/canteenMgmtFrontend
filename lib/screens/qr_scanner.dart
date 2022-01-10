@@ -5,7 +5,7 @@ import '../widgets/qr_scanner.dart';
 class QrScannerPage extends StatelessWidget {
   const QrScannerPage({Key? key}) : super(key: key);
 
-  static const route = 'qr';
+  static const route = '/qr';
 
   @override
   Widget build(BuildContext context) => const Scaffold(

@@ -6,7 +6,7 @@ import 'qr_scanner.dart';
 class QrDemoPage extends StatefulWidget {
   const QrDemoPage({Key? key}) : super(key: key);
 
-  static const route = 'qr-demo';
+  static const route = '/qr-demo';
 
   @override
   State<QrDemoPage> createState() => _QrDemoPageState();
