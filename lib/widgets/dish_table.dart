@@ -11,8 +11,11 @@ class DishTable extends StatelessWidget {
   Widget build(BuildContext context) => DataTable(
         columns: _columns,
         rows: _rows,
-        headingTextStyle:
-            const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        headingTextStyle: const TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       );
 
   static const List<DataColumn> _columns = [
