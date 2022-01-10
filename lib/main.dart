@@ -13,8 +13,6 @@ import 'package:http/http.dart' as http;
 import 'dish.dart';
 import 'qr_demo.dart';
 
-
-
 void main() {
   runApp(const MyApp());
 }
@@ -80,7 +78,6 @@ class _MyHomePageState extends State<MyHomePage> {
               _result,
               style: Theme.of(context).textTheme.headline4,
             ),
-
             FutureBuilder<List<Dish>>(
               future: futureDishes,
               builder: (context, snapshot) {
@@ -93,7 +90,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 // By default, show a loading spinner.
                 return const CircularProgressIndicator();
               },
-            ),],
+            ),
+          ],
         ),
       ),
     );

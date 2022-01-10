@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class DishService extends AbstractService {
-
   Future<List<Dish>> fetchDishes() async {
     var client = http.Client();
     final response = await client.get(getUri('dish'));
@@ -16,9 +15,7 @@ class DishService extends AbstractService {
       final stringData = response.body;
       var responseJson = json.decode(stringData);
 
-      return (responseJson as List)
-          .map((p) => Dish.fromJson(p))
-          .toList();
+      return (responseJson as List).map((p) => Dish.fromJson(p)).toList();
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.

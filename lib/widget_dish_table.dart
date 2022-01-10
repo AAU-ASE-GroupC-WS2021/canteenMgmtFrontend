@@ -17,18 +17,24 @@ class DishTableWidget extends StatelessWidget {
 
   List<DataColumn> _createColumns() {
     return const [
-      DataColumn(label: Text(
-        'Name',
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-      )),
-      DataColumn(label: Text(
-        'Price',
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-      )),
-      DataColumn(label: Text(
-        'Type',
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-      )),
+      DataColumn(
+        label: Text(
+          'Name',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+      ),
+      DataColumn(
+        label: Text(
+          'Price',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+      ),
+      DataColumn(
+        label: Text(
+          'Type',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+      ),
     ];
   }
 
@@ -37,10 +43,10 @@ class DishTableWidget extends StatelessWidget {
 
     for (var dish in dishes) {
       rows.add(DataRow(cells: [
-          DataCell(Text(dish.name)),
-          DataCell(Text(dish.price.toString())),
-          DataCell(Text(dish.type)),
-        ]));
+        DataCell(Text(dish.name)),
+        DataCell(Text(dish.price.toString())),
+        DataCell(Text(dish.type)),
+      ]));
     }
 
     return rows;

@@ -1,5 +1,5 @@
 abstract class AbstractService {
-  final bool httpsEnabled = true;   // private property indicated by leading _
+  final bool httpsEnabled = true; // private property indicated by leading _
   final String _restURL = 'localhost:8443/';
 
   String _getProtocol() {
