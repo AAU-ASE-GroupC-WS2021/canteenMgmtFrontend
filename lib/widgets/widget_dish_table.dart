@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'dish.dart';
+import '../models/dish.dart';
 
 class DishTableWidget extends StatelessWidget {
   const DishTableWidget({Key? key, required this.dishes}) : super(key: key);

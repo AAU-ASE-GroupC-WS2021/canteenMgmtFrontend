@@ -1,8 +1,9 @@
-import 'package:canteen_mgmt_frontend/abstract_service.dart';
-
-import 'dish.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:http/http.dart' as http;
+
+import '../models/dish.dart';
+import 'abstract_service.dart';
 
 class DishService extends AbstractService {
   Future<List<Dish>> fetchDishes() async {
