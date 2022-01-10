@@ -11,7 +11,7 @@ void main() {
     app.main();
     await tester.pumpAndSettle();
 
-    expect(find.text('Scanned Result:'), findsOneWidget);
+    expect(find.text('Canteen Management'), findsOneWidget);
 
     expect(find.text('This text appears nowhere in the app!'), findsNothing);
   });

@@ -12,12 +12,12 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      initialRoute: 'home',
+      // more sophisticated routing consider using packages like yeet or beamer
+      initialRoute: HomePage.route,
       routes: {
         HomePage.route: (context) => const HomePage(),
         DishDemoPage.route: (context) => const DishDemoPage(),
