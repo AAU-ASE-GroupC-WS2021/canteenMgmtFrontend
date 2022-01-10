@@ -14,7 +14,7 @@ void main() {
   testWidgets('demo test', (WidgetTester tester) async {
     await tester.pumpWidget(const MyApp());
 
-    expect(find.text('Scanned Result:'), findsOneWidget);
+    expect(find.text('Canteen Management'), findsOneWidget);
 
     expect(find.text('This text appears nowhere in the app!'), findsNothing);
   });
