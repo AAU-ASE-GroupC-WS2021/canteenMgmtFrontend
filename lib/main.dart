@@ -1,9 +1,9 @@
+import 'package:canteen_mgmt_frontend/screens/qr_demo.dart';
 import 'package:canteen_mgmt_frontend/widgets/dish_table.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import 'models/dish.dart';
-import 'screens/qr_demo.dart';
 import 'services/dish_service.dart';
 
 void main() {
@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () async {
                 var result = await Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const QRViewExample(),
+                    builder: (context) => const QrDemoScreen(),
                   ),
                 );
                 if (result is Barcode) {
