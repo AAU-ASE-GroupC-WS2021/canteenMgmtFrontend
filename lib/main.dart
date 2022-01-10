@@ -1,6 +1,16 @@
-import 'package:flutter/material.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:canteen_mgmt_frontend/dish_service.dart';
+import 'package:canteen_mgmt_frontend/widget_dish_table.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:http/http.dart' as http;
+
+import 'dish.dart';
 import 'qr_demo.dart';
 
 void main() {
@@ -31,6 +41,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String _result = '';
+  DishService dishService = DishService();
+  late Future<List<Dish>> futureDishes;
+
+  @override
+  void initState() {
+    super.initState();
+    futureDishes = dishService.fetchDishes();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,6 +77,19 @@ class _MyHomePageState extends State<MyHomePage> {
             Text(
               _result,
               style: Theme.of(context).textTheme.headline4,
+            ),
+            FutureBuilder<List<Dish>>(
+              future: futureDishes,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return DishTableWidget(dishes: snapshot.data!);
+                } else if (snapshot.hasError) {
+                  return Text('${snapshot.error}');
+                }
+
+                // By default, show a loading spinner.
+                return const CircularProgressIndicator();
+              },
             ),
           ],
         ),
