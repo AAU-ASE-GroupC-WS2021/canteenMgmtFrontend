@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-import '../widgets/qr_scanner.dart';
+import 'qr_scanner.dart';
 
 class QrDemoPage extends StatefulWidget {
   const QrDemoPage({Key? key}) : super(key: key);
+
+  static const route = 'qr-demo';
 
   @override
   State<QrDemoPage> createState() => _QrDemoPageState();
@@ -24,11 +26,8 @@ class _QrDemoPageState extends State<QrDemoPage> {
             ElevatedButton(
               child: const Text('Scan QR code'),
               onPressed: () async {
-                var result = await Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const Scaffold(body: QrScanner()),
-                  ),
-                );
+                var result =
+                    await Navigator.of(context).pushNamed(QrScannerPage.route);
                 if (result is Barcode) {
                   setState(() {
                     _result = result.code ?? '';

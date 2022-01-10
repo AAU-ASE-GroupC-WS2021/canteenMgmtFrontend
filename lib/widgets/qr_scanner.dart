@@ -6,9 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QrScanner extends StatefulWidget {
-  const QrScanner({Key? key, this.qrKey}) : super(key: key);
+  const QrScanner({
+    Key? key,
+    this.qrKey,
+    this.onScan,
+    this.ignoreEmpty = true,
+    this.popScreenOnScanResult = false,
+  }) : super(key: key);
 
   final Key? qrKey;
+  final Function(BuildContext)? onScan;
+  final bool ignoreEmpty;
+  final bool popScreenOnScanResult;
 
   @override
   State<QrScanner> createState() => _QrScannerState();
@@ -170,13 +179,24 @@ class _QrScannerState extends State<QrScanner> {
     setState(() {
       this.controller = controller;
     });
-    controller.scannedDataStream.first //Where((element) => element != '')
-        .then((scanData) async {
+
+    Future<Barcode> result = widget.ignoreEmpty
+        ? controller.scannedDataStream
+            .firstWhere((item) => item.code != null && item.code != '')
+        : controller.scannedDataStream.first;
+
+    result.then((scanData) {
       // setState(() {
       //   result = scanData;
       // });
 
-      Navigator.of(context).pop(scanData);
+      if (widget.onScan != null) {
+        widget.onScan!(context);
+      }
+
+      if (widget.popScreenOnScanResult) {
+        Navigator.of(context).pop(scanData);
+      }
     });
     // controller.scannedDataStream.listen((scanData) {
     //   setState(() {

@@ -7,6 +7,8 @@ import '../widgets/dish_table.dart';
 class DishDemoPage extends StatefulWidget {
   const DishDemoPage({Key? key}) : super(key: key);
 
+  static const route = 'dish-demo';
+
   @override
   State<DishDemoPage> createState() => _DishDemoPageState();
 }

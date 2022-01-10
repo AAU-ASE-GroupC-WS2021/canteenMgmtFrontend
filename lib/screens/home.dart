@@ -6,6 +6,8 @@ import 'qr_demo.dart';
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
+  static const route = 'home';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,22 +17,14 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const DishDemoPage(),
-                  ),
-                );
-              },
+              onPressed: () =>
+                  Navigator.of(context).pushNamed(DishDemoPage.route),
               child: const Text("Dish Service Demo"),
             ),
             const SizedBox(height: 20), // space between buttons
             ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const QrDemoPage()),
-                );
-              },
+              onPressed: () =>
+                  Navigator.of(context).pushNamed(QrDemoPage.route),
               child: const Text("QR Scanner Demo"),
             ),
           ],
