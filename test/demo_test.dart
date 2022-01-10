@@ -12,7 +12,7 @@ import 'package:canteen_mgmt_frontend/main.dart';
 
 void main() {
   testWidgets('demo test', (WidgetTester tester) async {
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(MyApp());
 
     expect(find.text('Canteen Management'), findsOneWidget);
 

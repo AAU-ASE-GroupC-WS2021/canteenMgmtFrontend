@@ -7,8 +7,6 @@ import '../widgets/dish_table.dart';
 class DishDemoScreen extends StatefulWidget {
   const DishDemoScreen({Key? key}) : super(key: key);
 
-  static const route = '/dish-demo';
-
   @override
   State<DishDemoScreen> createState() => _DishDemoScreenState();
 }
@@ -26,7 +24,7 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Dish Service Demo")),
+      appBar: AppBar(title: const Text('Dish Service Demo')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -38,7 +36,7 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
                   futureDishes = newDishes;
                 });
               },
-              child: const Text("Refresh"),
+              child: const Text('Refresh'),
             ),
             const SizedBox(height: 20),
             FutureBuilder<List<Dish>>(
