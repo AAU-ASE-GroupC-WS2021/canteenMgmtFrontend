@@ -17,12 +17,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       // more sophisticated routing consider using packages like yeet or beamer
-      initialRoute: HomePage.route,
+      initialRoute: HomeScreen.route,
       routes: {
-        HomePage.route: (context) => const HomePage(),
-        DishDemoPage.route: (context) => const DishDemoPage(),
-        QrDemoPage.route: (context) => const QrDemoPage(),
-        QrScannerPage.route: (context) => const QrScannerPage(),
+        HomeScreen.route: (context) => const HomeScreen(),
+        DishDemoScreen.route: (context) => const DishDemoScreen(),
+        QrDemoScreen.route: (context) => const QrDemoScreen(),
+        QrScannerScreen.route: (context) => const QrScannerScreen(),
       },
     );
   }

@@ -3,16 +3,16 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import 'qr_scanner.dart';
 
-class QrDemoPage extends StatefulWidget {
-  const QrDemoPage({Key? key}) : super(key: key);
+class QrDemoScreen extends StatefulWidget {
+  const QrDemoScreen({Key? key}) : super(key: key);
 
   static const route = '/qr-demo';
 
   @override
-  State<QrDemoPage> createState() => _QrDemoPageState();
+  State<QrDemoScreen> createState() => _QrDemoScreenState();
 }
 
-class _QrDemoPageState extends State<QrDemoPage> {
+class _QrDemoScreenState extends State<QrDemoScreen> {
   String _result = '';
 
   @override
@@ -27,7 +27,7 @@ class _QrDemoPageState extends State<QrDemoPage> {
               child: const Text('Scan QR code'),
               onPressed: () async {
                 var result =
-                    await Navigator.of(context).pushNamed(QrScannerPage.route);
+                    await Navigator.of(context).pushNamed(QrScannerScreen.route);
                 if (result is Barcode) {
                   setState(() {
                     _result = result.code ?? '';

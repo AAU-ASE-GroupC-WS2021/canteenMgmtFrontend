@@ -4,16 +4,16 @@ import '../models/dish.dart';
 import '../services/dish_service.dart';
 import '../widgets/dish_table.dart';
 
-class DishDemoPage extends StatefulWidget {
-  const DishDemoPage({Key? key}) : super(key: key);
+class DishDemoScreen extends StatefulWidget {
+  const DishDemoScreen({Key? key}) : super(key: key);
 
   static const route = '/dish-demo';
 
   @override
-  State<DishDemoPage> createState() => _DishDemoPageState();
+  State<DishDemoScreen> createState() => _DishDemoScreenState();
 }
 
-class _DishDemoPageState extends State<DishDemoPage> {
+class _DishDemoScreenState extends State<DishDemoScreen> {
   final DishService dishService = DishService();
   late Future<List<Dish>> futureDishes;
 
