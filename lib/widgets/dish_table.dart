@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../models/dish.dart';
 
-class DishTableWidget extends StatelessWidget {
-  const DishTableWidget({Key? key, required this.dishes}) : super(key: key);
+class DishTable extends StatelessWidget {
+  static const columnHeadStyle =
+      TextStyle(fontSize: 18, fontWeight: FontWeight.bold);
+
+  const DishTable({Key? key, required this.dishes}) : super(key: key);
 
   final List<Dish> dishes;
 
@@ -17,24 +20,9 @@ class DishTableWidget extends StatelessWidget {
 
   List<DataColumn> _createColumns() {
     return const [
-      DataColumn(
-        label: Text(
-          'Name',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-      ),
-      DataColumn(
-        label: Text(
-          'Price',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-      ),
-      DataColumn(
-        label: Text(
-          'Type',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
-      ),
+      DataColumn(label: Text('Name', style: columnHeadStyle)),
+      DataColumn(label: Text('Price', style: columnHeadStyle)),
+      DataColumn(label: Text('Type', style: columnHeadStyle)),
     ];
   }
 

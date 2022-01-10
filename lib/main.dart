@@ -1,4 +1,4 @@
-import 'package:canteen_mgmt_frontend/widgets/widget_dish_table.dart';
+import 'package:canteen_mgmt_frontend/widgets/dish_table.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -75,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
               future: futureDishes,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return DishTableWidget(dishes: snapshot.data!);
+                  return DishTable(dishes: snapshot.data!);
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 }
