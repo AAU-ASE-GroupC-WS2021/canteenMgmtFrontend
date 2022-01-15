@@ -1,5 +1,8 @@
 # Canteen Management Frontend
 
+[![CircleCI](https://circleci.com/gh/AAU-ASE-GroupC-WS2021/canteenMgmtFrontend/tree/main.svg?style=shield)](https://circleci.com/gh/AAU-ASE-GroupC-WS2021/canteenMgmtFrontend/tree/main)
+[![codecov](https://codecov.io/gh/AAU-ASE-GroupC-WS2021/canteenMgmtFrontend/branch/main/graph/badge.svg?token=7XIIY93GYQ)](https://codecov.io/gh/AAU-ASE-GroupC-WS2021/canteenMgmtFrontend)
+
 Frontend for our canteen management system.  
 Built with flutter web.
 
