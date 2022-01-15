@@ -1,5 +1,10 @@
 version: 2.1
 
+parameters:
+  flutter-version:
+    type: string
+    default: "2.8.1"
+
 orbs:
   flutter: circleci/flutter@1.0.1
   browser-tools: circleci/browser-tools@1.2.3
@@ -8,13 +13,11 @@ orbs:
 executors:
   cirrusci-flutter:
     docker:
-      # has flutter preinstalled, but otherwise very minimalistic
-      - image: cirrusci/flutter:2.8.1 # see https://hub.docker.com/r/cirrusci/flutter/
+      # has flutter preinstalled, but otherwise very minimalistic (see https://hub.docker.com/r/cirrusci/flutter/)
+      - image: cirrusci/flutter:<< pipeline.parameters.flutter-version >>
   circleci-android-with-browsers:
     docker:
       - image: cimg/android:2021.10.2-browsers # has browsers (including chromedriver) preinstalled
-
-# TODO extract flutter version into variable
 
 jobs:
   build:
@@ -22,7 +25,7 @@ jobs:
     steps:
       - checkout
       #- flutter/install_sdk:
-      #    version: 2.8.1
+      #    version: << pipeline.parameters.flutter-version >>
       - flutter/install_pub
       - run:
           name: Build web
