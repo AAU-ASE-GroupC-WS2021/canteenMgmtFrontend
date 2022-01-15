@@ -46,7 +46,7 @@ jobs:
           name: Set up dummy coverage test
           # so that files not touched in the actual tests are not left out of the report
           # see https://github.com/flutter/flutter/issues/27997
-          command: ./generate_coverage_helper.sh
+          command: sh generate_coverage_helper.sh
       - run:
           name: Run Widget tests
           # creates test report (reports/tests.jsonl) and coverage report (coverage/lcov.info)
