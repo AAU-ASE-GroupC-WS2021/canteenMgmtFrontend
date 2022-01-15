@@ -28,6 +28,9 @@ dev_dependencies:
   # convert flutter test results (json) to JUnit format
   junitreport: ^2.0.2
 
+  # navigation
+  beamer: ^1.2.0
+
 flutter:
   uses-material-design: true
   assets:

@@ -1,3 +1,4 @@
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/dish_service_demo.dart';
@@ -6,24 +7,31 @@ import 'screens/qr_demo.dart';
 import 'screens/qr_scanner.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+
+  final beamerDelegate = BeamerDelegate(
+    locationBuilder: RoutesLocationBuilder(
+      routes: {
+        // Return either Widgets or BeamPages if more customization is needed
+        '/': (context, state, data) => const HomeScreen(),
+        '/dish': (context, state, data) => const DishDemoScreen(),
+        '/qr-demo': (context, state, data) =>
+            QrDemoScreen(scanValue: data is String? ? data : null),
+        '/qr-scan': (context, state, data) => const QrScannerScreen(),
+      },
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Flutter Demo',
-      // more sophisticated routing consider using packages like yeet or beamer
-      initialRoute: HomePage.route,
-      routes: {
-        HomePage.route: (context) => const HomePage(),
-        DishDemoPage.route: (context) => const DishDemoPage(),
-        QrDemoPage.route: (context) => const QrDemoPage(),
-        QrScannerPage.route: (context) => const QrScannerPage(),
-      },
+      routeInformationParser: BeamerParser(),
+      routerDelegate: beamerDelegate,
     );
   }
 }

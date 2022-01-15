@@ -4,16 +4,14 @@ import '../models/dish.dart';
 import '../services/dish_service.dart';
 import '../widgets/dish_table.dart';
 
-class DishDemoPage extends StatefulWidget {
-  const DishDemoPage({Key? key}) : super(key: key);
-
-  static const route = '/dish-demo';
+class DishDemoScreen extends StatefulWidget {
+  const DishDemoScreen({Key? key}) : super(key: key);
 
   @override
-  State<DishDemoPage> createState() => _DishDemoPageState();
+  State<DishDemoScreen> createState() => _DishDemoScreenState();
 }
 
-class _DishDemoPageState extends State<DishDemoPage> {
+class _DishDemoScreenState extends State<DishDemoScreen> {
   final DishService dishService = DishService();
   late Future<List<Dish>> futureDishes;
 
@@ -26,7 +24,7 @@ class _DishDemoPageState extends State<DishDemoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Dish Service Demo")),
+      appBar: AppBar(title: const Text('Dish Service Demo')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -38,7 +36,7 @@ class _DishDemoPageState extends State<DishDemoPage> {
                   futureDishes = newDishes;
                 });
               },
-              child: const Text("Refresh"),
+              child: const Text('Refresh'),
             ),
             const SizedBox(height: 20),
             FutureBuilder<List<Dish>>(

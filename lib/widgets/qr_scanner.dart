@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:beamer/beamer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
@@ -11,13 +12,13 @@ class QrScanner extends StatefulWidget {
     this.qrKey,
     this.onScan,
     this.ignoreEmpty = true,
-    this.popScreenOnScanResult = false,
+    this.popOnScanResult = false,
   }) : super(key: key);
 
   final Key? qrKey;
-  final Function(BuildContext)? onScan;
+  final Function(BuildContext, String?)? onScan;
   final bool ignoreEmpty;
-  final bool popScreenOnScanResult;
+  final bool popOnScanResult;
 
   @override
   State<QrScanner> createState() => _QrScannerState();
@@ -191,11 +192,11 @@ class _QrScannerState extends State<QrScanner> {
       // });
 
       if (widget.onScan != null) {
-        widget.onScan!(context);
+        widget.onScan!(context, scanData.code);
       }
 
-      if (widget.popScreenOnScanResult) {
-        Navigator.of(context).pop(scanData);
+      if (widget.popOnScanResult) {
+        context.beamBack(data: scanData.code);
       }
     });
     // controller.scannedDataStream.listen((scanData) {
