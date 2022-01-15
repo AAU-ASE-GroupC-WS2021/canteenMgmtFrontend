@@ -4,13 +4,20 @@ orbs:
   flutter: circleci/flutter@1.0.1
   browser-tools: circleci/browser-tools@1.2.3
 
+executors:
+  cirrusci-flutter:
+    docker:
+      # has flutter preinstalled, but otherwise very minimalistic
+      - image: cirrusci/flutter:2.8.1 # see https://hub.docker.com/r/cirrusci/flutter/
+  circleci-android-with-browsers:
+    docker:
+      - image: cimg/android:2021.10.2-browsers # has browsers (including chromedriver) preinstalled
+
 # TODO extract flutter version into variable
 
 jobs:
   build:
-    docker:
-      - image: cirrusci/flutter:2.8.1 # see https://hub.docker.com/r/cirrusci/flutter/
-    #  - image: cimg/android:2021.10.2-browsers # has browsers (including chromedriver) preinstalled
+    executor: cirrusci-flutter
     steps:
       - checkout
       #- flutter/install_sdk:
@@ -27,8 +34,7 @@ jobs:
           path: build/web/web.zip
 
   run-widget-tests:
-    docker:
-      - image: cirrusci/flutter:2.8.1
+    executor: cirrusci-flutter
     steps:
       - checkout
       - flutter/install_pub
@@ -74,8 +80,7 @@ jobs:
           path: coverage/html/coverage.zip
 
   run-integration-tests:
-    docker:
-      - image: cirrusci/flutter:2.8.1
+    executor: cirrusci-flutter
     steps:
       - checkout
       - browser-tools/install-browser-tools:
@@ -93,8 +98,7 @@ jobs:
           command: flutter drive --driver=test_driver/integration_test.dart --target=integration_test/demo_test.dart -d web-server --web-renderer html
 
   analyze:
-    docker:
-      - image: cirrusci/flutter:2.8.1
+    executor: cirrusci-flutter
     steps:
       - checkout
       - flutter/install_pub
