@@ -68,6 +68,9 @@ jobs:
       #################### COVERAGE #######################
       - store_artifacts:
           path: coverage/lcov.info
+      - run:
+          name: Set up GPG agent (for codecov signature verification)
+          command: sudo apt-get -y update && sudo apt-get -y install gpg-agent
       - codecov/upload:
           file: coverage/lcov.info
 
