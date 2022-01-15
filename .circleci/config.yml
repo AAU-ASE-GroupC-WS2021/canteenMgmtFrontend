@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   flutter: circleci/flutter@1.0.1
   browser-tools: circleci/browser-tools@1.2.3
+  codecov: codecov/codecov@3.2.2 # requires env var CODECOV_TOKEN
 
 executors:
   cirrusci-flutter:
@@ -51,6 +52,7 @@ jobs:
           # creates test report (reports/tests.jsonl) and coverage report (coverage/lcov.info)
           command: flutter test --coverage --reporter json > reports/tests.jsonl
 
+      #################### TEST RESULTS #######################
       - store_artifacts:
           # regarding format, see https://github.com/dart-lang/test/blob/master/pkgs/test/doc/json_reporter.md
           path: reports/tests.jsonl
@@ -63,21 +65,11 @@ jobs:
       - store_artifacts:
           path: reports/tests.xml
 
+      #################### COVERAGE #######################
       - store_artifacts:
           path: coverage/lcov.info
-      #- run:
-      #    name: Install lcov (for genhtml)
-      #    command: sudo apt-get -y update && sudo apt-get -y install lcov
-      - run:
-          name: Generate HTML coverage report
-          # see https://stackoverflow.com/questions/50789578/how-can-the-code-coverage-data-from-flutter-tests-be-displayed
-          command: genhtml coverage/lcov.info -o coverage/html
-      - run:
-          name: Compress Artifacts
-          command: zip -r coverage.zip .
-          working_directory: coverage/html
-      - store_artifacts:
-          path: coverage/html/coverage.zip
+      - codecov/upload:
+          file: coverage/lcov.info
 
   run-integration-tests:
     executor: cirrusci-flutter
