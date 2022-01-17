@@ -1,20 +1,31 @@
 version: 2.1
 
+parameters:
+  flutter-version:
+    type: string
+    default: "2.8.1"
+
 orbs:
   flutter: circleci/flutter@1.0.1
   browser-tools: circleci/browser-tools@1.2.3
+  codecov: codecov/codecov@3.2.2 # requires env var CODECOV_TOKEN
 
-# TODO extract flutter version into variable
+executors:
+  cirrusci-flutter:
+    docker:
+      # has flutter preinstalled, but otherwise very minimalistic (see https://hub.docker.com/r/cirrusci/flutter/)
+      - image: cirrusci/flutter:<< pipeline.parameters.flutter-version >>
+  circleci-android-with-browsers:
+    docker:
+      - image: cimg/android:2021.10.2-browsers # has browsers (including chromedriver) preinstalled
 
 jobs:
   build:
-    docker:
-      - image: cirrusci/flutter:2.8.1 # see https://hub.docker.com/r/cirrusci/flutter/
-    #  - image: cimg/android:2021.10.2-browsers # has browsers (including chromedriver) preinstalled
+    executor: cirrusci-flutter
     steps:
       - checkout
       #- flutter/install_sdk:
-      #    version: 2.8.1
+      #    version: << pipeline.parameters.flutter-version >>
       - flutter/install_pub
       - run:
           name: Build web
@@ -27,8 +38,7 @@ jobs:
           path: build/web/web.zip
 
   run-widget-tests:
-    docker:
-      - image: cirrusci/flutter:2.8.1
+    executor: cirrusci-flutter
     steps:
       - checkout
       - flutter/install_pub
@@ -36,11 +46,16 @@ jobs:
           name: Create reports directory
           command: mkdir reports
       - run:
+          name: Set up dummy coverage test
+          # so that files not touched in the actual tests are not left out of the report
+          # see https://github.com/flutter/flutter/issues/27997
+          command: sh generate_coverage_helper.sh
+      - run:
           name: Run Widget tests
           # creates test report (reports/tests.jsonl) and coverage report (coverage/lcov.info)
-          # note coverage will not be reported for files that are not tested at all (see https://github.com/flutter/flutter/issues/27997)
           command: flutter test --coverage --reporter json > reports/tests.jsonl
 
+      #################### TEST RESULTS #######################
       - store_artifacts:
           # regarding format, see https://github.com/dart-lang/test/blob/master/pkgs/test/doc/json_reporter.md
           path: reports/tests.jsonl
@@ -53,25 +68,17 @@ jobs:
       - store_artifacts:
           path: reports/tests.xml
 
+      #################### COVERAGE #######################
       - store_artifacts:
           path: coverage/lcov.info
-      #- run:
-      #    name: Install lcov (for genhtml)
-      #    command: sudo apt-get -y update && sudo apt-get -y install lcov
       - run:
-          name: Generate HTML coverage report
-          # see https://stackoverflow.com/questions/50789578/how-can-the-code-coverage-data-from-flutter-tests-be-displayed
-          command: genhtml coverage/lcov.info -o coverage/html
-      - run:
-          name: Compress Artifacts
-          command: zip -r coverage.zip .
-          working_directory: coverage/html
-      - store_artifacts:
-          path: coverage/html/coverage.zip
+          name: Set up GPG agent (for codecov signature verification)
+          command: sudo apt-get -y update && sudo apt-get -y install gpg-agent
+      - codecov/upload:
+          file: coverage/lcov.info
 
   run-integration-tests:
-    docker:
-      - image: cirrusci/flutter:2.8.1
+    executor: cirrusci-flutter
     steps:
       - checkout
       - browser-tools/install-browser-tools:
@@ -89,8 +96,7 @@ jobs:
           command: flutter drive --driver=test_driver/integration_test.dart --target=integration_test/demo_test.dart -d web-server --web-renderer html
 
   analyze:
-    docker:
-      - image: cirrusci/flutter:2.8.1
+    executor: cirrusci-flutter
     steps:
       - checkout
       - flutter/install_pub
