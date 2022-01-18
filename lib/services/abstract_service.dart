@@ -21,7 +21,7 @@ abstract class AbstractService {
 
   Cookie? _getCSRFToken() {
     Cookie? cookie;
-    if (html.window.document.cookie != null) {
+    if (html.window.document.cookie!.isNotEmpty) {
       cookie = Cookie.fromSetCookieValue(html.window.document.cookie!);
     }
 
