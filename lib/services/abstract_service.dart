@@ -1,9 +1,10 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
-import 'dart:html' as html;
 import 'dart:io';
 
 abstract class AbstractService {
-  final bool httpsEnabled = false; // private property indicated by leading _
+  final bool httpsEnabled = true; // private property indicated by leading _
   final String _restURL = 'aau-ase-ws21-canteen-app-dev.herokuapp.com/';
   //final String _restURL = 'localhost:8080/';
 
@@ -19,14 +20,15 @@ abstract class AbstractService {
     return Uri.parse(uriString);
   }
 
-  Cookie? _getCSRFToken() {
+  /*Cookie? _getCSRFToken() {
     Cookie? cookie;
+    print(html.window.document.cookie);
     if (html.window.document.cookie!.isNotEmpty) {
       cookie = Cookie.fromSetCookieValue(html.window.document.cookie!);
     }
 
     return cookie;
-  }
+  }*/
 
   Future<http.Response> get(path) {
     return _client.get(_getUri(path), headers: getHeaders());
@@ -39,10 +41,10 @@ abstract class AbstractService {
   /// Set X-XSRF-TOKEN header if cookie is set
   Map<String, String> getHeaders() {
     var headers = {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"};
-    var csrfToken = _getCSRFToken();
+    /*var csrfToken = _getCSRFToken();
     if (csrfToken != null) {
       headers.addAll({"X-XSRF-TOKEN": csrfToken.value.toString()});
-    }
+    }*/
 
     return headers;
   }

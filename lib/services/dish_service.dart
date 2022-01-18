@@ -7,7 +7,6 @@ import 'abstract_service.dart';
 class DishService extends AbstractService {
   Future<List<Dish>> fetchDishes() async {
     final response = await get('dish');
-
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
