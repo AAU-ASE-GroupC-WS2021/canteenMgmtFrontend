@@ -39,6 +39,13 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
               child: const Text('Refresh'),
             ),
             const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                dishService.createDish();
+              },
+              child: const Text('Create Dish'),
+            ),
+            const SizedBox(height: 20),
             FutureBuilder<List<Dish>>(
               future: futureDishes,
               builder: (context, snapshot) {

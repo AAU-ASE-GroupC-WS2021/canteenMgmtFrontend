@@ -5,7 +5,7 @@ class Dish {
   final String type;
 
   Dish({
-    required this.id,
+    this.id = -1,
     required this.name,
     required this.price,
     required this.type,
@@ -19,6 +19,13 @@ class Dish {
       type: json['type'],
     );
   }
+
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'name': name,
+    'price': price,
+    'type': type,
+  };
 
   @override
   String toString() {

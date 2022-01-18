@@ -1,14 +1,12 @@
 import 'dart:convert';
 
-import 'package:http/http.dart' as http;
-
 import '../models/dish.dart';
 import 'abstract_service.dart';
 
+
 class DishService extends AbstractService {
   Future<List<Dish>> fetchDishes() async {
-    var client = http.Client();
-    final response = await client.get(getUri('dish'));
+    final response = await get('dish');
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -21,6 +19,24 @@ class DishService extends AbstractService {
       // If the server did not return a 200 OK response,
       // then throw an exception.
       throw Exception('Failed to load dishes');
+    }
+  }
+
+  Future<Dish> createDish() async {
+    var body = json.encode(Dish(name: "Test", price: 9.99, type: "STARTER").toJson());
+    final response = await post('dish', body);
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      final stringData = response.body;
+      var responseJson = json.decode(stringData);
+
+      return Dish.fromJson(responseJson);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to add dish');
     }
   }
 }
