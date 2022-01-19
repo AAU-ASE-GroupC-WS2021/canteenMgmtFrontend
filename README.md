@@ -23,7 +23,7 @@ See also dart/flutter [package layout conventions](https://dart.dev/tools/pub/pa
 
 ## Building from Source
 
-1. [Set up flutter](https://docs.flutter.dev/get-started/install) (includes the dart SDK)
+1. [Set up flutter](https://docs.flutter.dev/get-started/install) (includes the dart SDK) (if using IntelliJ you can simply just install 2 IntelliJ plugins: Flutter, Dart; no need for a system wide setup, saves a lot time and effort)
 2. clone the repository
 3. run `flutter build web --web-renderer html` in the project root
 
