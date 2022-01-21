@@ -1,6 +1,6 @@
 #!/bin/sh
 
-file=test/coverage_helper_test.dart
+FILENAME=test/coverage_helper_test.dart
 
 # extract package name from pubspec
 package="$( cat pubspec.yaml | grep -m 1 '^name: ' | sed 's/^name: \([a-z_]\+\).*$/\1/' )"
@@ -15,4 +15,4 @@ package="$( cat pubspec.yaml | grep -m 1 '^name: ' | sed 's/^name: \([a-z_]\+\).
 
   echo "// ignore: no-empty-block"
   echo "void main(){}"
-} > $file
+} > $FILENAME
