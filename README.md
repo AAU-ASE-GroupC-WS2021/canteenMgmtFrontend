@@ -38,8 +38,10 @@ select a device and the `main.dart` configuration and press either the _Run_ or 
 
 To run on other browsers and devices, select the `server` configuration and manually connect to `<host address>:5000`.
 
-Note: in most modern browsers, camera usage is only allowed in secure contexts (`https://...` or `localhost`).
-For debugging purposes, Chrome allows specifying exceptions using `chrome://flags/#unsafely-treat-insecure-origin-as-secure`.
+- `0.0.0.0` is just a placeholder so that it accepts connections from other devices. To connect to the server from the
+  same device, use `localhost:5000` or `127.0.0.1:5000`.
+- in most modern browsers, camera usage is only allowed in secure contexts (`https://...` or `localhost`). For debugging
+  purposes, Chrome allows specifying exceptions using `chrome://flags/#unsafely-treat-insecure-origin-as-secure`.
 
 ### Terminal
 
