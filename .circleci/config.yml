@@ -36,6 +36,10 @@ jobs:
           working_directory: build/web
       - store_artifacts:
           path: build/web.zip
+
+      - run:
+          name: Remove other ssh keys
+          command: ssh-add -D
       - add_ssh_keys:
           fingerprints:
             - $GH_PAGES_DEPLOY_KEY
