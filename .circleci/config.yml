@@ -40,9 +40,7 @@ jobs:
       - run:
           name: Remove other ssh keys
           command: ssh-add -D
-      - add_ssh_keys:
-          fingerprints:
-            - $GH_PAGES_DEPLOY_KEY
+      - add_ssh_keys
       - run:
           name: Deploy to GitHub Pages
           command: bash -x .circleci/deploy-gh-pages.sh
