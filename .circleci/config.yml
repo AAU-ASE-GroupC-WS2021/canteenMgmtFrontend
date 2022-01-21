@@ -127,7 +127,6 @@ workflows:
             branches:
               only:
                 - master
-                - feature/cd-gh-pages
           requires:
             - run-widget-tests
             - run-integration-tests
