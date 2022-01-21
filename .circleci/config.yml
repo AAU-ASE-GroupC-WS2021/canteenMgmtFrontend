@@ -37,9 +37,6 @@ jobs:
       - store_artifacts:
           path: build/web.zip
 
-      - run:
-          name: Remove other ssh keys
-          command: ssh-add -D
       - add_ssh_keys
       - run:
           name: Deploy to GitHub Pages
@@ -122,9 +119,15 @@ jobs:
 workflows:
   test-and-build:
     jobs:
+      - run-widget-tests
+      - run-integration-tests
+      - analyze
       - build-and-deploy:
           filters:
             branches:
               only:
                 - master
-                - feature/cd-gh-pages
+          requires:
+            - run-widget-tests
+            - run-integration-tests
+            - analyze
