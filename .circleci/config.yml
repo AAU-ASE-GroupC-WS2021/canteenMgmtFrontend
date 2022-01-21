@@ -124,16 +124,9 @@ jobs:
 workflows:
   test-and-build:
     jobs:
-      - run-widget-tests
-      - run-integration-tests
-      - analyze
       - build-and-deploy:
           filters:
             branches:
               only:
                 - master
                 - feature/cd-gh-pages
-          requires:
-            - run-widget-tests
-            - run-integration-tests
-            - analyze
