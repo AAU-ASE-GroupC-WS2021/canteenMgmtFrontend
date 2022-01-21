@@ -1,12 +1,12 @@
-import 'dart:convert';
-
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io';
 
 abstract class AbstractService {
-  final bool httpsEnabled = false; // private property indicated by leading _
-  //final String _restURL = 'aau-ase-ws21-canteen-app-dev.herokuapp.com/';
-  final String _restURL = 'localhost:8080/';
+  final bool httpsEnabled =
+      !kDebugMode; // private property indicated by leading _
+  final String _restURL = kDebugMode
+      ? 'localhost:8080/'
+      : 'aau-ase-ws21-canteen-app.herokuapp.com/';
 
   final _client = http.Client();
 
