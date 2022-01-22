@@ -20,7 +20,7 @@ executors:
       - image: cimg/android:2021.10.2-browsers # has browsers (including chromedriver) preinstalled
 
 jobs:
-  build:
+  build-and-deploy:
     executor: cirrusci-flutter
     steps:
       - checkout
@@ -32,10 +32,15 @@ jobs:
           command: flutter build web --web-renderer html
       - run:
           name: Compress Artifacts
-          command: zip -r web.zip .
+          command: zip -r ../web.zip .
           working_directory: build/web
       - store_artifacts:
-          path: build/web/web.zip
+          path: build/web.zip
+
+      - add_ssh_keys
+      - run:
+          name: Deploy to GitHub Pages
+          command: bash -x .circleci/deploy-gh-pages.sh
 
   run-widget-tests:
     executor: cirrusci-flutter
@@ -49,7 +54,7 @@ jobs:
           name: Set up dummy coverage test
           # so that files not touched in the actual tests are not left out of the report
           # see https://github.com/flutter/flutter/issues/27997
-          command: sh generate_coverage_helper.sh
+          command: sh -x .circleci/generate_coverage_helper.sh
       - run:
           name: Run Widget tests
           # creates test report (reports/tests.jsonl) and coverage report (coverage/lcov.info)
@@ -117,4 +122,12 @@ workflows:
       - run-widget-tests
       - run-integration-tests
       - analyze
-      - build
+      - build-and-deploy:
+          filters:
+            branches:
+              only:
+                - master
+          requires:
+            - run-widget-tests
+            - run-integration-tests
+            - analyze
