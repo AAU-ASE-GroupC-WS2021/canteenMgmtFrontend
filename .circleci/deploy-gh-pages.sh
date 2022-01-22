@@ -19,7 +19,7 @@ git clone git@github.com:$ORG_NAME/$REPO_NAME.git && \
   cp -r ../build/web/* .
 
 git config user.name "${GH_PAGES_NAME:-CircleCI}"
-git config user.email "${GH_PAGES_NAME:-ci@circleci.com}"
+git config user.email "${GH_PAGES_EMAIL:-ci@circleci.com}"
 
 git add -fA
 git commit --allow-empty -m "$COMMIT_TITLE" -m "$COMMIT_MESSAGE"
