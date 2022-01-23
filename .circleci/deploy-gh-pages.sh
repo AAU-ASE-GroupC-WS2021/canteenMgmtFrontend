@@ -3,7 +3,7 @@
 
 # set default values (correspond to main) if not set
 # see https://stackoverflow.com/a/28085062/9335596 for syntax
-: "${GH_PAGES_USER:="AAU-ASE-GroupC-WS2021"}"
+: "${GH_PAGES_USER:="canteen-mgmt"}"
 : "${GH_PAGES_REPO:="$GH_PAGES_USER.github.io"}"
 : "${GH_PAGES_REPO_URL:="git@github.com:$GH_PAGES_USER/$GH_PAGES_REPO.git"}"
 : "${SOURCE_REPO:="AAU-ASE-GroupC-WS2021/canteenMgmtFrontend"}"
