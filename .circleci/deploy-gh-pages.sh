@@ -32,4 +32,4 @@ git config user.email "${GH_PAGES_EMAIL:-ci@circleci.com}"
 
 git add -fA
 git commit --allow-empty -m "$COMMIT_TITLE" -m "$COMMIT_MESSAGE"
-git push -f origin "${GH_PAGES_BRANCH:-master}"
+git push -f origin "${GH_PAGES_BRANCH:-main}"
