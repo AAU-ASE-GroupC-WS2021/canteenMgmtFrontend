@@ -129,6 +129,7 @@ workflows:
               only:
                 - main
                 - development
+                - feature/cd-for-dev
           requires:
             - run-widget-tests
             - run-integration-tests
