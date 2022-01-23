@@ -123,10 +123,12 @@ workflows:
       - run-integration-tests
       - analyze
       - build-and-deploy:
+          context: GH-Pages-<< pipeline.git.branch >>
           filters:
             branches:
               only:
                 - main
+                - development
           requires:
             - run-widget-tests
             - run-integration-tests
