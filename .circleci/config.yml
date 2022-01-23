@@ -126,7 +126,7 @@ workflows:
           filters:
             branches:
               only:
-                - master
+                - main
           requires:
             - run-widget-tests
             - run-integration-tests
