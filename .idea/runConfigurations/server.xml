@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="server" type="FlutterRunConfigurationType" factoryName="Flutter">
-    <option name="additionalArgs" value="-d web-server --web-hostname 0.0.0.0 --web-port 5000 --web-renderer html" />
+    <option name="additionalArgs" value="-d web-server --web-hostname 0.0.0.0 --web-port 5000 --web-renderer html --dart-define=CI_PROVIDER=IntelliJ" />
     <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
     <method v="2" />
   </configuration>

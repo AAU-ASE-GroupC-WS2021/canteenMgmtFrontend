@@ -29,7 +29,12 @@ jobs:
       - flutter/install_pub
       - run:
           name: Build web
-          command: flutter build web --web-renderer html
+          command: |
+            flutter build web --web-renderer html \
+              --dart-define=CI_PROVIDER=CircleCI \
+              --dart-define=GIT_URL=<< pipeline.project.git_url >> \
+              --dart-define=GIT_BRANCH=<< pipeline.git.branch >> \
+              --dart-define=COMMIT_HASH=<< pipeline.git.revision >> \
       - run:
           name: Compress Artifacts
           command: zip -r ../web.zip .

@@ -1,4 +1,5 @@
 import 'package:beamer/beamer.dart';
+import 'package:canteen_mgmt_frontend/widgets/about_button.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -7,7 +8,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Canteen Management')),
+      appBar: AppBar(
+        title: const Text('Canteen Management'),
+        actions: const [AboutButton()],
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
