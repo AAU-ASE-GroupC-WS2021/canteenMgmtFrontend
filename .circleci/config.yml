@@ -8,13 +8,15 @@ parameters:
     description: Common arguments for flutter commands that execute code (run, build, test, drive)
     type: string
     # see https://yaml-multiline.info/ for multi-line strings in yaml
+    # the name of the backend url env variable depends on the git branch name, which may contain slashes
+    # therefore, apply the dark arts (nested command substitution) to replace special characters by "_" in git branch names
     default: >-
       --web-renderer html
       --dart-define=CI_PROVIDER=CircleCI
       --dart-define=GIT_URL=<< pipeline.project.git_url >>
       --dart-define=GIT_BRANCH=<< pipeline.git.branch >>
       --dart-define=COMMIT_HASH=<< pipeline.git.revision >>
-      --dart-define=BACKEND_URL="${BACKEND_URL_<< pipeline.git.branch >>:-$BACKEND_URL_development}"
+      --dart-define=BACKEND_URL="$(VAR_NAME="$(echo "BACKEND_URL_<< pipeline.git.branch >>" | sed 's/[^A-Za-z0-9]/_/g')" ; echo ${!VAR_NAME:-$BACKEND_URL_development})"
 
 orbs:
   flutter: circleci/flutter@1.0.1
@@ -40,7 +42,6 @@ jobs:
       - flutter/install_pub
       - run:
           name: Build web
-          # TODO code duplication: extract common args into a pipeline var (if possible)
           command: flutter build web << pipeline.parameters.flutter-run-args >>
       - run:
           name: Compress Artifacts
