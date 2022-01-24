@@ -36,7 +36,7 @@ jobs:
               --dart-define=GIT_URL=<< pipeline.project.git_url >> \
               --dart-define=GIT_BRANCH=<< pipeline.git.branch >> \
               --dart-define=COMMIT_HASH=<< pipeline.git.revision >> \
-              --dart-define=BACKEND_URL="${BACKEND_URL_<< pipeline.git.branch >>:-$BACKEND_URL_DEVELOPMENT}"
+              --dart-define=BACKEND_URL="${BACKEND_URL_<< pipeline.git.branch >>:-$BACKEND_URL_development}"
       - run:
           name: Compress Artifacts
           command: zip -r ../web.zip .
@@ -70,7 +70,7 @@ jobs:
               --dart-define=GIT_URL=<< pipeline.project.git_url >> \
               --dart-define=GIT_BRANCH=<< pipeline.git.branch >> \
               --dart-define=COMMIT_HASH=<< pipeline.git.revision >> \
-              --dart-define=BACKEND_URL="${BACKEND_URL_<< pipeline.git.branch >>:-$BACKEND_URL_DEVELOPMENT}" \
+              --dart-define=BACKEND_URL="${BACKEND_URL_<< pipeline.git.branch >>:-$BACKEND_URL_development}" \
                 > reports/tests.jsonl
 
       #################### TEST RESULTS #######################
@@ -118,7 +118,7 @@ jobs:
               --dart-define=GIT_URL=<< pipeline.project.git_url >> \
               --dart-define=GIT_BRANCH=<< pipeline.git.branch >> \
               --dart-define=COMMIT_HASH=<< pipeline.git.revision >> \
-              --dart-define=BACKEND_URL="${BACKEND_URL_<< pipeline.git.branch >>:-$BACKEND_URL_DEVELOPMENT}"
+              --dart-define=BACKEND_URL="${BACKEND_URL_<< pipeline.git.branch >>:-$BACKEND_URL_development}"
 
   analyze:
     executor: cirrusci-flutter
