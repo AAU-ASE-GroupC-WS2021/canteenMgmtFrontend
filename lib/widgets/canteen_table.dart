@@ -2,9 +2,10 @@ import '../models/canteen.dart';
 import 'package:flutter/material.dart';
 
 class CanteenTable extends StatelessWidget {
-  const CanteenTable({Key? key, required this.canteens}) : super(key: key);
+  const CanteenTable({Key? key, required this.canteens, required this.showId}) : super(key: key);
 
   final List<Canteen> canteens;
+  final bool showId;
 
   @override
   Widget build(BuildContext context) {
