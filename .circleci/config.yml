@@ -8,6 +8,7 @@ parameters:
     description: Common arguments for flutter commands that execute code (run, build, test, drive)
     type: string
     # see https://yaml-multiline.info/ for multi-line strings in yaml
+    # (note that circleci seems to ignore `>` and `>-` for `run:` and `command:` items)
     # the name of the backend url env variable depends on the git branch name, which may contain slashes
     # therefore, apply the dark arts (nested command substitution) to replace special characters by "_" in git branch names
     default: >-
