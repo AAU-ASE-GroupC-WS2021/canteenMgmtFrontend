@@ -3,7 +3,6 @@ import 'dart:convert';
 import '../models/dish.dart';
 import 'abstract_service.dart';
 
-
 class DishService extends AbstractService {
   Future<List<Dish>> fetchDishes() async {
     final response = await get('dish');
@@ -23,7 +22,11 @@ class DishService extends AbstractService {
   }
 
   Future<Dish> createDish() async {
-    var body = json.encode(Dish(name: "Test", price: 9.99, type: "STARTER").toJson());
+    var body = json.encode(Dish(
+      name: "Test",
+      price: 9.99,
+      type: "STARTER",
+    ).toJson());
     final response = await post('dish', body);
 
     if (response.statusCode == 200) {

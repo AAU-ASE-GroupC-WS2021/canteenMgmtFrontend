@@ -1,12 +1,14 @@
+import 'package:canteen_mgmt_frontend/main.dart' as app;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
-import 'package:canteen_mgmt_frontend/main.dart' as app;
-
+// allow running this test by itself
 void main() {
-  // for `flutter drive`
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+  test();
+}
 
+Future<void> test() async {
   testWidgets("demo test", (WidgetTester tester) async {
     app.main();
     await tester.pumpAndSettle();

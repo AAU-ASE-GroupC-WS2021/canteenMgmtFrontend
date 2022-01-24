@@ -21,11 +21,11 @@ class Dish {
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'price': price,
-    'type': type,
-  };
+        'id': id,
+        'name': name,
+        'price': price,
+        'type': type,
+      };
 
   @override
   String toString() {
