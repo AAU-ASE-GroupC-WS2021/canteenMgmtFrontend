@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="main (prod deployment)" type="FlutterRunConfigurationType" factoryName="Flutter">
+    <option name="additionalArgs" value="--web-renderer html --dart-define=CI_PROVIDER=IntelliJ --dart-define=BACKEND_URL=&quot;https://aau-ase-ws21-canteen-app.herokuapp.com/&quot;" />
+    <option name="filePath" value="$PROJECT_DIR$/lib/main.dart" />
+    <method v="2" />
+  </configuration>
+</component>
