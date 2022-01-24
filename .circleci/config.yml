@@ -4,6 +4,20 @@ parameters:
   flutter-version:
     type: string
     default: "2.8.1"
+  flutter-run-args:
+    description: Common arguments for flutter commands that execute code (run, build, test, drive)
+    type: string
+    # see https://yaml-multiline.info/ for multi-line strings in yaml
+    # (note that circleci seems to ignore `>` and `>-` for `run:` and `command:` items)
+    # the name of the backend url env variable depends on the git branch name, which may contain slashes
+    # therefore, apply the dark arts (nested command substitution) to replace special characters by "_" in git branch names
+    default: >-
+      --web-renderer html
+      --dart-define=CI_PROVIDER=CircleCI
+      --dart-define=GIT_URL=<< pipeline.project.git_url >>
+      --dart-define=GIT_BRANCH=<< pipeline.git.branch >>
+      --dart-define=COMMIT_HASH=<< pipeline.git.revision >>
+      --dart-define=BACKEND_URL="$(VAR_NAME="$(echo "BACKEND_URL_<< pipeline.git.branch >>" | sed 's/[^A-Za-z0-9]/_/g')" ; echo ${!VAR_NAME:-$BACKEND_URL_development})"
 
 orbs:
   flutter: circleci/flutter@1.0.1
@@ -29,7 +43,7 @@ jobs:
       - flutter/install_pub
       - run:
           name: Build web
-          command: flutter build web --web-renderer html
+          command: flutter build web << pipeline.parameters.flutter-run-args >>
       - run:
           name: Compress Artifacts
           command: zip -r ../web.zip .
@@ -37,7 +51,6 @@ jobs:
       - store_artifacts:
           path: build/web.zip
 
-      - add_ssh_keys
       - run:
           name: Deploy to GitHub Pages
           command: bash -x .circleci/deploy-gh-pages.sh
@@ -58,7 +71,9 @@ jobs:
       - run:
           name: Run Widget tests
           # creates test report (reports/tests.jsonl) and coverage report (coverage/lcov.info)
-          command: flutter test --coverage --reporter json > reports/tests.jsonl
+          command: |
+            flutter test --coverage --reporter json << pipeline.parameters.flutter-run-args >> \
+              > reports/tests.jsonl
 
       #################### TEST RESULTS #######################
       - store_artifacts:
@@ -98,7 +113,9 @@ jobs:
           name: Run Integration tests
           # `flutter drive` does not support machine-readable reports
           # regarding coverage see also https://stackoverflow.com/questions/57933204/flutter-driver-test-coverage-report
-          command: flutter drive --driver=test_driver/integration_test.dart --target=integration_test/demo_test.dart -d web-server --web-renderer html
+          command: |
+            flutter drive --driver=test_driver/integration_test.dart --target=integration_test/demo_test.dart \
+              -d web-server << pipeline.parameters.flutter-run-args >>
 
   analyze:
     executor: cirrusci-flutter
@@ -111,6 +128,7 @@ jobs:
       - run:
           name: Run static analysis
           # for now, do not treat infos and warnings as job failure
+          # note: analyze does not need (or accept) the compile-time args
           command: flutter analyze --write=reports/static_analysis.txt --no-fatal-infos --no-fatal-warnings
       - store_artifacts:
           path: reports/static_analysis.txt
@@ -123,10 +141,12 @@ workflows:
       - run-integration-tests
       - analyze
       - build-and-deploy:
+          context: GH-Pages-<< pipeline.git.branch >>
           filters:
             branches:
               only:
-                - master
+                - main
+                - development
           requires:
             - run-widget-tests
             - run-integration-tests
