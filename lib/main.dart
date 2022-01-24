@@ -1,4 +1,5 @@
 import 'package:beamer/beamer.dart';
+import 'package:canteen_mgmt_frontend/screens/canteen_mgmt.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/dish_service_demo.dart';
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         '/qr-demo': (context, state, data) =>
             QrDemoScreen(scanValue: data is String? ? data : null),
         '/qr-scan': (context, state, data) => const QrScannerScreen(),
+        '/admin': (context, state, data) => const AdminDashboardScreen(),
       },
     ),
   );
