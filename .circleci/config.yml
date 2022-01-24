@@ -4,6 +4,17 @@ parameters:
   flutter-version:
     type: string
     default: "2.8.1"
+  flutter-run-args:
+    description: Common arguments for flutter commands that execute code (run, build, test, drive)
+    type: string
+    # see https://yaml-multiline.info/ for multi-line strings in yaml
+    default: >-
+      --web-renderer html
+      --dart-define=CI_PROVIDER=CircleCI
+      --dart-define=GIT_URL=<< pipeline.project.git_url >>
+      --dart-define=GIT_BRANCH=<< pipeline.git.branch >>
+      --dart-define=COMMIT_HASH=<< pipeline.git.revision >>
+      --dart-define=BACKEND_URL="${BACKEND_URL_<< pipeline.git.branch >>:-$BACKEND_URL_development}"
 
 orbs:
   flutter: circleci/flutter@1.0.1
@@ -30,13 +41,7 @@ jobs:
       - run:
           name: Build web
           # TODO code duplication: extract common args into a pipeline var (if possible)
-          command: |
-            flutter build web --web-renderer html \
-              --dart-define=CI_PROVIDER=CircleCI \
-              --dart-define=GIT_URL=<< pipeline.project.git_url >> \
-              --dart-define=GIT_BRANCH=<< pipeline.git.branch >> \
-              --dart-define=COMMIT_HASH=<< pipeline.git.revision >> \
-              --dart-define=BACKEND_URL="${BACKEND_URL_<< pipeline.git.branch >>:-$BACKEND_URL_development}"
+          command: flutter build web << pipeline.parameter.flutter-run-args >>
       - run:
           name: Compress Artifacts
           command: zip -r ../web.zip .
@@ -64,14 +69,10 @@ jobs:
       - run:
           name: Run Widget tests
           # creates test report (reports/tests.jsonl) and coverage report (coverage/lcov.info)
-          command: |
-            flutter test --coverage --reporter json \
-              --dart-define=CI_PROVIDER=CircleCI \
-              --dart-define=GIT_URL=<< pipeline.project.git_url >> \
-              --dart-define=GIT_BRANCH=<< pipeline.git.branch >> \
-              --dart-define=COMMIT_HASH=<< pipeline.git.revision >> \
-              --dart-define=BACKEND_URL="${BACKEND_URL_<< pipeline.git.branch >>:-$BACKEND_URL_development}" \
-                > reports/tests.jsonl
+          command: >
+            flutter test --coverage --reporter json
+              << pipeline.parameter.flutter-run-args >>
+              > reports/tests.jsonl
 
       #################### TEST RESULTS #######################
       - store_artifacts:
@@ -111,14 +112,10 @@ jobs:
           name: Run Integration tests
           # `flutter drive` does not support machine-readable reports
           # regarding coverage see also https://stackoverflow.com/questions/57933204/flutter-driver-test-coverage-report
-          command: |
-            flutter drive --driver=test_driver/integration_test.dart --target=integration_test/demo_test.dart \
-              -d web-server --web-renderer html \
-              --dart-define=CI_PROVIDER=CircleCI \
-              --dart-define=GIT_URL=<< pipeline.project.git_url >> \
-              --dart-define=GIT_BRANCH=<< pipeline.git.branch >> \
-              --dart-define=COMMIT_HASH=<< pipeline.git.revision >> \
-              --dart-define=BACKEND_URL="${BACKEND_URL_<< pipeline.git.branch >>:-$BACKEND_URL_development}"
+          command: >
+            flutter drive --driver=test_driver/integration_test.dart --target=integration_test/demo_test.dart
+              -d web-server --web-renderer html
+              << pipeline.parameter.flutter-run-args >>
 
   analyze:
     executor: cirrusci-flutter
