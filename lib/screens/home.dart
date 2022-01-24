@@ -1,6 +1,7 @@
 import 'package:beamer/beamer.dart';
-import 'package:canteen_mgmt_frontend/widgets/about_button.dart';
 import 'package:flutter/material.dart';
+
+import '../widgets/about_button.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);

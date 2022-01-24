@@ -24,7 +24,10 @@ abstract class AbstractService {
 
   /// Set X-XSRF-TOKEN header if cookie is set
   Map<String, String> getHeaders() {
-    var headers = {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"};
+    var headers = {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+    };
     return headers;
   }
 }
