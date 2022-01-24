@@ -114,8 +114,7 @@ jobs:
           # regarding coverage see also https://stackoverflow.com/questions/57933204/flutter-driver-test-coverage-report
           command: |
             flutter drive --driver=test_driver/integration_test.dart --target=integration_test/demo_test.dart \
-              -d web-server --web-renderer html \
-              << pipeline.parameters.flutter-run-args >>
+              -d web-server << pipeline.parameters.flutter-run-args >>
 
   analyze:
     executor: cirrusci-flutter
