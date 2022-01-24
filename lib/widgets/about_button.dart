@@ -8,6 +8,11 @@ class AboutButton extends StatelessWidget {
   static const commitHash = String.fromEnvironment('COMMIT_HASH');
   static const ciProvider = String.fromEnvironment('CI_PROVIDER');
 
+  static const backendUrl = String.fromEnvironment(
+    'BACKEND_URL',
+    defaultValue: 'http://localhost:8080/',
+  );
+
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -22,7 +27,8 @@ class AboutButton extends StatelessWidget {
                   (ciProvider != '' ? ' by $ciProvider' : '') +
                   (gitUrl != '' ? ' from $gitUrl' : '') +
                   (gitBranch != '' ? ' (in $gitBranch)' : '') +
-                  (commitHash != '' ? ' at $commitHash' : ''),
+                  (commitHash != '' ? ' at $commitHash' : '') +
+                  '\nConnecting to API at $backendUrl',
             ),
           ],
         );

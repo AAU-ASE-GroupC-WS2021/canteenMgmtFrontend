@@ -29,12 +29,14 @@ jobs:
       - flutter/install_pub
       - run:
           name: Build web
+          # TODO code duplication: extract common args into a pipeline var (if possible)
           command: |
             flutter build web --web-renderer html \
               --dart-define=CI_PROVIDER=CircleCI \
               --dart-define=GIT_URL=<< pipeline.project.git_url >> \
               --dart-define=GIT_BRANCH=<< pipeline.git.branch >> \
               --dart-define=COMMIT_HASH=<< pipeline.git.revision >> \
+              --dart-define=BACKEND_URL="${BACKEND_URL_<< pipeline.git.branch >>:-$BACKEND_URL_DEVELOPMENT}"
       - run:
           name: Compress Artifacts
           command: zip -r ../web.zip .
@@ -62,7 +64,14 @@ jobs:
       - run:
           name: Run Widget tests
           # creates test report (reports/tests.jsonl) and coverage report (coverage/lcov.info)
-          command: flutter test --coverage --reporter json > reports/tests.jsonl
+          command: |
+            flutter test --coverage --reporter json \
+              --dart-define=CI_PROVIDER=CircleCI \
+              --dart-define=GIT_URL=<< pipeline.project.git_url >> \
+              --dart-define=GIT_BRANCH=<< pipeline.git.branch >> \
+              --dart-define=COMMIT_HASH=<< pipeline.git.revision >> \
+              --dart-define=BACKEND_URL="${BACKEND_URL_<< pipeline.git.branch >>:-$BACKEND_URL_DEVELOPMENT}" \
+                > reports/tests.jsonl
 
       #################### TEST RESULTS #######################
       - store_artifacts:
@@ -102,7 +111,14 @@ jobs:
           name: Run Integration tests
           # `flutter drive` does not support machine-readable reports
           # regarding coverage see also https://stackoverflow.com/questions/57933204/flutter-driver-test-coverage-report
-          command: flutter drive --driver=test_driver/integration_test.dart --target=integration_test/demo_test.dart -d web-server --web-renderer html
+          command: |
+            flutter drive --driver=test_driver/integration_test.dart --target=integration_test/demo_test.dart \
+              -d web-server --web-renderer html \
+              --dart-define=CI_PROVIDER=CircleCI \
+              --dart-define=GIT_URL=<< pipeline.project.git_url >> \
+              --dart-define=GIT_BRANCH=<< pipeline.git.branch >> \
+              --dart-define=COMMIT_HASH=<< pipeline.git.revision >> \
+              --dart-define=BACKEND_URL="${BACKEND_URL_<< pipeline.git.branch >>:-$BACKEND_URL_DEVELOPMENT}"
 
   analyze:
     executor: cirrusci-flutter
@@ -115,6 +131,7 @@ jobs:
       - run:
           name: Run static analysis
           # for now, do not treat infos and warnings as job failure
+          # note: analyze does not need (or accept) the compile-time args
           command: flutter analyze --write=reports/static_analysis.txt --no-fatal-infos --no-fatal-warnings
       - store_artifacts:
           path: reports/static_analysis.txt
