@@ -11,8 +11,8 @@ class CanteenTable extends StatelessWidget {
   Widget build(BuildContext context) {
     return canteens.isNotEmpty ?
       DataTable(
-        columns: _columns,
-        rows: _rows,
+        columns: _columns(),
+        rows: _rows(),
         headingTextStyle: const TextStyle(
           color: Colors.black,
           fontSize: 14,
@@ -22,18 +22,31 @@ class CanteenTable extends StatelessWidget {
     : const Text('No canteens currently');
   }
 
-  static const List<DataColumn> _columns = [
-    DataColumn(label: Text('Name')),
-    DataColumn(label: Text('Address')),
-    DataColumn(label: Text('Num Tables')),
-  ];
+  List<DataColumn> _columns() {
+    List<DataColumn> cols = const [
+      DataColumn(label: Text('Name')),
+      DataColumn(label: Text('Address')),
+      DataColumn(label: Text('Num Tables')),
+    ];
+    if (showId) {
+      cols = [const DataColumn(label: Text('ID')), ...cols];
+    }
+    return cols;
+  }
 
-  List<DataRow> get _rows => [
-        for (var canteen in canteens)
-          DataRow(cells: [
-            DataCell(Text(canteen.name)),
-            DataCell(Text(canteen.address.toString(), softWrap: true,)),
-            DataCell(Text(canteen.numTables.toString())),
-          ]),
+  List<DataRow> _rows() {
+    List<DataRow> rows = [];
+    for (var canteen in canteens) {
+      var cells = [
+        DataCell(SelectableText(canteen.name)),
+        DataCell(SelectableText(canteen.address)),
+        DataCell(SelectableText(canteen.numTables.toString())),
       ];
+      if (showId) {
+        cells = [DataCell(SelectableText(canteen.id.toString())), ...cells];
+      }
+      rows.add(DataRow(cells: cells));
+    }
+    return rows;
+  }
 }

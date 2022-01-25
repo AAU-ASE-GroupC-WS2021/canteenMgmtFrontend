@@ -1,5 +1,5 @@
-import 'package:canteen_mgmt_frontend/widgets/canteen_form.dart';
-import 'package:canteen_mgmt_frontend/widgets/text_heading.dart';
+import '../widgets/add_canteen_button.dart';
+import '../widgets/text_heading.dart';
 
 import '../widgets/canteen_table.dart';
 import '../models/canteen.dart';
@@ -37,9 +37,25 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    const TextHeading('Canteens'),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          const SizedBox(width: 32.0),
+                          const TextHeading('Canteens'),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const <Widget>[
+                              AddCanteenButton(),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.5,
+                      width: MediaQuery.of(context).size.width * 0.9,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
                         child: FutureBuilder<List<Canteen>>(
@@ -69,12 +85,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     ),
                   ],
                 ),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: CanteenForm(),
               ),
             ),
           ],
