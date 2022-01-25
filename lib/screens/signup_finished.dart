@@ -18,8 +18,14 @@ class SignupFinishedScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              "Profile created successfully."
-            )
+              "Profile created successfully.",
+              style: TextStyle(fontSize: 25),
+            ),
+            const SizedBox(height: 20), // space between buttons
+            ElevatedButton(
+              onPressed: () => context.beamToNamed('/'),
+              child: const Text('Go home'),
+            ),
           ],
         ),
       ),
