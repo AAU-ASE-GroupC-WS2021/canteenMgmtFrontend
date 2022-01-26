@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'dart:math';
+import 'package:crypto/crypto.dart';
 
 import 'package:canteen_mgmt_frontend/models/signup.dart';
-
-import '../models/dish.dart';
 import 'abstract_service.dart';
 
 class SignupService extends AbstractService {
@@ -25,9 +23,12 @@ class SignupService extends AbstractService {
   }
 
   Future<bool> createProfile(String username, String password) async {
+    var bytes = utf8.encode(password);
+    var hash = sha256.convert(bytes).toString();
+
     var body = json.encode(Signup(
       username: username,
-      password: password,
+      password: hash,
     ).toJson());
 
     final response = await post('user', body);
