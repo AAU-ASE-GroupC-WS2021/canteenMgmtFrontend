@@ -17,7 +17,7 @@ class SignupFinishedScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               "Profile created successfully.",
               style: TextStyle(fontSize: 25),
             ),

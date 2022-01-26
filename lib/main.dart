@@ -1,13 +1,12 @@
 import 'package:beamer/beamer.dart';
-import 'package:canteen_mgmt_frontend/screens/signup_finished.dart';
-import 'package:canteen_mgmt_frontend/screens/signup_screen.dart';
+import 'screens/signup_finished.dart';
+import 'screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/dish_service_demo.dart';
 import 'screens/home.dart';
 import 'screens/qr_demo.dart';
 import 'screens/qr_scanner.dart';
-import 'screens/signup_screen.dart';
 
 
 void main() {

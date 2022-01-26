@@ -1,11 +1,8 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 
-import '../models/signup.dart';
 import '../services/signup_service.dart';
-import '../widgets/signup_widget.dart';
 
-import '../widgets/about_button.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -18,12 +15,10 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   final SignupService signupService = SignupService();
-  late Future<List<Signup>> existingProfiles;
 
   @override
   void initState() {
     super.initState();
-    existingProfiles = signupService.fetchDishes();
   }
 
   final _formKey = GlobalKey<FormState>();
@@ -42,7 +37,7 @@ class _SignupScreenState extends State<SignupScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Container(
+            SizedBox(
                 width: 300.0,
                 child: Column(
                   children: [
@@ -72,22 +67,22 @@ class _SignupScreenState extends State<SignupScreen> {
                       if (_formKey.currentState!.validate()) {
                         signupService.createProfile(usernameController.text, passwordController.text)
                             .then((value) => {
-                          if (value) {
-                            context.beamToNamed('/signup-finished')
+                          if (value == null) {
+                            context.beamToNamed('/signup-finished'),
                           }
                           else {
-                            showAlertDialog("Could not create profile!")
-                          }
+                            showAlertDialog(value)
+                          },
                         })
                             .onError((error, stackTrace) => {
-                          showAlertDialog("Unknown error occured while trying to create a new profile.\nPlease refresh the page and try again.!")
-                        })
-                      }
+                          showAlertDialog("Unknown error occurred while trying to create a new profile.\nPlease refresh the page and try again.!"),
+                        }),
+                      },
                       },
                       child: const Text('Sign up'),
                     ),
                   ],
-                )
+                ),
             ),
           ],
         ),
@@ -100,13 +95,13 @@ class _SignupScreenState extends State<SignupScreen> {
 
     // set up the button
     Widget okButton = TextButton(
-      child: Text("Close"),
+      child: const Text("Close"),
       onPressed: () { Navigator.pop(context); },
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Cannot create profile"),
+      title: const Text("Could not create profile"),
       content: Text(error),
       actions: [
         okButton,
@@ -122,8 +117,8 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  static final regexAtLeastOneUppercaseLeter = RegExp(r'(?=.*[A-Z])');
-  static final regexAtLeastOneLowercaseLeter = RegExp(r'(?=.*[a-z])');
+  static final regexAtLeastOneUppercaseLetter = RegExp(r'(?=.*[A-Z])');
+  static final regexAtLeastOneLowercaseLetter = RegExp(r'(?=.*[a-z])');
   static final regexAtLeastOneDigit = RegExp(r'(?=.*[0-9])');
   static final regexAlphanumericOnly = RegExp(r'^[a-zA-Z0-9]+$');
 
@@ -137,10 +132,10 @@ class _SignupScreenState extends State<SignupScreen> {
     else if (password.length > 64) {
       return 'Password cannot be longer than 64 characters.';
     }
-    else if (!regexAtLeastOneUppercaseLeter.hasMatch(password)) {
+    else if (!regexAtLeastOneUppercaseLetter.hasMatch(password)) {
       return 'Password must contain at least one uppercase letter.';
     }
-    else if (!regexAtLeastOneLowercaseLeter.hasMatch(password)) {
+    else if (!regexAtLeastOneLowercaseLetter.hasMatch(password)) {
       return 'Password must contain at least one lowercase letter.';
     }
     else if (!regexAtLeastOneDigit.hasMatch(password)) {
