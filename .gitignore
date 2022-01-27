@@ -49,3 +49,7 @@ app.*.map.json
 
 # generated coverage dummy test
 /test/coverage_helper_test.dart
+
+# generated dart files (by build_runner)
+*.g.dart
+*.mocks.dart
