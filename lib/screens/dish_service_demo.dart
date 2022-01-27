@@ -42,7 +42,13 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                dishService.createDish();
+                dishService.createDish(
+                  const Dish(
+                    name: "Some Test Dish",
+                    price: 10,
+                    type: "MAIN",
+                  ),
+                );
               },
               child: const Text('Create Dish'),
             ),
@@ -51,7 +57,11 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
               future: futureDishes,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return DishTable(dishes: snapshot.data!);
+                  return Expanded(
+                    child: SingleChildScrollView(
+                      child: DishTable(dishes: snapshot.data!),
+                    ),
+                  );
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 } else {
