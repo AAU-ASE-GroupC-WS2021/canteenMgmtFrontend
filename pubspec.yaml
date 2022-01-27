@@ -18,6 +18,9 @@ dependencies:
   # navigation
   beamer: ^1.2.0
 
+  # service locator (allows for easy injection)
+  get_it: ^7.2.0
+
 dev_dependencies:
   integration_test:
     sdk: flutter

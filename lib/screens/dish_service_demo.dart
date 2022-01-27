@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import '../models/dish.dart';
 import '../services/dish_service.dart';
@@ -12,7 +13,7 @@ class DishDemoScreen extends StatefulWidget {
 }
 
 class _DishDemoScreenState extends State<DishDemoScreen> {
-  final DishService dishService = DishService();
+  final DishService dishService = GetIt.I<DishService>();
   late Future<List<Dish>> futureDishes;
 
   @override
