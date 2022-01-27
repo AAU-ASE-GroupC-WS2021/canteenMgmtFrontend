@@ -30,17 +30,17 @@ void main() {
     ),
   );
 
-  String _getTextFromTextFormInput(String key) {
-    return (find.byKey(Key(key)).evaluate().single.widget as TextFormField).controller!.value.text;
+  String _getTextFromTextFormInputAt(int index) {
+    return (find.byType(TextFormField).at(index).evaluate().single.widget as TextFormField).controller!.value.text;
   }
 
   testWidgets('Check if elements are there', (WidgetTester tester) async {
     await tester.pumpWidget(testWidgetEmpty);
     expect(find.byType(TextFormField), findsNWidgets(3));
     expect(find.byType(ElevatedButton), findsOneWidget);
-    expect(_getTextFromTextFormInput(CanteenForm.keyInputName), "");
-    expect(_getTextFromTextFormInput(CanteenForm.keyInputAddress), "");
-    expect(_getTextFromTextFormInput(CanteenForm.keyInputNumTables), "");
+    expect(_getTextFromTextFormInputAt(0), "");
+    expect(_getTextFromTextFormInputAt(1), "");
+    expect(_getTextFromTextFormInputAt(2), "");
   });
 
   testWidgets('When fields empty and button pressed then no submit', (WidgetTester tester) async {
@@ -54,9 +54,9 @@ void main() {
   testWidgets('When fields filled in and button pressed then submit correct data', (WidgetTester tester) async {
     await tester.pumpWidget(testWidgetEmpty);
 
-    await tester.enterText(find.byKey(const Key(CanteenForm.keyInputName)), _initialCanteen.name);
-    await tester.enterText(find.byKey(const Key(CanteenForm.keyInputAddress)), _initialCanteen.address);
-    await tester.enterText(find.byKey(const Key(CanteenForm.keyInputNumTables)), _initialCanteen.numTables.toString());
+    await tester.enterText(find.byType(TextFormField).at(0), _initialCanteen.name);
+    await tester.enterText(find.byType(TextFormField).at(1), _initialCanteen.address);
+    await tester.enterText(find.byType(TextFormField).at(2), _initialCanteen.numTables.toString());
 
     await tester.tap(find.byType(ElevatedButton));
     await tester.pumpAndSettle(); // wait until error messages are displayed
@@ -70,21 +70,19 @@ void main() {
   testWidgets('When initial canteen passed then fields are set', (WidgetTester tester) async {
     await tester.pumpWidget(testWidgetFilledIn);
 
-    expect(_getTextFromTextFormInput(CanteenForm.keyInputName), _initialCanteen.name);
-    expect(_getTextFromTextFormInput(CanteenForm.keyInputAddress), _initialCanteen.address);
-    expect(_getTextFromTextFormInput(CanteenForm.keyInputNumTables), _initialCanteen.numTables.toString());
+    expect(_getTextFromTextFormInputAt(0), _initialCanteen.name);
+    expect(_getTextFromTextFormInputAt(1), _initialCanteen.address);
+    expect(_getTextFromTextFormInputAt(2), _initialCanteen.numTables.toString());
 
     await tester.tap(find.byType(ElevatedButton));
     await tester.pumpAndSettle(); // wait until error messages are displayed
-
-
   });
 
   testWidgets('When non-numeric characters entered into numTables field then no action', (WidgetTester tester) async {
     await tester.pumpWidget(testWidgetEmpty);
 
-    await tester.enterText(find.byKey(const Key(CanteenForm.keyInputNumTables)), 'abc34#yd!');
-    expect(_getTextFromTextFormInput(CanteenForm.keyInputNumTables), '34');
+    await tester.enterText(find.byType(TextFormField).at(2), 'abc34#yd!');
+    expect(_getTextFromTextFormInputAt(2), '34');
   });
 
   @override

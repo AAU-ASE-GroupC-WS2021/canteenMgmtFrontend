@@ -3,9 +3,6 @@ import '../models/canteen.dart';
 import 'package:flutter/material.dart';
 
 class CanteenForm extends StatefulWidget {
-  static const keyInputName = "canteenInputName";
-  static const keyInputAddress = "canteenInputAddress";
-  static const keyInputNumTables = "canteenInputNumTables";
 
   const CanteenForm(this.callback, {Key? key, this.canteen}) : super(key: key);
 
@@ -37,7 +34,6 @@ class _CanteenFormState extends State<CanteenForm> {
       child: Column(
         children: [
           TextFormField(
-            key: const Key(CanteenForm.keyInputName),
             controller: controllerName,
             decoration: const InputDecoration(
               hintText: 'Enter canteen name',
@@ -49,7 +45,6 @@ class _CanteenFormState extends State<CanteenForm> {
           ),
           const SizedBox(height: spacing),
           TextFormField(
-            key: const Key(CanteenForm.keyInputAddress),
             controller: controllerAddress,
             decoration: const InputDecoration(
               hintText: 'Enter canteen address',
@@ -61,7 +56,6 @@ class _CanteenFormState extends State<CanteenForm> {
           ),
           const SizedBox(height: spacing),
           TextFormField(
-            key: const Key(CanteenForm.keyInputNumTables),
             controller: controllerNumTables,
             decoration: const InputDecoration(
               hintText: 'Enter number of tables',
