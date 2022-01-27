@@ -38,7 +38,7 @@ class _SignupScreenState extends State<SignupScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             SizedBox(
-                width: 300.0,
+                width: 350.0,
                 child: Column(
                   children: [
                     TextFormField(
@@ -132,17 +132,22 @@ class _SignupScreenState extends State<SignupScreen> {
     else if (password.length > 64) {
       return 'Password cannot be longer than 64 characters.';
     }
-    else if (!regexAtLeastOneUppercaseLetter.hasMatch(password)) {
-      return 'Password must contain at least one uppercase letter.';
-    }
-    else if (!regexAtLeastOneLowercaseLetter.hasMatch(password)) {
-      return 'Password must contain at least one lowercase letter.';
-    }
-    else if (!regexAtLeastOneDigit.hasMatch(password)) {
-      return 'Password must contain at least one digit.';
+
+    String otherRequirements = "";
+
+    if (!regexAtLeastOneUppercaseLetter.hasMatch(password)) {
+      otherRequirements += 'Password must contain at least one uppercase letter.\n';
     }
 
-    return null;
+    if (!regexAtLeastOneLowercaseLetter.hasMatch(password)) {
+      otherRequirements += 'Password must contain at least one lowercase letter.\n';
+    }
+
+    if (!regexAtLeastOneDigit.hasMatch(password)) {
+      otherRequirements += 'Password must contain at least one digit.\n';
+    }
+
+    return otherRequirements.length > 0 ? otherRequirements : null;
   }
 
   String? validateUsername(String? username) {
@@ -161,6 +166,5 @@ class _SignupScreenState extends State<SignupScreen> {
 
     return null;
   }
+
 }
-
-
