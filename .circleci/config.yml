@@ -109,7 +109,7 @@ jobs:
       # first `image` defines the primary container where all steps will run
       # if no `name:` is provided, services are accessible through `localhost`
       - image: cirrusci/flutter:<< pipeline.parameters.flutter-version >>
-      - image: registry.heroku.com/${HEROKU_APP_NAME:aau-ase-ws21-canteen-app-dev}/web
+      - image: registry.heroku.com/aau-ase-ws21-canteen-app-dev/web
         auth:
           username: _
           password: $HEROKU_API_KEY
