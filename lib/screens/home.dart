@@ -1,4 +1,5 @@
 import 'package:beamer/beamer.dart';
+import 'package:canteen_mgmt_frontend/widgets/signup_button.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/about_button.dart';
@@ -11,7 +12,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Canteen Management'),
-        actions: const [AboutButton()],
+        actions: const [SignUpButton(), AboutButton()],
       ),
       body: Center(
         child: Column(
@@ -20,11 +21,6 @@ class HomeScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () => context.beamToNamed('/dish'),
               child: const Text('Dish Service Demo'),
-            ),
-            const SizedBox(height: 20), // space between buttons
-            ElevatedButton(
-              onPressed: () => context.beamToNamed('/signup'),
-              child: const Text('Create a new profile'),
             ),
             const SizedBox(height: 20), // space between buttons
             ElevatedButton(
