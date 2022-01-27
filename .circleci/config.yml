@@ -69,6 +69,9 @@ jobs:
           # see https://github.com/flutter/flutter/issues/27997
           command: sh -x .circleci/generate_coverage_helper.sh
       - run:
+          name: Generate Mocks (for mockito)
+          command: flutter pub run build_runner build --delete-conflicting-outputs
+      - run:
           name: Run Widget tests
           # creates test report (reports/tests.jsonl) and coverage report (coverage/lcov.info)
           command: |
