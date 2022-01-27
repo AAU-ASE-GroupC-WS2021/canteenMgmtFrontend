@@ -6,7 +6,7 @@
 Frontend for our canteen management system.  
 Built with flutter web.
 
-The QR scanner feature requires _https_ to be enabled
+The QR scanner feature requires a secure context; serve over _https_ or from localhost
 (see [getUserMedia()](https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia)
 and [Secure context restrictions](https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts/features_restricted_to_secure_contexts#secure_context_restrictions_that_vary_by_browser)).
 
@@ -19,11 +19,12 @@ See also dart/flutter [package layout conventions](https://dart.dev/tools/pub/pa
 - `web/`, `android/`, `ios/` base files for respective device builds
 - `test/`, `integration_test/` test code for widget and integration tests, resp.
 - `test_driver/` setup for `flutter drive` (integration) tests
-- `.idea/`, `.circleci/` configuration files for IntelliJ and CircleCI resp.
+- `.idea/` IntelliJ configuration files
+- `.circleci/` CircleCI configuration (`config.yml`) and scripts
 
 ## Building from Source
 
-1. [Set up flutter](https://docs.flutter.dev/get-started/install) (includes the dart SDK) (if using IntelliJ you can simply just install 2 IntelliJ plugins: Flutter, Dart; no need for a system wide setup, saves a lot time and effort)
+1. [Set up flutter](https://docs.flutter.dev/get-started/install) OR install the flutter plugin for IntelliJ
 2. clone the repository
 3. run `flutter build web --web-renderer html` in the project root
 
@@ -31,10 +32,13 @@ The artifact is found in `<project root>/build/web/`.
 
 ## Running and Debugging
 
+For full functionality, launch the [backend](https://github.com/AAU-ASE-GroupC-WS2021/canteenMgmtBackend) locally,
+or specify `--dart-define=BACKEND_URL="<backend url>"` (defaults to `http:localhost:8080/`) when running or building the app.
+
 ### IntelliJ/Android Studio
 
 In the [flutter toolbar](https://docs.flutter.dev/development/tools/android-studio#running-and-debugging) (top right by default),
-select a device and the `main.dart` configuration and press either the _Run_ or _Debug_ button.
+select a device and the `main (local)` configuration and press either the _Run_ or _Debug_ button.
 
 To run on other browsers and devices, select the `server` configuration and manually connect to `<host address>:5000`.
 
@@ -57,16 +61,22 @@ Run `flutter run -d web-server --web-hostname 0.0.0.0 --web-port 5000 ...` and m
 
 [Widget tests](https://docs.flutter.dev/testing#widget-tests) launch widgets in an optimized test environment.
 
-Run `flutter test` (runs all files in `test/`)
+1. Run `flutter pub run build_runner build --delete-conflicting-outputs` to generate mocks
+   - Needs to be re-run after changing mocked classes/mocks
+   - Run `flutter pub run build_runner watch --delete-conflicting-outputs` in a second terminal to continuously watch for changes and rebuild mocks
+   - The IntelliJ plugin [Flutter Build Runner Helper](https://plugins.jetbrains.com/plugin/14442-flutter-build-runner-helper)
+     provides UI buttons for both commands 
+2. Run `flutter test` (runs all files in `test/`)
 
 ### Integration Tests
 
 [Integration tests](https://docs.flutter.dev/testing#integration-tests) launch the entire app on a real or emulated device/browser.
 This is closer to real use than widget tests, but requires more effort to set up and runs slower.
 
+0. Launch the [backend](https://github.com/AAU-ASE-GroupC-WS2021/canteenMgmtBackend) locally
 1. Download [chromedriver](https://chromedriver.chromium.org/downloads)
 2. Run `chromedriver --port=4444` (this is the default port for `flutter drive`)
-3. Run `flutter drive --driver=test_driver/integration_test.dart --target=integration_test/demo_test.dart -d web-server`
+3. Run `flutter drive --driver=test_driver/integration_test.dart --target=integration_test/demo_test.dart -d web-server ...`
 
 See also [Running Flutter Driver tests with Web](https://github.com/flutter/flutter/wiki/Running-Flutter-Driver-tests-with-Web)
 and the `integration_test` [example app](https://github.com/flutter/flutter/tree/master/packages/integration_test/example).
