@@ -9,14 +9,18 @@ parameters:
     type: string
     # see https://yaml-multiline.info/ for multi-line strings in yaml
     # (note that circleci seems to ignore `>` and `>-` for `run:` and `command:` items)
-    # the name of the backend url env variable depends on the git branch name, which may contain slashes
-    # therefore, apply the dark arts (nested command substitution) to replace special characters by "_" in git branch names
     default: >-
       --web-renderer html
       --dart-define=CI_PROVIDER=CircleCI
       --dart-define=GIT_URL=<< pipeline.project.git_url >>
       --dart-define=GIT_BRANCH=<< pipeline.git.branch >>
       --dart-define=COMMIT_HASH=<< pipeline.git.revision >>
+  flutter-backend-url:
+    description: Common arguments for flutter commands that execute code (run, build, test, drive)
+    type: string
+    # the name of the backend url env variable depends on the git branch name, which may contain slashes
+    # therefore, apply the dark arts (nested command substitution) to replace special characters by "_" in git branch names
+    default: >-
       --dart-define=BACKEND_URL="$(VAR_NAME="$(echo "BACKEND_URL_<< pipeline.git.branch >>" | sed 's/[^A-Za-z0-9]/_/g')" ; echo ${!VAR_NAME:-$BACKEND_URL_development})"
 
 orbs:
@@ -43,7 +47,7 @@ jobs:
       - flutter/install_pub
       - run:
           name: Build web
-          command: flutter build web << pipeline.parameters.flutter-run-args >>
+          command: flutter build web << pipeline.parameters.flutter-run-args >> << pipeline.parameters.flutter-backend-url >>
       - run:
           name: Compress Artifacts
           command: zip -r ../web.zip .
@@ -101,7 +105,17 @@ jobs:
           file: coverage/lcov.info
 
   run-integration-tests:
-    executor: cirrusci-flutter
+    docker:
+      # first `image` defines the primary container where all steps will run
+      # if no `name:` is provided, services are accessible through `localhost`
+      - image: cirrusci/flutter:<< pipeline.parameters.flutter-version >>
+      - image: registry.heroku.com/${HEROKU_APP_NAME:aau-ase-ws21-canteen-app-dev}/web
+        auth:
+          username: _
+          password: $HEROKU_API_KEY
+      - image: postgres
+        environment:
+          POSTGRES_PASSWORD: mysecretpassword
     steps:
       - checkout
       - browser-tools/install-browser-tools:
@@ -141,7 +155,8 @@ workflows:
   test-and-build:
     jobs:
       - run-widget-tests
-      - run-integration-tests
+      - run-integration-tests:
+          context: Heroku-development # TODO choose context dynamically
       - analyze
       - build-and-deploy:
           context: GH-Pages-<< pipeline.git.branch >>
