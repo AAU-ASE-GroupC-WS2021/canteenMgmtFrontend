@@ -4,6 +4,9 @@ parameters:
   flutter-version:
     type: string
     default: "2.8.1"
+  maven-version:
+    type: string
+    default: "3.8.4"
   flutter-run-args:
     description: Common arguments for flutter commands that execute code (run, build, test, drive)
     type: string
@@ -109,14 +112,28 @@ jobs:
       # first `image` defines the primary container where all steps will run
       # if no `name:` is provided, services are accessible through `localhost`
       - image: cirrusci/flutter:<< pipeline.parameters.flutter-version >>
-      - image: heroku.com/aau-ase-ws21-canteen-app-dev/web
-        auth:
-          username: _
-          password: $HEROKU_API_KEY
       - image: postgres
         environment:
           POSTGRES_PASSWORD: mysecretpassword
     steps:
+      - run:
+          name: Set up maven
+          command: |
+            curl https://dlcdn.apache.org/maven/maven-3/$MVN_VERSION/binaries/apache-maven-$MVN_VERSION-bin.tar.gz \
+              | tar xzvf - -C /opt
+            export PATH=/opt/apache-maven-$MVN_VERSION/bin:$PATH
+          environment:
+            - MVN_VERSION: << pipeline.parameters.maven-version >>
+      - run:
+          name: Clone backend
+          command: |
+            git clone -b ${BACKEND_BRANCH:-development} ${BACKEND_GIT_URL:-https://github.com/AAU-ASE-GroupC-WS2021/canteenMgmtBackend.git} backend
+      - run:
+          name: Run backend
+          command: mvn spring-boot:run
+          working_directory: backend
+          background: true
+
       - checkout
       - browser-tools/install-browser-tools:
           install-firefox: false # if firefox is needed, install jq first: `sudo apt-get -y update && sudo apt-get -y install jq`
@@ -155,8 +172,7 @@ workflows:
   test-and-build:
     jobs:
       - run-widget-tests
-      - run-integration-tests:
-          context: Heroku-development # TODO choose context dynamically
+      - run-integration-tests
       - analyze
       - build-and-deploy:
           context: GH-Pages-<< pipeline.git.branch >>
