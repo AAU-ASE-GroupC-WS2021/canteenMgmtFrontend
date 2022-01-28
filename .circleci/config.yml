@@ -128,8 +128,10 @@ jobs:
             - MVN_VERSION: << pipeline.parameters.maven-version >>
       - run:
           name: Clone backend
+          # to allow injecting the backend branch based on the frontend branch, replace special characters in branch names by underscores
           command: |
-            git clone -b ${BACKEND_BRANCH:-development} ${BACKEND_GIT_URL:-https://github.com/AAU-ASE-GroupC-WS2021/canteenMgmtBackend.git} /opt/backend
+            BACKEND_BRANCH_NORMALIZED=$(echo "BACKEND_BRANCH_$CIRCLE_BRANCH" | sed -e 's/[^A-Za-z0-9]/_/g')
+            git clone -b ${!BACKEND_BRANCH_NORMALIZED:-development} ${BACKEND_GIT_URL:-https://github.com/AAU-ASE-GroupC-WS2021/canteenMgmtBackend.git} /opt/backend
       - run:
           name: Run backend
           # $JAVA_HOME is not set in this container by default (for command see https://www.xmodulo.com/set-java_home-environment-variable-linux.html)
@@ -184,8 +186,7 @@ workflows:
   test-and-build:
     jobs:
       - run-widget-tests
-      - run-integration-tests:
-          context: frontend-integration-<< pipeline.git.branch >>
+      - run-integration-tests
       - analyze
       - build-and-deploy:
           context: GH-Pages-<< pipeline.git.branch >>
