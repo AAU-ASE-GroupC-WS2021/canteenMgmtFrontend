@@ -121,17 +121,16 @@ jobs:
           command: |
             curl https://dlcdn.apache.org/maven/maven-3/$MVN_VERSION/binaries/apache-maven-$MVN_VERSION-bin.tar.gz \
               | tar xzvf - -C /opt
-            export PATH=/opt/apache-maven-$MVN_VERSION/bin:$PATH
           environment:
             - MVN_VERSION: << pipeline.parameters.maven-version >>
       - run:
           name: Clone backend
           command: |
-            git clone -b ${BACKEND_BRANCH:-development} ${BACKEND_GIT_URL:-https://github.com/AAU-ASE-GroupC-WS2021/canteenMgmtBackend.git} backend
+            git clone -b ${BACKEND_BRANCH:-development} ${BACKEND_GIT_URL:-https://github.com/AAU-ASE-GroupC-WS2021/canteenMgmtBackend.git} /opt/backend
       - run:
           name: Run backend
-          command: mvn spring-boot:run
-          working_directory: backend
+          command: /opt/apache-maven-*/bin/mvn spring-boot:run
+          working_directory: /opt/backend
           background: true
 
       - checkout
