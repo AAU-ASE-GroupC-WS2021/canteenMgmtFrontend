@@ -4,14 +4,6 @@ import 'abstract_service.dart';
 
 
 class CanteenService extends AbstractService {
-  static final CanteenService _instance = CanteenService._internal();
-
-  factory CanteenService() {
-    return _instance;
-  }
-
-  CanteenService._internal();
-
   Future<List<Canteen>> getCanteens() async {
     final response = await get('canteen');
 

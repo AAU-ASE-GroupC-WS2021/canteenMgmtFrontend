@@ -1,3 +1,5 @@
+import 'package:get_it/get_it.dart';
+
 import '../widgets/add_canteen_button.dart';
 import '../widgets/text_heading.dart';
 
@@ -14,7 +16,7 @@ class AdminDashboardScreen extends StatefulWidget {
 }
 
 class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
-  final CanteenService canteenService = CanteenService();
+  final CanteenService canteenService = GetIt.I<CanteenService>();
   late Future<List<Canteen>> futureCanteens;
 
   @override

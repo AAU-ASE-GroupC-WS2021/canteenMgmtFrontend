@@ -10,9 +10,6 @@ void main() {
 
   Widget testWidgetEmpty = MaterialApp(
     home: Scaffold(
-      appBar: AppBar(
-        title: const Text('Canteen Management'),
-      ),
       body: CanteenForm((Canteen c) => {
         _returnedCanteen = c,
       }),
@@ -21,9 +18,6 @@ void main() {
 
   Widget testWidgetFilledIn = MaterialApp(
     home: Scaffold(
-      appBar: AppBar(
-        title: const Text('Canteen Management'),
-      ),
       body: CanteenForm((Canteen c) => {
         _returnedCanteen = c,
       }, canteen: _initialCanteen,),
