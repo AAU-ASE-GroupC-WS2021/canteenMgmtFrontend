@@ -129,7 +129,11 @@ jobs:
             git clone -b ${BACKEND_BRANCH:-development} ${BACKEND_GIT_URL:-https://github.com/AAU-ASE-GroupC-WS2021/canteenMgmtBackend.git} /opt/backend
       - run:
           name: Run backend
-          command: /opt/apache-maven-*/bin/mvn spring-boot:run
+          # $JAVA_HOME is not set in this container by default (for command see https://www.xmodulo.com/set-java_home-environment-variable-linux.html)
+          # env vars are not persisted across steps, hence path to maven is required
+          command: |
+            export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
+            /opt/apache-maven-*/bin/mvn spring-boot:run
           working_directory: /opt/backend
           background: true
 
