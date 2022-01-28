@@ -1,13 +1,17 @@
 import 'package:beamer/beamer.dart';
 import 'screens/admin_dashboard.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import 'screens/dish_service_demo.dart';
 import 'screens/home.dart';
 import 'screens/qr_demo.dart';
 import 'screens/qr_scanner.dart';
+import 'services/dish_service.dart';
 
 void main() {
+  GetIt.I.registerFactory<DishService>(() => DishService());
+
   runApp(MyApp());
 }
 

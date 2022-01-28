@@ -4,19 +4,26 @@ parameters:
   flutter-version:
     type: string
     default: "2.8.1"
+  maven-version:
+    type: string
+    default: "3.8.4"
   flutter-run-args:
     description: Common arguments for flutter commands that execute code (run, build, test, drive)
     type: string
     # see https://yaml-multiline.info/ for multi-line strings in yaml
     # (note that circleci seems to ignore `>` and `>-` for `run:` and `command:` items)
-    # the name of the backend url env variable depends on the git branch name, which may contain slashes
-    # therefore, apply the dark arts (nested command substitution) to replace special characters by "_" in git branch names
     default: >-
       --web-renderer html
       --dart-define=CI_PROVIDER=CircleCI
       --dart-define=GIT_URL=<< pipeline.project.git_url >>
       --dart-define=GIT_BRANCH=<< pipeline.git.branch >>
       --dart-define=COMMIT_HASH=<< pipeline.git.revision >>
+  flutter-backend-url:
+    description: Common arguments for flutter commands that execute code (run, build, test, drive)
+    type: string
+    # the name of the backend url env variable depends on the git branch name, which may contain slashes
+    # therefore, apply the dark arts (nested command substitution) to replace special characters by "_" in git branch names
+    default: >-
       --dart-define=BACKEND_URL="$(VAR_NAME="$(echo "BACKEND_URL_<< pipeline.git.branch >>" | sed 's/[^A-Za-z0-9]/_/g')" ; echo ${!VAR_NAME:-$BACKEND_URL_development})"
 
 orbs:
@@ -43,7 +50,7 @@ jobs:
       - flutter/install_pub
       - run:
           name: Build web
-          command: flutter build web << pipeline.parameters.flutter-run-args >>
+          command: flutter build web << pipeline.parameters.flutter-run-args >> << pipeline.parameters.flutter-backend-url >>
       - run:
           name: Compress Artifacts
           command: zip -r ../web.zip .
@@ -68,6 +75,9 @@ jobs:
           # so that files not touched in the actual tests are not left out of the report
           # see https://github.com/flutter/flutter/issues/27997
           command: sh -x .circleci/generate_coverage_helper.sh
+      - run:
+          name: Generate Mocks (for mockito)
+          command: flutter pub run build_runner build --delete-conflicting-outputs
       - run:
           name: Run Widget tests
           # creates test report (reports/tests.jsonl) and coverage report (coverage/lcov.info)
@@ -98,8 +108,42 @@ jobs:
           file: coverage/lcov.info
 
   run-integration-tests:
-    executor: cirrusci-flutter
+    docker:
+      # first `image` defines the primary container where all steps will run
+      # if no `name:` is provided, services are accessible through `localhost`
+      - image: cirrusci/flutter:<< pipeline.parameters.flutter-version >>
+      - image: postgres
+        environment:
+          POSTGRES_PASSWORD: mysecretpassword
     steps:
+      - run:
+          name: Set up Java 17
+          command: sudo apt-get -y update && sudo apt-get -y install openjdk-17-jdk-headless
+      - run:
+          name: Set up maven
+          command: |
+            curl https://dlcdn.apache.org/maven/maven-3/$MVN_VERSION/binaries/apache-maven-$MVN_VERSION-bin.tar.gz \
+              | tar xzvf - -C /opt
+          environment:
+            - MVN_VERSION: << pipeline.parameters.maven-version >>
+      - run:
+          name: Clone backend
+          # to allow injecting the backend branch based on the frontend branch, replace special characters in branch names by underscores
+          command: |
+            BACKEND_BRANCH_NORMALIZED=$(echo "BACKEND_BRANCH_$CIRCLE_BRANCH" | sed -e 's/[^A-Za-z0-9]/_/g')
+            git clone -b ${!BACKEND_BRANCH_NORMALIZED:-development} ${BACKEND_GIT_URL:-https://github.com/AAU-ASE-GroupC-WS2021/canteenMgmtBackend.git} /opt/backend
+            echo "Checked out branch: $(cd /opt/backend && git rev-parse --abbrev-ref HEAD)"
+      - run:
+          name: Run backend
+          # $JAVA_HOME is not set in this container by default (for command see https://www.xmodulo.com/set-java_home-environment-variable-linux.html)
+          # env vars are not persisted across steps, hence path to maven is required
+          # `--batch-mode` is recommended for CI setups
+          command: |
+            export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
+            /opt/apache-maven-*/bin/mvn --batch-mode --no-transfer-progress spring-boot:run
+          working_directory: /opt/backend
+          background: true
+
       - checkout
       - browser-tools/install-browser-tools:
           install-firefox: false # if firefox is needed, install jq first: `sudo apt-get -y update && sudo apt-get -y install jq`
@@ -125,6 +169,11 @@ jobs:
       - run:
           name: Create reports directory
           command: mkdir reports
+      - run:
+          name: Generate Mocks (for mockito)
+          # required as analyzer will complain about missing imports
+          # generated files will generally include `ignore` directives for relevant rules
+          command: flutter pub run build_runner build --delete-conflicting-outputs
       - run:
           name: Run static analysis
           # for now, do not treat infos and warnings as job failure
