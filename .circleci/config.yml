@@ -18,6 +18,8 @@ parameters:
       --dart-define=GIT_BRANCH=<< pipeline.git.branch >>
       --dart-define=COMMIT_HASH=<< pipeline.git.revision >>
       --dart-define=BACKEND_URL="$(VAR_NAME="$(echo "BACKEND_URL_<< pipeline.git.branch >>" | sed 's/[^A-Za-z0-9]/_/g')" ; echo ${!VAR_NAME:-$BACKEND_URL_development})"
+      --dart-define=AUTH_TOKEN=Auth-Token
+      --dart-define=AUTH_TOKEN_LENGTH=36
 
 orbs:
   flutter: circleci/flutter@1.0.1
