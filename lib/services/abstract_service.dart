@@ -1,3 +1,4 @@
+import 'package:canteen_mgmt_frontend/utils/auth_token.dart';
 import 'package:http/http.dart' as http;
 
 abstract class AbstractService {
@@ -14,20 +15,35 @@ abstract class AbstractService {
     return Uri.parse(uriString);
   }
 
-  Future<http.Response> get(path) {
-    return _client.get(_getUri(path), headers: getHeaders());
+  Future<http.Response> get(path) async {
+    var headers = await getHeaders();
+    return _client.get(_getUri(path), headers: headers);
   }
 
-  Future<http.Response> post(path, String body) {
-    return _client.post(_getUri(path), body: body, headers: getHeaders());
+  Future<http.Response> post(path, String body) async {
+    var headers = await getHeaders();
+    return _client.post(_getUri(path), body: body, headers: headers);
+  }
+
+  Future<http.Response> delete(path, String body) async {
+    var headers = await getHeaders();
+    return _client.delete(_getUri(path), body: body, headers: headers);
   }
 
   /// Set X-XSRF-TOKEN header if cookie is set
-  Map<String, String> getHeaders() {
+  Future<Map<String, String>> getHeaders() async {
     var headers = {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     };
+
+    String? token = await AuthTokenUtils.getAuthToken();
+
+    if (token != null) {
+      var authHeader = { AuthTokenUtils.authTokenKey: token};
+      headers.addAll(authHeader);
+    }
+
     return headers;
   }
 }
