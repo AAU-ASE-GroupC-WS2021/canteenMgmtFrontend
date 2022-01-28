@@ -4,7 +4,7 @@ class Dish {
   final double price;
   final String type;
 
-  Dish({
+  const Dish({
     this.id = -1,
     required this.name,
     required this.price,

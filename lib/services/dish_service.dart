@@ -21,13 +21,8 @@ class DishService extends AbstractService {
     }
   }
 
-  Future<Dish> createDish() async {
-    var body = json.encode(Dish(
-      name: "Test",
-      price: 9.99,
-      type: "STARTER",
-    ).toJson());
-    final response = await post('dish', body);
+  Future<Dish> createDish(Dish dish) async {
+    final response = await post('dish', jsonEncode(dish));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
