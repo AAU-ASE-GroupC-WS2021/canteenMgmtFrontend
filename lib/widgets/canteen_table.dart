@@ -23,14 +23,13 @@ class CanteenTable extends StatelessWidget {
   }
 
   List<DataColumn> _columns() {
-    List<DataColumn> cols = const [
-      DataColumn(label: Text('Name')),
-      DataColumn(label: Text('Address')),
-      DataColumn(label: Text('Num Tables')),
+    List<DataColumn> cols = [
+      if (showId)
+        const DataColumn(label: Text('ID')),
+      const DataColumn(label: Text('Name')),
+      const DataColumn(label: Text('Address')),
+      const DataColumn(label: Text('Num Tables')),
     ];
-    if (showId) {
-      cols = [const DataColumn(label: Text('ID')), ...cols];
-    }
     return cols;
   }
 
@@ -38,13 +37,12 @@ class CanteenTable extends StatelessWidget {
     List<DataRow> rows = [];
     for (var canteen in canteens) {
       var cells = [
+        if (showId)
+          DataCell(SelectableText(canteen.id.toString())),
         DataCell(SelectableText(canteen.name)),
         DataCell(SelectableText(canteen.address)),
         DataCell(SelectableText(canteen.numTables.toString())),
       ];
-      if (showId) {
-        cells = [DataCell(SelectableText(canteen.id.toString())), ...cells];
-      }
       rows.add(DataRow(cells: cells));
     }
     return rows;

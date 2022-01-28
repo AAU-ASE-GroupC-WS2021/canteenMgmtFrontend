@@ -1,5 +1,5 @@
 import 'package:beamer/beamer.dart';
-import 'package:canteen_mgmt_frontend/screens/admin_dashboard.dart';
+import 'screens/admin_dashboard.dart';
 import 'package:flutter/material.dart';
 
 import 'screens/dish_service_demo.dart';
