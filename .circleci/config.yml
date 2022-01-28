@@ -184,7 +184,8 @@ workflows:
   test-and-build:
     jobs:
       - run-widget-tests
-      - run-integration-tests
+      - run-integration-tests:
+          context: frontend-integration-<< pipeline.git.branch >>
       - analyze
       - build-and-deploy:
           context: GH-Pages-<< pipeline.git.branch >>
