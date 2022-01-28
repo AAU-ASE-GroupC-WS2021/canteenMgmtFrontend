@@ -117,6 +117,9 @@ jobs:
           POSTGRES_PASSWORD: mysecretpassword
     steps:
       - run:
+          name: Set up Java 17
+          command: sudo apt-get -y update && sudo apt-get -y install openjdk-17-jdk-headless
+      - run:
           name: Set up maven
           command: |
             curl https://dlcdn.apache.org/maven/maven-3/$MVN_VERSION/binaries/apache-maven-$MVN_VERSION-bin.tar.gz \
@@ -131,9 +134,10 @@ jobs:
           name: Run backend
           # $JAVA_HOME is not set in this container by default (for command see https://www.xmodulo.com/set-java_home-environment-variable-linux.html)
           # env vars are not persisted across steps, hence path to maven is required
+          # `--batch-mode` is recommended for CI setups
           command: |
             export JAVA_HOME=$(dirname $(dirname $(readlink -f $(which javac))))
-            /opt/apache-maven-*/bin/mvn spring-boot:run
+            /opt/apache-maven-*/bin/mvn --batch-mode --no-transfer-progress spring-boot:run
           working_directory: /opt/backend
           background: true
 
