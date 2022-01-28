@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 
 import 'screens/dish_service_demo.dart';
 import 'screens/home.dart';
+import 'screens/order_demo.dart';
 import 'screens/qr_demo.dart';
 import 'screens/qr_scanner.dart';
 import 'services/dish_service.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         // Return either Widgets or BeamPages if more customization is needed
         '/': (context, state, data) => const HomeScreen(),
         '/dish': (context, state, data) => const DishDemoScreen(),
+        '/order': (context, state, data) => const OrderDemoScreen(),
         '/qr-demo': (context, state, data) =>
             QrDemoScreen(scanValue: data is String? ? data : null),
         '/qr-scan': (context, state, data) => const QrScannerScreen(),
