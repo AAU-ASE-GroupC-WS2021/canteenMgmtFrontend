@@ -163,6 +163,11 @@ jobs:
           name: Create reports directory
           command: mkdir reports
       - run:
+          name: Generate Mocks (for mockito)
+          # required as analyzer will complain about missing imports
+          # generated files will generally include `ignore` directives for relevant rules
+          command: flutter pub run build_runner build --delete-conflicting-outputs
+      - run:
           name: Run static analysis
           # for now, do not treat infos and warnings as job failure
           # note: analyze does not need (or accept) the compile-time args
