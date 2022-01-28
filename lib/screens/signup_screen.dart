@@ -45,6 +45,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       decoration: const InputDecoration(
                         labelText: 'Username',
                       ),
+                      autofillHints: [AutofillHints.newUsername],
                       controller: usernameController,
                       validator: (value) {
                         return validateUsername(value);
@@ -60,6 +61,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       decoration: const InputDecoration(
                         labelText: 'Password',
                       ),
+                        autofillHints: [AutofillHints.newPassword],
                     ),
                     const SizedBox(height: 20), // space between buttons
                     ElevatedButton(
