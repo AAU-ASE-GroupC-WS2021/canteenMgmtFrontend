@@ -1,4 +1,5 @@
 import 'package:beamer/beamer.dart';
+import 'package:canteen_mgmt_frontend/screens/signin_screen.dart';
 import 'screens/signup_finished.dart';
 import 'screens/signup_screen.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class MyApp extends StatelessWidget {
         '/': (context, state, data) => const HomeScreen(),
         '/dish': (context, state, data) => const DishDemoScreen(),
         '/signup': (context, state, data) => const SignupScreen(),
+        '/signin': (context, state, data) => const SignInScreen(),
         '/signup-finished': (context, state, data) => const SignupFinishedScreen(),
         '/qr-demo': (context, state, data) =>
             QrDemoScreen(scanValue: data is String? ? data : null),

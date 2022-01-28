@@ -1,4 +1,6 @@
 import 'package:beamer/beamer.dart';
+import 'package:canteen_mgmt_frontend/widgets/signin_button.dart';
+import 'package:canteen_mgmt_frontend/widgets/signout_button.dart';
 import 'package:canteen_mgmt_frontend/widgets/signup_button.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +14,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Canteen Management'),
-        actions: const [SignUpButton(), AboutButton()],
+        actions: const [SignInButton(), SignOutButton(), SignUpButton(), AboutButton()],
       ),
       body: Center(
         child: Column(

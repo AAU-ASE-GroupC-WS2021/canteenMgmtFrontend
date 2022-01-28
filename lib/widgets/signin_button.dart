@@ -1,8 +1,8 @@
 import 'package:beamer/src/beamer.dart';
 import 'package:flutter/material.dart';
 
-class SignUpButton extends StatelessWidget {
-  const SignUpButton({Key? key}) : super(key: key);
+class SignInButton extends StatelessWidget {
+  const SignInButton({Key? key}) : super(key: key);
 
   final bool loggedIn = false;
 
@@ -16,8 +16,8 @@ class SignUpButton extends StatelessWidget {
     }
 
     return ElevatedButton(
-        onPressed: () => { context.beamToNamed('/signup') },
-        child: Text("Sign up"),
+        onPressed: () => { context.beamToNamed('/signin') },
+        child: Text("Log in")
     );
   }
 }
