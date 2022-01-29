@@ -1,24 +1,22 @@
 import 'package:beamer/beamer.dart';
-import 'package:canteen_mgmt_frontend/screens/signup_finished.dart';
+import 'package:canteen_mgmt_frontend/services/signin_service.dart';
 import 'package:canteen_mgmt_frontend/utils/auth_token.dart';
 import 'package:canteen_mgmt_frontend/widgets/about_button.dart';
 import 'package:flutter/material.dart';
 
-import '../services/signup_service.dart';
 import 'home.dart';
 
-
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _SignupScreenState();
+    return _SignInScreenState();
   }
 }
 
-class _SignupScreenState extends State<SignupScreen> {
-  final SignupService signupService = SignupService();
+class _SignInScreenState extends State<SignInScreen> {
+  final SignInService signupService = SignInService();
 
   @override
   void initState() {
@@ -43,11 +41,6 @@ class _SignupScreenState extends State<SignupScreen> {
                 style: TextStyle(fontSize: 25),
               ),
               const SizedBox(height: 20), // space between buttons
-              const Text(
-                "To create a new account please log out first!",
-                style: TextStyle(fontSize: 25),
-              ),
-              const SizedBox(height: 20), // space between buttons
               ElevatedButton(
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen())),
                 child: const Text('Go to the Homepage'),
@@ -62,7 +55,8 @@ class _SignupScreenState extends State<SignupScreen> {
         key: _formKey,
         child:
         Scaffold(
-      appBar: AppBar(title: const Text('Create a new profile'),
+      appBar: AppBar(
+        title: const Text('Log in'),
         actions: const [AboutButton()],
       ),
       body: Center(
@@ -77,43 +71,39 @@ class _SignupScreenState extends State<SignupScreen> {
                       decoration: const InputDecoration(
                         labelText: 'Username',
                       ),
-                      autofillHints: [AutofillHints.newUsername],
                       controller: usernameController,
-                      validator: (value) {
-                        return validateUsername(value);
-                      },
+                      validator: (value) => validateUsername(value),
+                      autofillHints: [AutofillHints.username],
                     ),
                     const SizedBox(height: 20), // space between buttons
                     TextFormField(
                       obscureText: true,
                       controller: passwordController,
-                      validator: (value) {
-                        return validatePassword(value);
-                      },
+                      validator: (value) => validatePassword(value),
+                      autofillHints: [AutofillHints.password],
                       decoration: const InputDecoration(
                         labelText: 'Password',
                       ),
-                        autofillHints: [AutofillHints.newPassword],
                     ),
                     const SizedBox(height: 20), // space between buttons
                     ElevatedButton(
                       onPressed: () => {
                       if (_formKey.currentState!.validate()) {
-                        signupService.createProfile(usernameController.text, passwordController.text)
+                        signupService.login(usernameController.text, passwordController.text)
                             .then((value) => {
                           if (value == null) {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignupFinishedScreen())),
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen())),
                           }
                           else {
-                            showAlertDialog(value)
+                            showAlertDialog(value),
                           },
                         })
                             .onError((error, stackTrace) => {
-                          showAlertDialog("Unknown error occurred while trying to create a new profile.\nPlease refresh the page and try again.!"),
+                          showAlertDialog("Unknown error occurred while trying to log you in.\nPlease refresh the page and try again.!"),
                         }),
                       },
                       },
-                      child: const Text('Sign up'),
+                      child: const Text('Log in'),
                     ),
                   ],
                 ),
@@ -126,7 +116,6 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   showAlertDialog(String error) {
-
     // set up the button
     Widget okButton = TextButton(
       child: const Text("Close"),
@@ -135,7 +124,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: const Text("Could not create profile"),
+      title: const Text("Could not log in"),
       content: Text(error),
       actions: [
         okButton,
@@ -151,11 +140,6 @@ class _SignupScreenState extends State<SignupScreen> {
     );
   }
 
-  static final regexAtLeastOneUppercaseLetter = RegExp(r'(?=.*[A-Z])');
-  static final regexAtLeastOneLowercaseLetter = RegExp(r'(?=.*[a-z])');
-  static final regexAtLeastOneDigit = RegExp(r'(?=.*[0-9])');
-  static final regexAlphanumericOnly = RegExp(r'^[a-zA-Z0-9]+$');
-
   String? validatePassword(String? password) {
     if (password == null || password.isEmpty) {
       return 'Password field cannot be empty.';
@@ -167,21 +151,7 @@ class _SignupScreenState extends State<SignupScreen> {
       return 'Password cannot be longer than 64 characters.';
     }
 
-    String otherRequirements = "";
-
-    if (!regexAtLeastOneUppercaseLetter.hasMatch(password)) {
-      otherRequirements += 'Password must contain at least one uppercase letter.\n';
-    }
-
-    if (!regexAtLeastOneLowercaseLetter.hasMatch(password)) {
-      otherRequirements += 'Password must contain at least one lowercase letter.\n';
-    }
-
-    if (!regexAtLeastOneDigit.hasMatch(password)) {
-      otherRequirements += 'Password must contain at least one digit.\n';
-    }
-
-    return otherRequirements.length > 0 ? otherRequirements : null;
+    return null;
   }
 
   String? validateUsername(String? username) {
@@ -194,11 +164,7 @@ class _SignupScreenState extends State<SignupScreen> {
     else if (username.length > 24) {
       return 'Username cannot be longer than 24 characters.';
     }
-    else if (!regexAlphanumericOnly.hasMatch(username)) {
-      return 'Username can contain only letters and digits.';
-    }
 
     return null;
   }
-
 }

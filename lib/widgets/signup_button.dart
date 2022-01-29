@@ -1,23 +1,37 @@
-import 'package:beamer/src/beamer.dart';
+import 'package:canteen_mgmt_frontend/screens/signup_screen.dart';
+import 'package:canteen_mgmt_frontend/utils/auth_token.dart';
 import 'package:flutter/material.dart';
 
-class SignUpButton extends StatelessWidget {
+class SignUpButton extends StatefulWidget {
   const SignUpButton({Key? key}) : super(key: key);
 
-  final bool loggedIn = false;
+  @override
+  State<StatefulWidget> createState() {
+    return _SignUpButtonState();
+  }
+}
+
+class _SignUpButtonState extends State<SignUpButton> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
 
-    if (loggedIn) {
+    if (AuthTokenUtils.isLoggedIn()) {
       return Offstage(
         offstage: true,
       );
     }
 
     return ElevatedButton(
-        onPressed: () => { context.beamToNamed('/signup') },
-        child: Text("Sign up"),
+        onPressed: () => {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignupScreen())),
+        },
+        child: Text("Sign up")
     );
   }
 }
