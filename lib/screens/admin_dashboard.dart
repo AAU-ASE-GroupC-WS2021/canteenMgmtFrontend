@@ -48,8 +48,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                           const TextHeading('Canteens'),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const <Widget>[
-                              AddCanteenButton(),
+                            children: <Widget>[
+                              AddCanteenButton((c) => {
+                                // TODO: call API
+                              }),
                             ],
                           ),
                         ],

@@ -4,7 +4,9 @@ import '../widgets/canteen_form.dart';
 import 'package:flutter/material.dart';
 
 class AddCanteenButton extends StatelessWidget {
-  const AddCanteenButton({Key? key}) : super(key: key);
+  const AddCanteenButton(this.callback, {Key? key}) : super(key: key);
+
+  final Function(Canteen) callback;
 
   @override
   Widget build(BuildContext context) {
@@ -22,9 +24,7 @@ class AddCanteenButton extends StatelessWidget {
                   child: CanteenForm((canteen) => {
                     // close dialog
                     Navigator.pop(context),
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text(canteen.toString())),
-                    ),
+                    callback(canteen),
                   },),
                 ),
               );
