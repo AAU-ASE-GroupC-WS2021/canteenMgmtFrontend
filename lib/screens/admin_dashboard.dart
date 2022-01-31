@@ -1,6 +1,7 @@
+import 'package:canteen_mgmt_frontend/widgets/create_user_button.dart';
 import 'package:get_it/get_it.dart';
 
-import '../widgets/add_canteen_button.dart';
+import '../widgets/create_canteen_button.dart';
 import '../widgets/text_heading.dart';
 
 import '../widgets/canteen_table.dart';
@@ -23,6 +24,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   void initState() {
     super.initState();
     futureCanteens = canteenService.getCanteens();
+  }
+
+  bool createCanteen(Canteen c) {
+    // TODO: add API call
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(c.toString())),
+    );
+    return false;
   }
 
   @override
@@ -49,9 +58,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              AddCanteenButton((c) => {
-                                // TODO: call API
-                              }),
+                              CreateCanteenButton(createCanteen),
+                              CreateUserButton(() => {}),
                             ],
                           ),
                         ],
