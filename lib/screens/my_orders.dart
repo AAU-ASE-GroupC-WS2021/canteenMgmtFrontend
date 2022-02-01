@@ -21,6 +21,7 @@ class MyOrdersScreen extends StatelessWidget {
             for (final order in orders)
               ListTile(
                 title: Text('Order at Canteen #${order.canteenId}'),
+                subtitle: Text('Total price: ${order.totalPrice}'),
                 trailing: IconButton(
                   icon: const Icon(Icons.qr_code),
                   onPressed: () {

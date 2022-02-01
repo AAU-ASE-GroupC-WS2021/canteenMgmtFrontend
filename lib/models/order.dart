@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 import 'dish.dart';
 
 class Order {
@@ -12,6 +14,8 @@ class Order {
     required this.userId,
     required this.dishes,
   });
+
+  double get totalPrice => dishes.entries.map((e) => e.key.price * e.value).sum;
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
         id: json['id'],
