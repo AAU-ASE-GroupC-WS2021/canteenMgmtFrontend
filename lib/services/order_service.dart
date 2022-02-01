@@ -1,9 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:canteen_mgmt_frontend/models/order.dart';
-
 import '../models/create_order.dart';
+import '../models/order.dart';
 import 'abstract_service.dart';
 
 class OrderService extends AbstractService {
