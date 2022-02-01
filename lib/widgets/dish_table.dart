@@ -22,6 +22,7 @@ class DishTable extends StatelessWidget {
     DataColumn(label: Text('Name')),
     DataColumn(label: Text('Price')),
     DataColumn(label: Text('Type')),
+    DataColumn(label: Text('Day')),
   ];
 
   List<DataRow> get _rows => [
@@ -30,6 +31,7 @@ class DishTable extends StatelessWidget {
             DataCell(Text(dish.name)),
             DataCell(Text(dish.price.toString())),
             DataCell(Text(dish.type)),
+            DataCell(Text(dish.dishDay)),
           ]),
       ];
 }

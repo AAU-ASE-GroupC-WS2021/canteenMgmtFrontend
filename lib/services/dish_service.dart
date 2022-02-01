@@ -25,7 +25,7 @@ class DishService extends AbstractService {
     var body = json.encode(Dish(
       name: "Test",
       price: 9.99,
-      type: "STARTER",
+      type: "MAIN",
     ).toJson());
     final response = await post('dish', body);
 
