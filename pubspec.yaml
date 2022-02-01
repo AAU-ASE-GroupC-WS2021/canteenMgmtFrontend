@@ -25,6 +25,8 @@ dependencies:
   bloc: ^8.0.2
   flutter_bloc: ^8.0.1
 
+  qr_flutter: ^4.0.0
+
 dev_dependencies:
   integration_test:
     sdk: flutter
