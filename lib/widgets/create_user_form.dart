@@ -73,7 +73,7 @@ class _CreateUserFormState extends State<CreateUserForm> {
             ))
                 .toList(),
           ),
-
+          const SizedBox(height: spacing),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               minimumSize: const Size.fromHeight(40), // fromHeight use double.infinity as width and 40 is the height

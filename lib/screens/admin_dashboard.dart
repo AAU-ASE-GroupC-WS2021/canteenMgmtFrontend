@@ -27,11 +27,15 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   }
 
   bool createCanteen(Canteen c) {
-    // TODO: add API call
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(c.toString())),
-    );
-    return false;
+    try {
+      canteenService.createCanteen(c);
+      return true;
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
+      return false;
+    }
   }
 
   @override
@@ -59,6 +63,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               CreateCanteenButton(createCanteen),
+                              // TODO: Find actual place
                               CreateUserButton(() => {}),
                             ],
                           ),
