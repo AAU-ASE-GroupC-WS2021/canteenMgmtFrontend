@@ -10,7 +10,7 @@ class CanteenListview extends StatefulWidget {
 
   final List<Canteen> canteens;
   final Function(Canteen) editCallback;
-  final Function(Canteen) selectionChangedCallback;
+  final Function(Canteen?) selectionChangedCallback;
 
   @override
   State<CanteenListview> createState() => _CanteenListviewState();
@@ -38,8 +38,9 @@ class _CanteenListviewState extends State<CanteenListview> {
               selectedTileColor: Colors.blue[100],
               onTap: () {
                 setState(() {
-                  _selectedIndex = index;
-                  widget.selectionChangedCallback(widget.canteens[index]);
+                  // allow for de-selection if pressed again
+                  _selectedIndex = _selectedIndex != index ? index : -1;
+                  widget.selectionChangedCallback(_selectedIndex > -1 ? widget.canteens[_selectedIndex] : null);
                 });
               },
             ),

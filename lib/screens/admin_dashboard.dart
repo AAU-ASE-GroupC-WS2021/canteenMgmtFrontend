@@ -30,12 +30,22 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   void initState() {
     super.initState();
     futureCanteens = canteenService.getCanteens();
-    futureUsers = userService.getAllUsers();
+    futureUsers = userService.getAllByType(UserType.ADMIN);
   }
 
   bool createCanteen(Canteen c) {
     try {
       canteenService.createCanteen(c);
+      return true;
+    } catch (e) {
+      showSnackbar(e.toString());
+      return false;
+    }
+  }
+
+  bool createUser(User user) {
+    try {
+      userService.createUser(user);
       return true;
     } catch (e) {
       showSnackbar(e.toString());
@@ -53,10 +63,12 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     }
   }
 
-  void showAdminsOfCanteen(Canteen c) {
+  void showAdmins(Canteen? c) {
     try {
       setState(() {
-        futureUsers = userService.getAllAdminsOfCanteen(c.id);
+        futureUsers = c != null ?
+          userService.getAllByTypeAndCanteen(UserType.ADMIN, c.id) :
+          userService.getAllByType(UserType.ADMIN);
       });
     } catch (e) {
       showSnackbar(e.toString());
@@ -106,7 +118,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         future: futureCanteens,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            return CanteenListview(editCanteen, showAdminsOfCanteen, canteens: snapshot.data!,);
+                            return CanteenListview(editCanteen, showAdmins, canteens: snapshot.data!,);
                           } else if (snapshot.hasError) {
                             return Text('${snapshot.error}');
                           } else {
@@ -145,11 +157,11 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           const SizedBox(width: 32.0),
-                          const TextHeading('Users'),
+                          const TextHeading('Canteen Staff'),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              CreateUserButton(() => {}),
+                              CreateUserButton(createUser),
                             ],
                           ),
                         ],

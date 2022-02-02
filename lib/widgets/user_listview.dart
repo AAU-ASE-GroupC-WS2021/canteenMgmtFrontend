@@ -24,10 +24,13 @@ class _UserListviewState extends State<UserListview> {
           child: Card(
             child:ListTile(
               title: Text(widget.users[index].username),
+              subtitle: Text(widget.users[index].type.name),
             ),
           ),
         );
       },)
         : const Center(child: Text('No users currently'),);
   }
+
+
 }

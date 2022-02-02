@@ -1,12 +1,14 @@
 class User {
   final int id;
   final String username;
+  final String? password;
   final UserType type;
   final int? canteenID;
 
   User({
     this.id = -1,
     required this.username,
+    this.password,
     required this.type,
     this.canteenID,
   });
@@ -23,6 +25,7 @@ class User {
   Map<String, dynamic> toJson() => {
     'id': id,
     'username': username,
+    'password': password,
     'type': type.name,
     'canteenID': canteenID,
   };

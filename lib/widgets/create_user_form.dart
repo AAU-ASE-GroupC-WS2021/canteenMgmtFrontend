@@ -1,3 +1,5 @@
+import '../models/user.dart';
+
 import '../models/canteen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -7,8 +9,7 @@ class CreateUserForm extends StatefulWidget {
   const CreateUserForm(this.callback, {Key? key, required this.canteens}) : super(key: key);
 
   final List<Canteen> canteens;
-  // TODO: Add user argument
-  final Function() callback;
+  final Function(User) callback;
 
   @override
   State<StatefulWidget> createState() => _CreateUserFormState();
@@ -21,6 +22,8 @@ class _CreateUserFormState extends State<CreateUserForm> {
   final controllerUsername = TextEditingController();
   final controllerPassword = TextEditingController();
   final controllerPasswordRepeat = TextEditingController();
+
+  Canteen? _selectedCanteen;
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +50,9 @@ class _CreateUserFormState extends State<CreateUserForm> {
             ),
             validator: (value) => validatePassword(value, "password"),
             textInputAction: TextInputAction.next,
+            obscureText: true,
+            enableSuggestions: false,
+            autocorrect: false,
           ),
           const SizedBox(height: spacing),
           TextFormField(
@@ -57,6 +63,9 @@ class _CreateUserFormState extends State<CreateUserForm> {
             ),
             validator: (value) => validatePasswordRepeat(value, "password"),
             textInputAction: TextInputAction.next,
+            obscureText: true,
+            enableSuggestions: false,
+            autocorrect: false,
           ),
           const SizedBox(height: spacing),
           FormBuilderDropdown(
@@ -70,8 +79,10 @@ class _CreateUserFormState extends State<CreateUserForm> {
                 .map((canteen) => DropdownMenuItem(
               value: canteen,
               child: Text('$canteen'),
-            ))
-                .toList(),
+            )).toList(),
+            onChanged: (Canteen? canteen) => {
+              _selectedCanteen = canteen,
+            },
           ),
           const SizedBox(height: spacing),
           ElevatedButton(
@@ -115,6 +126,12 @@ class _CreateUserFormState extends State<CreateUserForm> {
   }
 
   void processInput() {
-    // TODO: add user
+    User currentUserInput = User(
+      username: controllerUsername.value.text,
+      password: controllerPassword.value.text,
+      canteenID: _selectedCanteen != null ? _selectedCanteen!.id : null,
+      type: UserType.ADMIN,);
+
+    widget.callback(currentUserInput);
   }
 }

@@ -7,17 +7,7 @@ import 'abstract_service.dart';
 
 class OwnerUserService extends AbstractService {
   Future<List<User>> getAllUsers() async {
-    final response = await get('api/owner/user');
-
-    if (response.statusCode == 200) {
-      final stringData = response.body;
-      var responseJson = json.decode(stringData);
-
-      return (responseJson as List).map((p) => User.fromJson(p)).toList();
-    } else {
-
-      throw Exception('Failed to load users: ${response.body}');
-    }
+    return _parseUserListResponse(await get('api/owner/user'));
   }
 
   Future<User> createUser(User canteen) async {
@@ -29,13 +19,19 @@ class OwnerUserService extends AbstractService {
 
       return User.fromJson(responseJson);
     } else {
-      throw Exception('Failed to create user');
+      throw Exception('Failed to create user (${response.statusCode} - ${response.body})');
     }
   }
 
-  Future<List<User>>  getAllAdminsOfCanteen(int id) async {
-    final response = await get('api/owner/user?type=ADMIN&canteenID=$id');
+  Future<List<User>>  getAllByTypeAndCanteen(UserType type, int id) async {
+    return _parseUserListResponse(await get('api/owner/user?type=${type.name}&canteenID=$id'));
+  }
 
+  Future<List<User>>  getAllByType(UserType type) async {
+    return _parseUserListResponse(await get('api/owner/user?type=${type.name}'));
+  }
+
+  List<User> _parseUserListResponse(response) {
     if (response.statusCode == 200) {
       final stringData = response.body;
       var responseJson = json.decode(stringData);
