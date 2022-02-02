@@ -53,6 +53,16 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     }
   }
 
+  void showAdminsOfCanteen(Canteen c) {
+    try {
+      setState(() {
+        futureUsers = userService.getAllAdminsOfCanteen(c.id);
+      });
+    } catch (e) {
+      showSnackbar(e.toString());
+    }
+  }
+
   void showSnackbar(String text) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(text)),
@@ -96,7 +106,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         future: futureCanteens,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            return CanteenListview(editCanteen, canteens: snapshot.data!,);
+                            return CanteenListview(editCanteen, showAdminsOfCanteen, canteens: snapshot.data!,);
                           } else if (snapshot.hasError) {
                             return Text('${snapshot.error}');
                           } else {
@@ -161,16 +171,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                           }
                         },
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        final newCanteens = canteenService.getCanteens();
-                        setState(() {
-                          futureCanteens = newCanteens;
-                        });
-                      },
-                      child: const Text('Refresh'),
                     ),
                   ],
                 ),

@@ -32,4 +32,18 @@ class OwnerUserService extends AbstractService {
       throw Exception('Failed to create user');
     }
   }
+
+  Future<List<User>>  getAllAdminsOfCanteen(int id) async {
+    final response = await get('api/owner/user?type=ADMIN&canteenID=$id');
+
+    if (response.statusCode == 200) {
+      final stringData = response.body;
+      var responseJson = json.decode(stringData);
+
+      return (responseJson as List).map((p) => User.fromJson(p)).toList();
+    } else {
+
+      throw Exception('Failed to load users: ${response.body}');
+    }
+  }
 }
