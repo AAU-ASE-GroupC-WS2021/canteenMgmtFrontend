@@ -1,13 +1,23 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
+import 'cubits/order_cubit.dart';
 import 'screens/dish_service_demo.dart';
 import 'screens/home.dart';
+import 'screens/my_orders.dart';
 import 'screens/order_demo.dart';
 import 'screens/qr_demo.dart';
 import 'screens/qr_scanner.dart';
+import 'services/dish_service.dart';
+import 'services/order_service.dart';
 
 void main() {
+  GetIt.I.registerFactory<DishService>(() => DishService());
+  // lazy, as the orders depend on the user.
+  GetIt.I.registerLazySingleton<OrderService>(() => OrderService());
+  GetIt.I.registerLazySingleton<OrderCubit>(() => OrderCubit());
+
   runApp(MyApp());
 }
 
@@ -20,7 +30,8 @@ class MyApp extends StatelessWidget {
         // Return either Widgets or BeamPages if more customization is needed
         '/': (context, state, data) => const HomeScreen(),
         '/dish': (context, state, data) => const DishDemoScreen(),
-        '/order': (context, state, data) => const OrderDemoScreen(),
+        '/order': (context, state, data) => const MyOrdersScreen(),
+        '/order/submit': (context, state, data) => const OrderDemoScreen(),
         '/qr-demo': (context, state, data) =>
             QrDemoScreen(scanValue: data is String? ? data : null),
         '/qr-scan': (context, state, data) => const QrScannerScreen(),

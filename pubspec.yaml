@@ -15,6 +15,18 @@ dependencies:
   qr_code_scanner: ^0.6.1
   http: ^0.13.4
 
+  # navigation
+  beamer: ^1.2.0
+
+  # service locator (allows for easy injection)
+  get_it: ^7.2.0
+
+  # state management
+  bloc: ^8.0.2
+  flutter_bloc: ^8.0.1
+
+  qr_flutter: ^4.0.0
+
 dev_dependencies:
   integration_test:
     sdk: flutter
@@ -28,8 +40,10 @@ dev_dependencies:
   # convert flutter test results (json) to JUnit format
   junitreport: ^2.0.2
 
-  # navigation
-  beamer: ^1.2.0
+  mockito: ^5.0.17
+
+  # code generation, required for mockito
+  build_runner: ^2.1.7
 
 flutter:
   uses-material-design: true
