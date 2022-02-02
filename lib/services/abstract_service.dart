@@ -14,8 +14,19 @@ abstract class AbstractService {
     return Uri.parse(uriString);
   }
 
-  Future<http.Response> get(path) {
-    return _client.get(_getUri(path), headers: getHeaders());
+  Future<http.Response> get(path, [menuDay]) {
+    if (menuDay != null)
+    {
+      var pathnew = Uri.parse(backendUrl + path).replace(queryParameters: {
+        'menuDay': menuDay,
+        });
+      return _client.get(pathnew, headers: getHeaders());
+    }
+    else
+    {
+      return _client.get(_getUri(path), headers: getHeaders());
+    }
+
   }
 
   Future<http.Response> post(path, String body) {
