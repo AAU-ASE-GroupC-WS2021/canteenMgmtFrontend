@@ -23,13 +23,23 @@ class MyApp extends StatelessWidget {
   final beamerDelegate = BeamerDelegate(
     locationBuilder: RoutesLocationBuilder(
       routes: {
-        // Return either Widgets or BeamPages if more customization is needed
-        '/': (context, state, data) => const HomeScreen(),
-        '/dish': (context, state, data) => const DishDemoScreen(),
-        '/qr-demo': (context, state, data) =>
-            QrDemoScreen(scanValue: data is String? ? data : null),
-        '/qr-scan': (context, state, data) => const QrScannerScreen(),
-        '/admin': (context, state, data) => const AdminDashboardScreen(),
+        '/': (context, state, data) => const BeamPage(
+              title: 'Canteen Management',
+              child: HomeScreen(),
+            ),
+        '/dish': (context, state, data) => const BeamPage(
+              title: 'Dish Demo',
+              child: DishDemoScreen(),
+            ),
+        '/qr-demo': (context, state, data) => BeamPage(
+              title: 'QR Scanner Demo',
+              child: QrDemoScreen(scanValue: data is String? ? data : null),
+            ),
+        '/qr-scan': (context, state, data) => const BeamPage(
+              title: 'Scan QR Code',
+              child: QrScannerScreen(),
+            ),
+    /admin': (context, state, data) => const AdminDashboardScreen(),
       },
     ),
   );
