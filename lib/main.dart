@@ -11,6 +11,9 @@ import 'services/dish_service.dart';
 void main() {
   GetIt.I.registerFactory<DishService>(() => DishService());
 
+  // remove .../#/... from url
+  Beamer.setPathUrlStrategy();
+
   runApp(MyApp());
 }
 
