@@ -38,11 +38,25 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       canteenService.createCanteen(c);
       return true;
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
-      );
+      showSnackbar(e.toString());
       return false;
     }
+  }
+
+  bool editCanteen(Canteen c) {
+    try {
+      canteenService.updateCanteen(c);
+      return true;
+    } catch (e) {
+      showSnackbar(e.toString());
+      return false;
+    }
+  }
+
+  void showSnackbar(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(text)),
+    );
   }
 
   @override
@@ -82,7 +96,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         future: futureCanteens,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            return CanteenListview(canteens: snapshot.data!,);
+                            return CanteenListview(editCanteen, canteens: snapshot.data!,);
                           } else if (snapshot.hasError) {
                             return Text('${snapshot.error}');
                           } else {

@@ -29,4 +29,17 @@ class CanteenService extends AbstractService {
       throw Exception('Failed to create canteen');
     }
   }
+
+  Future<Canteen> updateCanteen(Canteen canteen) async {
+    final response = await put('api/canteen/'+canteen.id.toString(), jsonEncode(canteen));
+
+    if (response.statusCode == 200) {
+      final stringData = response.body;
+      var responseJson = json.decode(stringData);
+
+      return Canteen.fromJson(responseJson);
+    } else {
+      throw Exception('Failed to update canteen');
+    }
+  }
 }

@@ -1,10 +1,14 @@
+
 import '../models/canteen.dart';
 import 'package:flutter/material.dart';
 
+import 'edit_canteen_button.dart';
+
 class CanteenListview extends StatelessWidget {
-  const CanteenListview({Key? key, required this.canteens}) : super(key: key);
+  const CanteenListview(this.editCallback, {Key? key, required this.canteens}) : super(key: key);
 
   final List<Canteen> canteens;
+  final Function(Canteen) editCallback;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +26,7 @@ class CanteenListview extends StatelessWidget {
       items.add(Card(child:ListTile(
         title: Text(canteen.name),
         subtitle: Text(canteen.address),
-        trailing: Icon(Icons.star),)));
+        trailing: EditCanteenButton(editCallback, canteen),)));
     }
     return items;
   }
