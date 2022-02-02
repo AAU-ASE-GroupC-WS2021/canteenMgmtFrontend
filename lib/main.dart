@@ -35,8 +35,14 @@ class MyApp extends StatelessWidget {
               title: 'Dish Demo',
               child: DishDemoScreen(),
             ),
-        '/order': (context, state, data) => const MyOrdersScreen(),
-        '/order/submit': (context, state, data) => const OrderDemoScreen(),
+        '/order': (context, state, data) => const BeamPage(
+              title: 'My Orders',
+              child: MyOrdersScreen(),
+            ),
+        '/order/submit': (context, state, data) => const BeamPage(
+              title: 'Order from SomeCanteen',
+              child: OrderDemoScreen(),
+            ),
         '/qr-demo': (context, state, data) => BeamPage(
               title: 'QR Scanner Demo',
               child: QrDemoScreen(scanValue: data is String? ? data : null),
