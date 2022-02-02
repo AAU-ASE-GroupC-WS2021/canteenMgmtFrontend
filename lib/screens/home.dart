@@ -31,6 +31,11 @@ class HomeScreen extends StatelessWidget {
               onPressed: () => context.beamToNamed('/qr-demo'),
               child: const Text('QR Scanner Demo'),
             ),
+            const SizedBox(height: 20), // space between buttons
+            ElevatedButton(
+              onPressed: () => context.beamToNamed('/admin'),
+              child: const Text('Admin Dashboard'),
+            ),
           ],
         ),
       ),
