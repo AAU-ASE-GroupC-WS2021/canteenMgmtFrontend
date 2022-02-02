@@ -1,6 +1,6 @@
 import '../models/user.dart';
 import '../services/owner_user_service.dart';
-import '../widgets/user_table.dart';
+import '../widgets/user_listview.dart';
 
 import '../widgets/create_user_button.dart';
 import 'package:get_it/get_it.dart';
@@ -8,7 +8,7 @@ import 'package:get_it/get_it.dart';
 import '../widgets/create_canteen_button.dart';
 import '../widgets/text_heading.dart';
 
-import '../widgets/canteen_table.dart';
+import '../widgets/canteen_listview.dart';
 import '../models/canteen.dart';
 import '../services/canteen_service.dart';
 import 'package:flutter/material.dart';
@@ -78,21 +78,18 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.5,
                       width: MediaQuery.of(context).size.width * 0.45,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: FutureBuilder<List<Canteen>>(
-                          future: futureCanteens,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return CanteenTable(canteens: snapshot.data!, showId: true,);
-                            } else if (snapshot.hasError) {
-                              return Text('${snapshot.error}');
-                            } else {
-                              // By default, show a loading spinner.
-                              return const CircularProgressIndicator();
-                            }
-                          },
-                        ),
+                      child: FutureBuilder<List<Canteen>>(
+                        future: futureCanteens,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return CanteenListview(canteens: snapshot.data!,);
+                          } else if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          } else {
+                            // By default, show a loading spinner.
+                            return const CircularProgressIndicator();
+                          }
+                        },
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -137,21 +134,18 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.5,
                       width: MediaQuery.of(context).size.width * 0.45,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: FutureBuilder<List<User>>(
-                          future: futureUsers,
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              return UserTable(users: snapshot.data!,);
-                            } else if (snapshot.hasError) {
-                              return Text('${snapshot.error}');
-                            } else {
-                              // By default, show a loading spinner.
-                              return const CircularProgressIndicator();
-                            }
-                          },
-                        ),
+                      child: FutureBuilder<List<User>>(
+                        future: futureUsers,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return UserListview(users: snapshot.data!,);
+                          } else if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          } else {
+                            // By default, show a loading spinner.
+                            return const CircularProgressIndicator();
+                          }
+                        },
                       ),
                     ),
                     const SizedBox(height: 20),
