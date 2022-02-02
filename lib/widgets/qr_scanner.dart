@@ -177,20 +177,14 @@ class _QrScannerState extends State<QrScanner> {
   }
 
   void _onQRViewCreated(QRViewController controller) {
-    setState(() {
-      this.controller = controller;
-    });
+    setState(() => this.controller = controller);
 
-    Future<Barcode> result = widget.ignoreEmpty
-        ? controller.scannedDataStream
-            .firstWhere((item) => item.code != null && item.code != '')
-        : controller.scannedDataStream.first;
+    Stream<Barcode> stream = controller.scannedDataStream;
+    if (widget.ignoreEmpty) {
+      stream = stream.where((item) => item.code != null && item.code != '');
+    }
 
-    result.then((scanData) {
-      // setState(() {
-      //   result = scanData;
-      // });
-
+    stream.listen((scanData) {
       if (widget.onScan != null) {
         widget.onScan!(context, scanData.code);
       }
@@ -199,11 +193,6 @@ class _QrScannerState extends State<QrScanner> {
         context.beamBack(data: scanData.code);
       }
     });
-    // controller.scannedDataStream.listen((scanData) {
-    //   setState(() {
-    //     result = scanData;
-    //   });
-    // });
   }
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
