@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/qr_scan/scanner.dart';
+import '../widgets/qr_scanner.dart';
 
 class OrderQrScanScreen extends StatelessWidget {
   const OrderQrScanScreen({Key? key}) : super(key: key);

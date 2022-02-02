@@ -2,12 +2,8 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:beamer/beamer.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-
-part 'flash_button.dart';
-part 'flip_camera_button.dart';
 
 class QrScanner extends StatefulWidget {
   const QrScanner({
@@ -53,13 +49,7 @@ class _QrScannerState extends State<QrScanner> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Scan QR Code'),
-        actions: kIsWeb ? const [] : [
-          _QrScannerFlashButton(controller: controller),
-          _QrScannerFacingButton(controller: controller),
-        ],
-      ),
+      appBar: AppBar(title: const Text('Scan QR Code')),
       body: QRView(
         key: qrKey,
         onQRViewCreated: _onQRViewCreated,
