@@ -45,7 +45,7 @@ class MyOrdersScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => context.beamToNamed('/order/submit'),
+        onPressed: () => context.beamToNamed('/new-order', beamBackOnPop: true),
       ),
     );
   }

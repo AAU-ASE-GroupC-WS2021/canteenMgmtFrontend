@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
               title: 'My Orders',
               child: MyOrdersScreen(),
             ),
-        '/order/submit': (context, state, data) => const BeamPage(
+        '/new-order': (context, state, data) => const BeamPage(
               title: 'Order from SomeCanteen',
               child: OrderDemoScreen(),
             ),
