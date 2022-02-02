@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import '../models/create_order.dart';
 import '../models/order.dart';
@@ -14,7 +13,7 @@ class OrderService extends AbstractService {
       final stringData = response.body;
       // TODO: ORDER-MODEL creation
       var responseJson = json.decode(stringData);
-      return responseJson;
+      return Order.fromJson(responseJson);
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -29,9 +28,6 @@ class OrderService extends AbstractService {
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(response.body);
-
-      log(response.body);
-      log(responseJson.toString());
 
       if (responseJson is! List) {
         throw const FormatException('Result from order is not a list');

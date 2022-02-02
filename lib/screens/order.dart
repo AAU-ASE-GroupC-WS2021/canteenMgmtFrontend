@@ -1,30 +1,44 @@
-import 'package:canteen_mgmt_frontend/models/create_order.dart';
-import 'package:canteen_mgmt_frontend/models/create_order_dish.dart';
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 
+import '../models/create_order.dart';
+import '../models/create_order_dish.dart';
 import '../models/dish.dart';
+import '../models/order_arguments.dart';
 import '../models/order_dish.dart';
 import '../services/dish_service.dart';
+import '../services/order_data_helper_service.dart';
 import '../services/order_service.dart';
 
-class OrderDemoScreen extends StatefulWidget {
-  const OrderDemoScreen({Key? key}) : super(key: key);
+class OrderScreen extends StatefulWidget {
+  const OrderScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  State<OrderDemoScreen> createState() => _OrderDemoScreenState();
+  State<OrderScreen> createState() => _OrderScreenState();
 }
 
-class _OrderDemoScreenState extends State<OrderDemoScreen> {
+class _OrderScreenState extends State<OrderScreen> {
   final DishService dishService = DishService();
   final OrderService orderService = OrderService();
+  final OrderDataHelperService orderDataHelperService =
+      OrderDataHelperService();
   late Future<List<Dish>> currentDishes;
 
   List<OrderDish> selectedDishes = [];
+  late OrderArguments orderArguments;
 
   @override
   void initState() {
     super.initState();
     currentDishes = dishService.fetchDishes();
+    orderArguments = orderDataHelperService.getOrderArguments();
+    if (!orderArguments.isValid()) {
+      Future(() {
+        context.beamToNamed('/order-select-canteen', beamBackOnPop: true);
+      });
+    }
   }
 
   @override
@@ -248,8 +262,9 @@ class _OrderDemoScreenState extends State<OrderDemoScreen> {
             ElevatedButton(
               onPressed: () {
                 final orderReturn = orderService.createOrder(prepareSubmit());
-                print(orderReturn);
-                // TODO: REDIRECT TO ORDER DISPLAY
+                orderReturn.then((data) {
+                  context.beamToNamed('/order/${data.id}', beamBackOnPop: true);
+                });
               },
               child: const Text('Submit order'),
             ),
@@ -266,12 +281,15 @@ class _OrderDemoScreenState extends State<OrderDemoScreen> {
       selectedDishes[dishIndex].count++;
     } else {
       // if the dish does not exist we add it to the order
-      selectedDishes.add(OrderDish(
+      selectedDishes.add(
+        OrderDish(
           id: dish.id,
           name: dish.name,
           price: dish.price,
           type: dish.type,
-          count: 1));
+          count: 1,
+        ),
+      );
     }
 
     setState(() {});
@@ -299,7 +317,13 @@ class _OrderDemoScreenState extends State<OrderDemoScreen> {
       for (var dish in selectedDishes) {
         dishList.add(CreateOrderDish(id: dish.id, count: dish.count));
       }
-      return CreateOrder(userId: 1, canteenId: 1, dishes: dishList);
+      return CreateOrder(
+        userId: 1,
+        canteenId: orderArguments.canteenId,
+        dishes: dishList,
+        pickupDate: orderArguments.pickupDate,
+        reserveTable: orderArguments.reserveTable,
+      );
     }
   }
 }

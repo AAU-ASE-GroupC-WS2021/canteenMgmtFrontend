@@ -4,11 +4,15 @@ class CreateOrder {
   final int userId;
   final int canteenId;
   List<CreateOrderDish> dishes = [];
+  final DateTime pickupDate;
+  final bool reserveTable;
 
   CreateOrder({
     required this.userId,
     required this.canteenId,
     required this.dishes,
+    required this.pickupDate,
+    required this.reserveTable,
   });
 
   factory CreateOrder.fromJson(Map<String, dynamic> json) {
@@ -16,6 +20,8 @@ class CreateOrder {
       userId: json['userId'],
       canteenId: json['canteenId'],
       dishes: json['dishes'],
+      pickupDate: DateTime.fromMillisecondsSinceEpoch(json['pickupDate']),
+      reserveTable: json['reserveTable'],
     );
   }
 
@@ -23,10 +29,12 @@ class CreateOrder {
         'userId': userId,
         'canteenId': canteenId,
         'dishes': dishes,
+        'pickupDate': pickupDate.millisecondsSinceEpoch,
+        'reserveTable': reserveTable,
       };
 
   @override
   String toString() {
-    return 'Order{User-ID: $userId, CanteenID: $canteenId, dishes $dishes}';
+    return 'Order{User-ID: $userId, CanteenID: $canteenId, dishes $dishes, PickupDate: $pickupDate, ReserveTable: $reserveTable}';
   }
 }

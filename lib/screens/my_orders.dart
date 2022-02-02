@@ -33,7 +33,8 @@ class MyOrdersScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => context.beamToNamed('/new-order', beamBackOnPop: true),
+        onPressed: () =>
+            context.beamToNamed('/order-select-canteen', beamBackOnPop: true),
       ),
     );
   }
