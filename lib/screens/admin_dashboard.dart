@@ -1,4 +1,8 @@
-import 'package:canteen_mgmt_frontend/widgets/create_user_button.dart';
+import '../models/user.dart';
+import '../services/owner_user_service.dart';
+import '../widgets/user_table.dart';
+
+import '../widgets/create_user_button.dart';
 import 'package:get_it/get_it.dart';
 
 import '../widgets/create_canteen_button.dart';
@@ -18,12 +22,15 @@ class AdminDashboardScreen extends StatefulWidget {
 
 class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   final CanteenService canteenService = GetIt.I<CanteenService>();
+  final OwnerUserService userService = GetIt.I<OwnerUserService>();
   late Future<List<Canteen>> futureCanteens;
+  late Future<List<User>> futureUsers;
 
   @override
   void initState() {
     super.initState();
     futureCanteens = canteenService.getCanteens();
+    futureUsers = userService.getAllUsers();
   }
 
   bool createCanteen(Canteen c) {
@@ -53,7 +60,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.9,
+                      width: MediaQuery.of(context).size.width * 0.45,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
@@ -63,7 +70,64 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               CreateCanteenButton(createCanteen),
-                              // TODO: Find actual place
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.5,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: FutureBuilder<List<Canteen>>(
+                          future: futureCanteens,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return CanteenTable(canteens: snapshot.data!, showId: true,);
+                            } else if (snapshot.hasError) {
+                              return Text('${snapshot.error}');
+                            } else {
+                              // By default, show a loading spinner.
+                              return const CircularProgressIndicator();
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        final newCanteens = canteenService.getCanteens();
+                        setState(() {
+                          futureCanteens = newCanteens;
+                        });
+                      },
+                      child: const Text('Refresh'),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+
+
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          const SizedBox(width: 32.0),
+                          const TextHeading('Users'),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
                               CreateUserButton(() => {}),
                             ],
                           ),
@@ -72,14 +136,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                     ),
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.5,
-                      width: MediaQuery.of(context).size.width * 0.9,
+                      width: MediaQuery.of(context).size.width * 0.45,
                       child: SingleChildScrollView(
                         scrollDirection: Axis.vertical,
-                        child: FutureBuilder<List<Canteen>>(
-                          future: futureCanteens,
+                        child: FutureBuilder<List<User>>(
+                          future: futureUsers,
                           builder: (context, snapshot) {
                             if (snapshot.hasData) {
-                              return CanteenTable(canteens: snapshot.data!, showId: true,);
+                              return UserTable(users: snapshot.data!,);
                             } else if (snapshot.hasError) {
                               return Text('${snapshot.error}');
                             } else {

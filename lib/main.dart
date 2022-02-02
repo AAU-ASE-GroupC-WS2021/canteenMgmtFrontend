@@ -1,4 +1,5 @@
 import 'package:beamer/beamer.dart';
+import 'services/owner_user_service.dart';
 import 'services/canteen_service.dart';
 import 'screens/admin_dashboard.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'services/dish_service.dart';
 void main() {
   GetIt.I.registerFactory<DishService>(() => DishService());
   GetIt.I.registerFactory<CanteenService>(() => CanteenService());
+  GetIt.I.registerFactory<OwnerUserService>(() => OwnerUserService());
 
   runApp(MyApp());
 }
