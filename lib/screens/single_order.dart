@@ -30,17 +30,14 @@ class SingleOrderScreen extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(title: Text('Order #${order.id}')),
-          body: ListView(
-            children: [
-              for (final dishEntry in order.dishes.entries)
-                ListTile(
-                  title: Text(dishEntry.key.name),
-                  subtitle:
-                      Text('${dishEntry.value} × \$${dishEntry.key.price}'),
-                  trailing: Text('${dishEntry.value * dishEntry.key.price}'),
-                ),
-            ],
-          ),
+          body: ListView(children: [
+            for (final dishEntry in order.dishes.entries)
+              ListTile(
+                title: Text(dishEntry.key.name),
+                subtitle: Text('${dishEntry.value} × \$${dishEntry.key.price}'),
+                trailing: Text('${dishEntry.value * dishEntry.key.price}'),
+              ),
+          ]),
         );
       },
     );
