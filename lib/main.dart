@@ -39,7 +39,10 @@ class MyApp extends StatelessWidget {
               title: 'Scan QR Code',
               child: QrScannerScreen(),
             ),
-    /admin': (context, state, data) => const AdminDashboardScreen(),
+        '/admin': (context, state, data) => const BeamPage(
+              title: 'Admin Dashboard',
+              child: AdminDashboardScreen(),
+            ),
       },
     ),
   );
