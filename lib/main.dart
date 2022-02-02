@@ -9,6 +9,7 @@ import 'screens/my_orders.dart';
 import 'screens/order_demo.dart';
 import 'screens/qr_demo.dart';
 import 'screens/qr_scanner.dart';
+import 'screens/single_order.dart';
 import 'services/dish_service.dart';
 import 'services/order_service.dart';
 
@@ -37,8 +38,24 @@ class MyApp extends StatelessWidget {
             ),
         '/order': (context, state, data) => const BeamPage(
               title: 'My Orders',
+              key: ValueKey('my-orders'),
               child: MyOrdersScreen(),
             ),
+        '/order/:orderId': (context, state, data) {
+          var orderId = int.tryParse(state.pathParameters['orderId']!);
+          if (orderId == null) {
+            context.beamToNamed('/order');
+            return const SizedBox();
+          }
+
+          return BeamPage(
+            // the key is required for flutter to differentiate between similar widgets.
+            // necessary, if multiple different widgets of the same type are used in the same place in the widget tree.
+            key: ValueKey('order-$orderId'),
+            title: 'Order from SomeCanteen',
+            child: SingleOrderScreen(orderId: orderId),
+          );
+        },
         '/new-order': (context, state, data) => const BeamPage(
               title: 'Order from SomeCanteen',
               child: OrderDemoScreen(),
