@@ -17,9 +17,7 @@ class OrderQrPopup extends StatelessWidget {
       title: const Text('Some Order'),
       content: SizedBox(
         width: 200,
-        child: QrImage(
-          data: 'canteen-mgmt-order:${order.id}',
-        ),
+        child: QrImage(data: 'canteen-mgmt-order:${order.id}'),
       ),
     );
   }

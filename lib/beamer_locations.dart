@@ -1,18 +1,16 @@
 import 'package:beamer/beamer.dart';
-import 'package:canteen_mgmt_frontend/cubits/auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'cubits/auth.dart';
 import 'screens/admin_dashboard.dart';
 import 'screens/create_order.dart';
 import 'screens/dish_service_demo.dart';
 import 'screens/home.dart';
 import 'screens/menu_service_demo.dart';
 import 'screens/my_orders.dart';
+import 'screens/order_qr_scan.dart';
 import 'screens/order_select_canteen.dart';
-import 'screens/qr_demo.dart';
-import 'screens/qr_scanner.dart';
 import 'screens/signin_screen.dart';
 import 'screens/signup_finished.dart';
 import 'screens/signup_screen.dart';
@@ -33,16 +31,6 @@ BeamerDelegate getBeamerDelegate() => BeamerDelegate(
                 title: 'Dish Demo',
                 child: DishDemoScreen(),
                 key: ValueKey('DishScreen'),
-              ),
-          '/qr-demo': (context, state, data) => BeamPage(
-                title: 'QR Scanner Demo',
-                child: QrDemoScreen(scanValue: data is String? ? data : null),
-                key: const ValueKey('QRDemoScreen'),
-              ),
-          '/qr-scan': (context, state, data) => const BeamPage(
-                title: 'Scan QR Code',
-                child: QrScannerScreen(),
-                key: ValueKey('QRScannerScreen'),
               ),
           '/signup': (context, state, data) => const BeamPage(
                 title: 'Create a new profile',
@@ -82,6 +70,10 @@ BeamerDelegate getBeamerDelegate() => BeamerDelegate(
               ),
           '/create-order/:canteenId': (context, state, data) =>
               orderSelectDishesScreen(context, state, data),
+          '/scan-order': (context, state, data) => const BeamPage(
+                title: 'Scan QR Code',
+                child: OrderQrScanScreen(),
+              ),
         },
       ),
       guards: [
