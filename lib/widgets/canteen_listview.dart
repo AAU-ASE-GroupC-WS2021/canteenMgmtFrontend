@@ -19,7 +19,7 @@ class CanteenListview extends StatefulWidget {
 
 class _CanteenListviewState extends State<CanteenListview> {
 
-  var _selectedIndex;
+  var _selectedIndex = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -29,19 +29,24 @@ class _CanteenListviewState extends State<CanteenListview> {
       itemCount: widget.canteens.length,
       itemBuilder: (context, index) {
         return InkWell(
-          onTap: () {
-            _selectedIndex = index;
-            widget.selectionChangedCallback(widget.canteens[index]);
-          },
-          child: Card(child:ListTile(
-            title: Text(widget.canteens[index].name),
-            subtitle: Text("${widget.canteens[index].address}\n${widget.canteens[index].numTables} Tables"),
-            trailing: EditCanteenButton(widget.editCallback, widget.canteens[index]),
-          ),
+          child: Card(
+            child:ListTile(
+              title: Text(widget.canteens[index].name),
+              subtitle: Text("${widget.canteens[index].address}\n${widget.canteens[index].numTables} Tables"),
+              trailing: EditCanteenButton(widget.editCallback, widget.canteens[index]),
+              selected: _selectedIndex == index? true: false,
+              selectedTileColor: Colors.blue[100],
+              onTap: () {
+                setState(() {
+                  _selectedIndex = index;
+                  widget.selectionChangedCallback(widget.canteens[index]);
+                });
+              },
+            ),
           ),
         );
       },)
-        : const Text('No canteens currently');
+        : const Center(child: Text('No canteens currently'),);
   }
 }
 
