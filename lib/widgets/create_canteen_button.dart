@@ -1,3 +1,4 @@
+import 'package:canteen_mgmt_frontend/cubits/canteen_cubit.dart';
 import 'package:canteen_mgmt_frontend/models/canteen.dart';
 import 'package:canteen_mgmt_frontend/services/canteen_service.dart';
 import 'package:get_it/get_it.dart';
@@ -23,12 +24,15 @@ class CreateCanteenButton extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: CanteenForm((canteen) => {
                     GetIt.I.get<CanteenService>().createCanteen(canteen)
-                        .then((value) => Navigator.pop(context),)
+                        .then((value) => {
+                          Navigator.pop(context),
+                          GetIt.I.get<CanteensCubit>().refresh(),
+                        },)
                         .onError((error, stackTrace) => {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(error.toString())),
-                      ),
-                    }),
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(error.toString())),
+                            ),
+                        }),
                   },),
                 ),
               );

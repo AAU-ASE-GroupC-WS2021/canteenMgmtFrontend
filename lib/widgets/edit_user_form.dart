@@ -1,3 +1,5 @@
+import '../cubits/filtered_users_cubit.dart';
+
 import '../services/owner_user_service.dart';
 import 'package:get_it/get_it.dart';
 
@@ -160,7 +162,10 @@ class _EditUserFormState extends State<EditUserForm> {
       type: UserType.ADMIN,);
 
     GetIt.I.get<OwnerUserService>().updateUser(currentUserInput)
-    .then((value) => Navigator.pop(context),)
+    .then((value) => {
+      Navigator.pop(context),
+      GetIt.I.get<FilteredUsersCubit>().refresh(),
+    })
     .onError((error, stackTrace) => {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(error.toString())),

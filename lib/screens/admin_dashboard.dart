@@ -1,3 +1,8 @@
+import 'package:canteen_mgmt_frontend/cubits/filtered_users_cubit.dart';
+
+import '../cubits/canteen_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../models/user.dart';
 import '../services/owner_user_service.dart';
 import '../widgets/user_listview.dart';
@@ -23,26 +28,24 @@ class AdminDashboardScreen extends StatefulWidget {
 class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   final CanteenService canteenService = GetIt.I<CanteenService>();
   final OwnerUserService userService = GetIt.I<OwnerUserService>();
-  late Future<List<Canteen>> futureCanteens;
-  late Future<List<User>> futureUsers;
+  final CanteensCubit canteensCubit = GetIt.I.get<CanteensCubit>();
+  final FilteredUsersCubit usersCubit = GetIt.I.get<FilteredUsersCubit>();
 
   Canteen? _selectedCanteen;
 
   @override
   void initState() {
     super.initState();
-    futureCanteens = canteenService.getCanteens();
-    futureUsers = userService.getAllByType(UserType.ADMIN);
+    usersCubit.setTypeFilter(UserType.ADMIN);
+    usersCubit.refresh();
+    canteensCubit.refresh();
   }
 
   void showAdmins(Canteen? c) {
     try {
-      setState(() {
-        _selectedCanteen = c;
-        futureUsers = c != null ?
-          userService.getAllByTypeAndCanteen(UserType.ADMIN, c.id) :
-          userService.getAllByType(UserType.ADMIN);
-      });
+      _selectedCanteen = c;
+      usersCubit.setCanteenIDFilter(c?.id);
+      usersCubit.refresh();
     } catch (e) {
       showSnackbar(e.toString());
     }
@@ -77,39 +80,25 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                           const TextHeading('Canteens'),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
+                            children: const <Widget>[
                               CreateCanteenButton(),
                             ],
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.5,
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      child: FutureBuilder<List<Canteen>>(
-                        future: futureCanteens,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return CanteenListview(showAdmins, canteens: snapshot.data!,);
-                          } else if (snapshot.hasError) {
-                            return Text('${snapshot.error}');
-                          } else {
-                            // By default, show a loading spinner.
-                            return const CircularProgressIndicator();
-                          }
-                        },
+                    BlocBuilder<CanteensCubit, CanteensState>(
+                      bloc: GetIt.I.get<CanteensCubit>(),
+                      builder: (context, state) =>
+                      state.exception != null ?
+                        Center(child: Text('${state.exception}'),) :
+                        state.isLoading ?
+                          const CircularProgressIndicator() :
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.8,
+                            width: MediaQuery.of(context).size.width * 0.45,
+                            child: CanteenListview(showAdmins, canteens: state.canteens!),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {
-                        final newCanteens = canteenService.getCanteens();
-                        setState(() {
-                          futureCanteens = newCanteens;
-                        });
-                      },
-                      child: const Text('Refresh'),
                     ),
                   ],
                 ),
@@ -140,21 +129,17 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         ],
                       ),
                     ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.5,
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      child: FutureBuilder<List<User>>(
-                        future: futureUsers,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasData) {
-                            return UserListview(users: snapshot.data!,);
-                          } else if (snapshot.hasError) {
-                            return Text('${snapshot.error}');
-                          } else {
-                            // By default, show a loading spinner.
-                            return const CircularProgressIndicator();
-                          }
-                        },
+                    BlocBuilder<FilteredUsersCubit, FilteredUsersState>(
+                      bloc: GetIt.I.get<FilteredUsersCubit>(),
+                      builder: (context, state) =>
+                      state.exception != null ?
+                      Center(child: Text('${state.exception}'),) :
+                      state.isLoading ?
+                      const CircularProgressIndicator() :
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.8,
+                        width: MediaQuery.of(context).size.width * 0.45,
+                        child: UserListview(users: state.users!,),
                       ),
                     ),
                   ],

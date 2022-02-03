@@ -40,6 +40,10 @@ class OwnerUserService extends AbstractService {
     return _parseUserListResponse(await get('api/owner/user?type=${type.name}&canteenID=$id'));
   }
 
+  Future<List<User>>  getAllByCanteen(int id) async {
+    return _parseUserListResponse(await get('api/owner/user?canteenID=$id'));
+  }
+
   Future<List<User>>  getAllByType(UserType type) async {
     return _parseUserListResponse(await get('api/owner/user?type=${type.name}'));
   }

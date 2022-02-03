@@ -1,3 +1,5 @@
+import 'package:canteen_mgmt_frontend/cubits/filtered_users_cubit.dart';
+
 import '../services/owner_user_service.dart';
 import 'package:get_it/get_it.dart';
 import '../models/user.dart';
@@ -142,11 +144,14 @@ class _CreateUserFormState extends State<CreateUserForm> {
       type: UserType.ADMIN,);
 
     GetIt.I.get<OwnerUserService>().createUser(currentUserInput)
-        .then((value) => Navigator.pop(context),)
+        .then((value) => {
+          Navigator.pop(context),
+          GetIt.I.get<FilteredUsersCubit>().refresh(),
+        })
         .onError((error, stackTrace) => {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error.toString())),
-      ),
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(error.toString())),
+          ),
     });
   }
 }
