@@ -14,8 +14,7 @@ class OwnerUserService extends AbstractService {
     final response = await post('api/owner/user', jsonEncode(user));
 
     if (response.statusCode == 200) {
-      final stringData = response.body;
-      var responseJson = json.decode(stringData);
+      var responseJson = json.decode(utf8.decode(response.bodyBytes));
 
       return User.fromJson(responseJson);
     } else {
@@ -27,8 +26,7 @@ class OwnerUserService extends AbstractService {
     final response = await put('api/owner/user/${user.id}', jsonEncode(user));
 
     if (response.statusCode == 200) {
-      final stringData = response.body;
-      var responseJson = json.decode(stringData);
+      var responseJson = json.decode(utf8.decode(response.bodyBytes));
 
       return User.fromJson(responseJson);
     } else {
@@ -50,8 +48,7 @@ class OwnerUserService extends AbstractService {
 
   List<User> _parseUserListResponse(response) {
     if (response.statusCode == 200) {
-      final stringData = response.body;
-      var responseJson = json.decode(stringData);
+      var responseJson = json.decode(utf8.decode(response.bodyBytes));
 
       return (responseJson as List).map((p) => User.fromJson(p)).toList();
     } else {

@@ -1,4 +1,4 @@
-import 'package:canteen_mgmt_frontend/cubits/filtered_users_cubit.dart';
+import '../cubits/filtered_users_cubit.dart';
 
 import '../cubits/canteen_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -43,7 +43,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
 
   void showAdmins(Canteen? c) {
     try {
-      _selectedCanteen = c;
+      setState(() {
+        _selectedCanteen = c;
+      });
       usersCubit.setCanteenIDFilter(c?.id);
       usersCubit.refresh();
     } catch (e) {
@@ -104,8 +106,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                 ),
               ),
             ),
-
-
 
             Expanded(
               child: Padding(

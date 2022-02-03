@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Canteen {
   final int id;
   final String name;

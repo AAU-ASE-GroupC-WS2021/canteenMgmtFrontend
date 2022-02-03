@@ -30,6 +30,8 @@ class _CreateUserFormState extends State<CreateUserForm> {
 
   @override
   Widget build(BuildContext context) {
+    _selectedCanteen = widget.defaultCanteen;
+
     return FormBuilder(
       key: _formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,

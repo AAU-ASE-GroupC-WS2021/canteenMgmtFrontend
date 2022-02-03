@@ -8,8 +8,7 @@ class CanteenService extends AbstractService {
     final response = await get('api/canteen');
 
     if (response.statusCode == 200) {
-      final stringData = response.body;
-      var responseJson = json.decode(stringData);
+      var responseJson = json.decode(utf8.decode(response.bodyBytes));
 
       return (responseJson as List).map((p) => Canteen.fromJson(p)).toList();
     } else {
@@ -21,8 +20,7 @@ class CanteenService extends AbstractService {
     final response = await post('api/canteen', jsonEncode(canteen));
 
     if (response.statusCode == 200) {
-      final stringData = response.body;
-      var responseJson = json.decode(stringData);
+      var responseJson = json.decode(utf8.decode(response.bodyBytes));
 
       return Canteen.fromJson(responseJson);
     } else {
@@ -34,8 +32,7 @@ class CanteenService extends AbstractService {
     final response = await put('api/canteen/'+canteen.id.toString(), jsonEncode(canteen));
 
     if (response.statusCode == 200) {
-      final stringData = response.body;
-      var responseJson = json.decode(stringData);
+      var responseJson = json.decode(utf8.decode(response.bodyBytes));
 
       return Canteen.fromJson(responseJson);
     } else {
