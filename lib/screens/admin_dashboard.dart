@@ -26,6 +26,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   late Future<List<Canteen>> futureCanteens;
   late Future<List<User>> futureUsers;
 
+  Canteen? _selectedCanteen;
+
   @override
   void initState() {
     super.initState();
@@ -66,6 +68,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   void showAdmins(Canteen? c) {
     try {
       setState(() {
+        _selectedCanteen = c;
         futureUsers = c != null ?
           userService.getAllByTypeAndCanteen(UserType.ADMIN, c.id) :
           userService.getAllByType(UserType.ADMIN);
@@ -161,7 +164,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              CreateUserButton(createUser),
+                              CreateUserButton(createUser, _selectedCanteen),
                             ],
                           ),
                         ],

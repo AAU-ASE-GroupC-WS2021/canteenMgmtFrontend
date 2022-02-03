@@ -6,10 +6,11 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class CreateUserForm extends StatefulWidget {
 
-  const CreateUserForm(this.callback, {Key? key, required this.canteens}) : super(key: key);
+  const CreateUserForm(this.callback, {Key? key, required this.canteens, this.defaultCanteen}) : super(key: key);
 
   final List<Canteen> canteens;
   final Function(User) callback;
+  final Canteen? defaultCanteen;
 
   @override
   State<StatefulWidget> createState() => _CreateUserFormState();
@@ -69,6 +70,7 @@ class _CreateUserFormState extends State<CreateUserForm> {
           ),
           const SizedBox(height: spacing),
           FormBuilderDropdown(
+            initialValue: findCanteenInValues(widget.defaultCanteen),
             name: 'canteen',
             decoration: const InputDecoration(
               labelText: 'Canteen',
@@ -100,6 +102,13 @@ class _CreateUserFormState extends State<CreateUserForm> {
         ],
       ),
     );
+  }
+
+  Canteen? findCanteenInValues(Canteen? c) {
+    if (c == null) {
+      return null;
+    }
+    return widget.canteens.firstWhere((element) => element.id == c.id);
   }
 
   String? validateInputNotEmpty(String? value, String label) {
