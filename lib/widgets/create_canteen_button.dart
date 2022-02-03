@@ -19,21 +19,25 @@ class CreateCanteenButton extends StatelessWidget {
             builder: (context) {
               return AlertDialog(
                 title: const Text('Create Canteen'),
-                content: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.45,
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  child: CanteenForm((canteen) => {
-                    GetIt.I.get<CanteenService>().createCanteen(canteen)
-                        .then((value) => {
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: CanteenForm((canteen) => {
+                        GetIt.I.get<CanteenService>().createCanteen(canteen)
+                            .then((value) => {
                           Navigator.pop(context),
                           GetIt.I.get<CanteensCubit>().refresh(),
                         },)
-                        .onError((error, stackTrace) => {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text(error.toString())),
-                            ),
+                            .onError((error, stackTrace) => {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(error.toString())),
+                          ),
                         }),
-                  },),
+                      },),
+                    ),
+                  ],
                 ),
               );
             },

@@ -31,10 +31,14 @@ class _CreateUserButtonState extends State<CreateUserButton> {
             builder: (context) {
               return AlertDialog(
                 title: const Text('Create User'),
-                content: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.7,
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  child: CreateUserForm(canteens: allCanteens, defaultCanteen: widget.defaultCanteen,),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: CreateUserForm(canteens: allCanteens, defaultCanteen: widget.defaultCanteen,),
+                    ),
+                  ],
                 ),
               );
             },

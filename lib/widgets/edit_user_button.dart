@@ -31,10 +31,14 @@ class _EditUserButtonState extends State<EditUserButton> {
             builder: (context) {
               return AlertDialog(
                 title: const Text('Edit User'),
-                content: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.45,
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  child: EditUserForm(canteens: allCanteens, user: widget.user,),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: EditUserForm(canteens: allCanteens, user: widget.user,),
+                    ),
+                  ],
                 ),
               );
             },
