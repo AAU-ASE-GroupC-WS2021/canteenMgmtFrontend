@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import '../models/dish.dart';
 import '../services/dish_service.dart';
@@ -12,7 +13,7 @@ class DishDemoScreen extends StatefulWidget {
 }
 
 class _DishDemoScreenState extends State<DishDemoScreen> {
-  final DishService dishService = DishService();
+  final DishService dishService = GetIt.I<DishService>();
   late Future<List<Dish>> futureDishes;
 
   @override
@@ -41,7 +42,13 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                dishService.createDish();
+                dishService.createDish(
+                  const Dish(
+                    name: "Some Test Dish",
+                    price: 10,
+                    type: "MAIN",
+                  ),
+                );
               },
               child: const Text('Create Dish'),
             ),
@@ -50,7 +57,11 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
               future: futureDishes,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return DishTable(dishes: snapshot.data!);
+                  return Expanded(
+                    child: SingleChildScrollView(
+                      child: DishTable(dishes: snapshot.data!),
+                    ),
+                  );
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 } else {
