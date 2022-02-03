@@ -35,36 +35,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     futureUsers = userService.getAllByType(UserType.ADMIN);
   }
 
-  bool createCanteen(Canteen c) {
-    try {
-      canteenService.createCanteen(c);
-      return true;
-    } catch (e) {
-      showSnackbar(e.toString());
-      return false;
-    }
-  }
-
-  bool createUser(User user) {
-    try {
-      userService.createUser(user);
-      return true;
-    } catch (e) {
-      showSnackbar(e.toString());
-      return false;
-    }
-  }
-
-  bool editCanteen(Canteen c) {
-    try {
-      canteenService.updateCanteen(c);
-      return true;
-    } catch (e) {
-      showSnackbar(e.toString());
-      return false;
-    }
-  }
-
   void showAdmins(Canteen? c) {
     try {
       setState(() {
@@ -108,7 +78,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              CreateCanteenButton(createCanteen),
+                              CreateCanteenButton(),
                             ],
                           ),
                         ],
@@ -121,7 +91,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         future: futureCanteens,
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
-                            return CanteenListview(editCanteen, showAdmins, canteens: snapshot.data!,);
+                            return CanteenListview(showAdmins, canteens: snapshot.data!,);
                           } else if (snapshot.hasError) {
                             return Text('${snapshot.error}');
                           } else {
@@ -164,7 +134,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              CreateUserButton(createUser, _selectedCanteen),
+                              CreateUserButton(defaultCanteen: _selectedCanteen),
                             ],
                           ),
                         ],

@@ -1,12 +1,12 @@
 import 'package:canteen_mgmt_frontend/models/canteen.dart';
+import 'package:canteen_mgmt_frontend/services/canteen_service.dart';
+import 'package:get_it/get_it.dart';
 
 import '../widgets/canteen_form.dart';
 import 'package:flutter/material.dart';
 
 class CreateCanteenButton extends StatelessWidget {
-  const CreateCanteenButton(this.callback, {Key? key}) : super(key: key);
-
-  final Function(Canteen) callback;
+  const CreateCanteenButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +22,13 @@ class CreateCanteenButton extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.45,
                   width: MediaQuery.of(context).size.width * 0.5,
                   child: CanteenForm((canteen) => {
-                    // close dialog if success
-                    if (callback(canteen)) {
-                      Navigator.pop(context),
-                    },
+                    GetIt.I.get<CanteenService>().createCanteen(canteen)
+                        .then((value) => Navigator.pop(context),)
+                        .onError((error, stackTrace) => {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text(error.toString())),
+                      ),
+                    }),
                   },),
                 ),
               );

@@ -5,11 +5,10 @@ import 'package:flutter/material.dart';
 import 'edit_canteen_button.dart';
 
 class CanteenListview extends StatefulWidget {
-  const CanteenListview(this.editCallback, this.selectionChangedCallback, {Key? key, required this.canteens})
+  const CanteenListview(this.selectionChangedCallback, {Key? key, required this.canteens})
       : super(key: key);
 
   final List<Canteen> canteens;
-  final Function(Canteen) editCallback;
   final Function(Canteen?) selectionChangedCallback;
 
   @override
@@ -33,7 +32,7 @@ class _CanteenListviewState extends State<CanteenListview> {
             child:ListTile(
               title: Text(widget.canteens[index].name),
               subtitle: Text("${widget.canteens[index].address}\n${widget.canteens[index].numTables} Tables"),
-              trailing: EditCanteenButton(widget.editCallback, widget.canteens[index]),
+              trailing: EditCanteenButton(widget.canteens[index]),
               selected: _selectedIndex == index? true: false,
               selectedTileColor: Colors.blue[100],
               onTap: () {

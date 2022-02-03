@@ -1,4 +1,4 @@
-import 'package:canteen_mgmt_frontend/models/canteen.dart';
+import '../models/canteen.dart';
 
 import '../models/user.dart';
 
@@ -9,9 +9,8 @@ import 'package:get_it/get_it.dart';
 import 'package:flutter/material.dart';
 
 class CreateUserButton extends StatefulWidget {
-  CreateUserButton(this.callback, this.defaultCanteen, {Key? key}) : super(key: key);
+  const CreateUserButton({Key? key, this.defaultCanteen}) : super(key: key);
 
-  final Function(User) callback;
   final Canteen? defaultCanteen;
 
   @override
@@ -35,12 +34,7 @@ class _CreateUserButtonState extends State<CreateUserButton> {
                 content: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.7,
                   width: MediaQuery.of(context).size.width * 0.5,
-                  child: CreateUserForm((canteen) => {
-                    // close dialog if success
-                    if (widget.callback(canteen)) {
-                      Navigator.pop(context),
-                    },
-                  }, canteens: allCanteens, defaultCanteen: widget.defaultCanteen,),
+                  child: CreateUserForm(canteens: allCanteens, defaultCanteen: widget.defaultCanteen,),
                 ),
               );
             },

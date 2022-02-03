@@ -1,22 +1,24 @@
 import '../services/owner_user_service.dart';
 import 'package:get_it/get_it.dart';
+
 import '../models/user.dart';
+
 import '../models/canteen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
-class CreateUserForm extends StatefulWidget {
+class EditUserForm extends StatefulWidget {
 
-  const CreateUserForm({Key? key, required this.canteens, this.defaultCanteen}) : super(key: key);
+  const EditUserForm({Key? key, required this.canteens, required this.user}) : super(key: key);
 
   final List<Canteen> canteens;
-  final Canteen? defaultCanteen;
+  final User user;
 
   @override
-  State<StatefulWidget> createState() => _CreateUserFormState();
+  State<StatefulWidget> createState() => _EditUserFormState();
 }
 
-class _CreateUserFormState extends State<CreateUserForm> {
+class _EditUserFormState extends State<EditUserForm> {
 
   final _formKey = GlobalKey<FormBuilderState>();
   static const spacing = 15.0;
@@ -25,9 +27,12 @@ class _CreateUserFormState extends State<CreateUserForm> {
   final controllerPasswordRepeat = TextEditingController();
 
   Canteen? _selectedCanteen;
+  bool _changePassword = false;
 
   @override
   Widget build(BuildContext context) {
+    controllerUsername.text = widget.user.username;
+
     return FormBuilder(
       key: _formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -43,7 +48,19 @@ class _CreateUserFormState extends State<CreateUserForm> {
             textInputAction: TextInputAction.next,
           ),
           const SizedBox(height: spacing),
-          TextFormField(
+          CheckboxListTile(
+            title: const Text("Change Password"),
+            value: _changePassword,
+            onChanged: (newValue) {
+              setState(() {
+                if (newValue != null) {
+                  _changePassword = newValue;
+                }
+              });
+            },
+          ),
+          const SizedBox(height: spacing),
+          if (_changePassword) TextFormField(
             controller: controllerPassword,
             decoration: const InputDecoration(
               hintText: 'Enter password',
@@ -55,8 +72,8 @@ class _CreateUserFormState extends State<CreateUserForm> {
             enableSuggestions: false,
             autocorrect: false,
           ),
-          const SizedBox(height: spacing),
-          TextFormField(
+          if (_changePassword) const SizedBox(height: spacing),
+          if (_changePassword) TextFormField(
             controller: controllerPasswordRepeat,
             decoration: const InputDecoration(
               hintText: 'Repeat password',
@@ -68,9 +85,9 @@ class _CreateUserFormState extends State<CreateUserForm> {
             enableSuggestions: false,
             autocorrect: false,
           ),
-          const SizedBox(height: spacing),
+          if (_changePassword) const SizedBox(height: spacing),
           FormBuilderDropdown(
-            initialValue: findCanteenInValues(widget.defaultCanteen),
+            initialValue: findCanteenInValues(widget.user.canteenID),
             name: 'canteen',
             decoration: const InputDecoration(
               labelText: 'Canteen',
@@ -97,18 +114,18 @@ class _CreateUserFormState extends State<CreateUserForm> {
                 processInput();
               }
             },
-            child: const Text('Create User'),
+            child: const Text('Save'),
           ),
         ],
       ),
     );
   }
 
-  Canteen? findCanteenInValues(Canteen? c) {
-    if (c == null) {
+  Canteen? findCanteenInValues(int? canteenID) {
+    if (canteenID == null) {
       return null;
     }
-    return widget.canteens.firstWhere((element) => element.id == c.id);
+    return widget.canteens.firstWhere((element) => element.id == canteenID);
   }
 
   String? validateInputNotEmpty(String? value, String label) {
@@ -136,14 +153,15 @@ class _CreateUserFormState extends State<CreateUserForm> {
 
   void processInput() {
     User currentUserInput = User(
+      id: widget.user.id,
       username: controllerUsername.value.text,
-      password: controllerPassword.value.text,
+      password: _changePassword ? controllerPassword.value.text : null,
       canteenID: _selectedCanteen != null ? _selectedCanteen!.id : null,
       type: UserType.ADMIN,);
 
-    GetIt.I.get<OwnerUserService>().createUser(currentUserInput)
-        .then((value) => Navigator.pop(context),)
-        .onError((error, stackTrace) => {
+    GetIt.I.get<OwnerUserService>().updateUser(currentUserInput)
+    .then((value) => Navigator.pop(context),)
+    .onError((error, stackTrace) => {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(error.toString())),
       ),

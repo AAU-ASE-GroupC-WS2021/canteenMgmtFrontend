@@ -1,3 +1,5 @@
+import 'edit_user_button.dart';
+
 import '../models/user.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +27,7 @@ class _UserListviewState extends State<UserListview> {
             child:ListTile(
               title: Text(widget.users[index].username),
               subtitle: Text(widget.users[index].type.name),
+              trailing: EditUserButton(widget.users[index]),
             ),
           ),
         );

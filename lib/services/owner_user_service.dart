@@ -10,8 +10,8 @@ class OwnerUserService extends AbstractService {
     return _parseUserListResponse(await get('api/owner/user'));
   }
 
-  Future<User> createUser(User canteen) async {
-    final response = await post('api/owner/user', jsonEncode(canteen));
+  Future<User> createUser(User user) async {
+    final response = await post('api/owner/user', jsonEncode(user));
 
     if (response.statusCode == 200) {
       final stringData = response.body;
@@ -20,6 +20,19 @@ class OwnerUserService extends AbstractService {
       return User.fromJson(responseJson);
     } else {
       throw Exception('Failed to create user (${response.statusCode} - ${response.body})');
+    }
+  }
+
+  Future<User> updateUser(User user) async {
+    final response = await put('api/owner/user/${user.id}', jsonEncode(user));
+
+    if (response.statusCode == 200) {
+      final stringData = response.body;
+      var responseJson = json.decode(stringData);
+
+      return User.fromJson(responseJson);
+    } else {
+      throw Exception('Failed to update user (${response.statusCode} - ${response.body})');
     }
   }
 
