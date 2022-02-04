@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
-import '../models/order.dart';
-import '../services/order_qr_code.dart';
-
-class OrderQrPopup extends StatelessWidget {
-  const OrderQrPopup({
+class QrPopup extends StatelessWidget {
+  const QrPopup({
     Key? key,
-    required this.order,
+    required this.token,
   }) : super(key: key);
 
-  final Order order;
+  final String token;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +15,7 @@ class OrderQrPopup extends StatelessWidget {
       title: const Text('Some Order'),
       content: SizedBox(
         width: 200,
-        child: QrImage(data: order.token),
+        child: QrImage(data: token),
       ),
     );
   }
