@@ -1,4 +1,3 @@
-import '../models/canteen.dart';
 import 'package:flutter/material.dart';
 
 class TextHeading extends StatelessWidget {

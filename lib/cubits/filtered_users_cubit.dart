@@ -1,10 +1,8 @@
 import 'package:bloc/bloc.dart';
-import 'package:canteen_mgmt_frontend/models/user.dart';
-import 'package:canteen_mgmt_frontend/services/owner_user_service.dart';
+import '../models/user.dart';
+import '../services/owner_user_service.dart';
 import 'package:get_it/get_it.dart';
 
-import '../models/canteen.dart';
-import '../services/canteen_service.dart';
 
 class FilteredUsersCubit extends Cubit<FilteredUsersState> {
   final OwnerUserService _userService;

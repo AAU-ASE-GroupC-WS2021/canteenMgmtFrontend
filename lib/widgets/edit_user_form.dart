@@ -34,6 +34,7 @@ class _EditUserFormState extends State<EditUserForm> {
   @override
   Widget build(BuildContext context) {
     controllerUsername.text = widget.user.username;
+    _selectedCanteen = findCanteenInValues(widget.user.canteenID);
 
     return FormBuilder(
       key: _formKey,
@@ -89,6 +90,7 @@ class _EditUserFormState extends State<EditUserForm> {
           ),
           if (_changePassword) const SizedBox(height: spacing),
           FormBuilderDropdown(
+            key: const ValueKey('dropdown'),
             initialValue: findCanteenInValues(widget.user.canteenID),
             name: 'canteen',
             decoration: const InputDecoration(

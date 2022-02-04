@@ -1,5 +1,4 @@
-import 'package:canteen_mgmt_frontend/cubits/filtered_users_cubit.dart';
-
+import '../cubits/filtered_users_cubit.dart';
 import '../services/owner_user_service.dart';
 import 'package:get_it/get_it.dart';
 import '../models/user.dart';
@@ -74,6 +73,7 @@ class _CreateUserFormState extends State<CreateUserForm> {
           ),
           const SizedBox(height: spacing),
           FormBuilderDropdown(
+            key: const ValueKey('dropdown'),
             initialValue: findCanteenInValues(widget.defaultCanteen),
             name: 'canteen',
             decoration: const InputDecoration(

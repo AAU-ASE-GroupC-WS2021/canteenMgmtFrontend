@@ -1,7 +1,6 @@
 import 'dart:convert';
-import 'package:canteen_mgmt_frontend/models/user.dart';
+import '../models/user.dart';
 
-import '../models/canteen.dart';
 import 'abstract_service.dart';
 
 

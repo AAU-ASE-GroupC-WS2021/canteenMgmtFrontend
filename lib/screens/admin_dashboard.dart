@@ -119,13 +119,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           const SizedBox(width: 32.0),
-                          const TextHeading('Canteen Staff'),
+                          TextHeading(_selectedCanteen != null ? 'Staff [filtered]' : 'Staff [all]'),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              CreateUserButton(defaultCanteen: _selectedCanteen),
-                            ],
-                          ),
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                CreateUserButton(defaultCanteen: _selectedCanteen),
+                              ],
+                            ),
                         ],
                       ),
                     ),

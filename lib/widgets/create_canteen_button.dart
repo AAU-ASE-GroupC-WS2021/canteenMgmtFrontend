@@ -1,6 +1,5 @@
-import 'package:canteen_mgmt_frontend/cubits/canteen_cubit.dart';
-import 'package:canteen_mgmt_frontend/models/canteen.dart';
-import 'package:canteen_mgmt_frontend/services/canteen_service.dart';
+import '../cubits/canteen_cubit.dart';
+import '../services/canteen_service.dart';
 import 'package:get_it/get_it.dart';
 
 import '../widgets/canteen_form.dart';

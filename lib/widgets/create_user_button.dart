@@ -1,7 +1,4 @@
 import '../models/canteen.dart';
-
-import '../models/user.dart';
-
 import '../services/canteen_service.dart';
 import 'create_user_form.dart';
 import 'package:get_it/get_it.dart';
