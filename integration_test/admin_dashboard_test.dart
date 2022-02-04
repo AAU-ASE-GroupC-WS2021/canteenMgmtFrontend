@@ -45,6 +45,7 @@ Future<void> _verifyCanteenExists(WidgetTester tester, Canteen canteen) async {
 
 Future<void> _createCanteen(WidgetTester tester, Canteen canteen) async {
   await tester.tap(find.byIcon(Icons.add).at(0));
+  await tester.pumpAndSettle();
   expect(find.text('Create Canteen'), findsWidgets);
 
   await tester.enterText(find.byType(TextFormField).at(0), canteen.name);
