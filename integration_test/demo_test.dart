@@ -7,10 +7,7 @@ import 'util/widget_tester_wait_for.dart';
 // allow running this test by itself
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  test();
-}
 
-Future<void> test() async {
   testWidgets("demo test", (WidgetTester tester) async {
     app.main();
     await tester.pumpAndSettle();

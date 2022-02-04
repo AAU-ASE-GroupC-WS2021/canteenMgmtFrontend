@@ -5,7 +5,7 @@ class Canteen {
   final String address;
   final int numTables;
 
-  Canteen({
+  const Canteen({
     this.id = -1,
     required this.name,
     required this.address,

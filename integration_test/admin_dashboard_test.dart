@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
+const _canteenToCreate = Canteen(
+  name: "TestCanteen",
+  address: "TestAddress",
+  numTables: 40,
+);
+
 // allow running this test by itself
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  test();
-}
 
-final _canteenToCreate =
-    Canteen(name: "TestCanteen", address: "TestAddress", numTables: 40);
-
-Future<void> test() async {
   testWidgets("Admin Dashboard test", (WidgetTester tester) async {
     app.main();
     await tester.pumpAndSettle();
