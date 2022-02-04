@@ -158,8 +158,12 @@ jobs:
           # `flutter drive` does not support machine-readable reports
           # regarding coverage see also https://stackoverflow.com/questions/57933204/flutter-driver-test-coverage-report
           command: |
-            flutter drive --driver=test_driver/integration_test.dart --target=integration_test/demo_test.dart \
-              -d web-server << pipeline.parameters.flutter-run-args >>
+            for TEST_FILE in integration_test/*_test.dart
+            do
+              echo "Running $TEST_FILE"
+              flutter drive --driver=test_driver/integration_test.dart --target="$TEST_FILE" \
+                -d web-server << pipeline.parameters.flutter-run-args >>
+            done
 
   analyze:
     executor: cirrusci-flutter
