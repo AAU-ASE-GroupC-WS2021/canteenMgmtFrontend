@@ -5,7 +5,7 @@ class Dish {
   final String type;
   final String dishDay;
 
-  Dish({
+  const Dish({
     this.id = -1,
     required this.name,
     required this.price,
