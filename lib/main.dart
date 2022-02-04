@@ -13,17 +13,14 @@ import 'screens/qr_demo.dart';
 import 'screens/qr_scanner.dart';
 import 'services/dish_service.dart';
 
-MyApp main() {
-  if (!GetIt.I.isRegistered<DishService>()) GetIt.I.registerFactory<DishService>(() => DishService());
-  if (!GetIt.I.isRegistered<CanteenService>()) GetIt.I.registerFactory<CanteenService>(() => CanteenService());
-  if (!GetIt.I.isRegistered<OwnerUserService>()) GetIt.I.registerFactory<OwnerUserService>(() => OwnerUserService());
-  if (!GetIt.I.isRegistered<CanteensCubit>()) GetIt.I.registerLazySingleton<CanteensCubit>(() => CanteensCubit());
-  if (!GetIt.I.isRegistered<FilteredUsersCubit>()) GetIt.I.registerLazySingleton<FilteredUsersCubit>(() => FilteredUsersCubit());
+void main() {
+  GetIt.I.registerFactory<DishService>(() => DishService());
+  GetIt.I.registerFactory<CanteenService>(() => CanteenService());
+  GetIt.I.registerFactory<OwnerUserService>(() => OwnerUserService());
+  GetIt.I.registerLazySingleton<CanteensCubit>(() => CanteensCubit());
+  GetIt.I.registerLazySingleton<FilteredUsersCubit>(() => FilteredUsersCubit());
 
-  var app = MyApp();
-  runApp(app);
-
-  return app;
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

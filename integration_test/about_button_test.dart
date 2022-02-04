@@ -1,5 +1,4 @@
 import 'package:canteen_mgmt_frontend/main.dart' as app;
-import 'package:canteen_mgmt_frontend/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
@@ -23,7 +22,7 @@ void main() {
 
 Future<void> test() async {
   testWidgets("AboutButton test", (WidgetTester tester) async {
-    app.main().beamerDelegate.beamToNamed('/');
+    app.main();
     await tester.pumpAndSettle();
 
     expect(find.byIcon(Icons.info), findsOneWidget);
