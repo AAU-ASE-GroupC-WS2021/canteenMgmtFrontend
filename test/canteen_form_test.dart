@@ -53,7 +53,7 @@ void main() {
     await tester.enterText(find.byType(TextFormField).at(2), _initialCanteen.numTables.toString());
 
     await tester.tap(find.byType(ElevatedButton));
-    await tester.pumpAndSettle(); // wait until error messages are displayed
+    await tester.pumpAndSettle();
 
     expect(_returnedCanteen, isNot(null));
     expect(_returnedCanteen!.name, _initialCanteen.name);

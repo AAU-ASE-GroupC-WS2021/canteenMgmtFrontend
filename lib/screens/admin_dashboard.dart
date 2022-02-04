@@ -36,6 +36,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   @override
   void initState() {
     super.initState();
+    usersCubit.setCanteenIDFilter(null);
     usersCubit.setTypeFilter(UserType.ADMIN);
     usersCubit.refresh();
     canteensCubit.refresh();
