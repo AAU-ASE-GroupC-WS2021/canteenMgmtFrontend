@@ -5,7 +5,7 @@ class User {
   final UserType type;
   final int? canteenID;
 
-  User({
+  const User({
     this.id = -1,
     required this.username,
     this.password,

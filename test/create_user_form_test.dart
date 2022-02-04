@@ -13,7 +13,7 @@ import 'create_user_form_test.mocks.dart';
 
 @GenerateMocks([OwnerUserService])
 void main() {
-  final List<Canteen> _canteens = [
+  const List<Canteen> _canteens = [
     Canteen(name: "Canteen1", address: "SomeAddress", numTables: 42, id: 1),
     Canteen(name: "Canteen2", address: "SomeAddress", numTables: 42, id: 2),
     Canteen(name: "Canteen3", address: "SomeAddress", numTables: 42, id: 3),
@@ -23,7 +23,7 @@ void main() {
   User _defaultUser = User(username: "username", type: UserType.ADMIN, id: 1, 
       canteenID: _canteens[_defaultCanteenIndex].id, password: "password",);
 
-  Widget testWidget = MaterialApp(
+  Widget testWidget = const MaterialApp(
     home: Scaffold(
       body: CreateUserForm(canteens: _canteens),
     ),

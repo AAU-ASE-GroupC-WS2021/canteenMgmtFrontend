@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   Canteen? _returnedCanteen;
-  Canteen _initialCanteen = Canteen(name: "SomeCanteen", address: "SomeAddress", numTables: 42);
+  const _initialCanteen = Canteen(name: "SomeCanteen", address: "SomeAddress", numTables: 42);
 
   Widget testWidgetEmpty = MaterialApp(
     home: Scaffold(

@@ -19,13 +19,13 @@ void main() {
   MyApp testWidget = MyApp();
   testWidget.beamerDelegate.beamToNamed('/admin');
 
-  final List<Canteen> _canteens = [
+  const _canteens = [
     Canteen(name: "Canteen1", address: "SomeAddress1", numTables: 11, id: 1),
     Canteen(name: "Canteen2", address: "SomeAddress2", numTables: 22, id: 2),
     Canteen(name: "Canteen3", address: "SomeAddress3", numTables: 33, id: 3),
   ];
 
-  final List<User> _users = [
+  const _users = [
     User(username: 'User1', type: UserType.ADMIN, canteenID: 1, id: 1),
     User(username: 'User2', type: UserType.ADMIN, canteenID: 1, id: 2),
     User(username: 'User3', type: UserType.ADMIN, canteenID: 2, id: 3),
