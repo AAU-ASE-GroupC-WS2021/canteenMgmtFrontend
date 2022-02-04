@@ -19,4 +19,15 @@ class SignupService extends AbstractService {
 
     return response.statusCode == 200 ? null : response.body;
   }
+
+  Future<Signup> getUserSelfInfo() async {
+    final response = await get('api/register');
+
+    if (response.statusCode == 200) {
+      var json = jsonDecode(response.body);
+      return Signup.fromJson(json);
+    } else {
+      throw Exception('Failed to load user info!');
+    }
+  }
 }

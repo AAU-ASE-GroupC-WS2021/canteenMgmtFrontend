@@ -1,5 +1,7 @@
 library utils.authTokenUtils;
 
+// TODO: If trying to create a native app, this has to go (somewhere else).
+// It applies only to web app.
 import 'dart:html' as html;
 
 class AuthTokenUtils {
@@ -14,9 +16,9 @@ class AuthTokenUtils {
     defaultValue: '36',
   );
 
-  static bool? _loggedIn = null;
+  static bool? _loggedIn;
 
-  static Future<String?> getAuthToken() async {
+  static String? getAuthToken() {
     if (!isLoggedIn()) {
       return null;
     }
@@ -24,7 +26,7 @@ class AuthTokenUtils {
     return getCookie(authTokenKey);
   }
 
-  static void setAuthToken(String token) async {
+  static void setAuthToken(String token) {
     html.window.document.cookie = "$authTokenKey=$token;";
     _loggedIn = token.length.toString() == authTokenLength;
   }

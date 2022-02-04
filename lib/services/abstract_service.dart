@@ -15,29 +15,29 @@ abstract class AbstractService {
     return Uri.parse(uriString);
   }
 
-  Future<http.Response> get(path) async {
-    var headers = await getHeaders();
+  Future<http.Response> get(path) {
+    var headers = getHeaders();
     return _client.get(_getUri(path), headers: headers);
   }
 
-  Future<http.Response> post(path, String body) async {
-    var headers = await getHeaders();
+  Future<http.Response> post(path, String body) {
+    var headers = getHeaders();
     return _client.post(_getUri(path), body: body, headers: headers);
   }
 
-  Future<http.Response> delete(path, String body) async {
-    var headers = await getHeaders();
+  Future<http.Response> delete(path, String body) {
+    var headers = getHeaders();
     return _client.delete(_getUri(path), body: body, headers: headers);
   }
 
   /// Set X-XSRF-TOKEN header if cookie is set
-  Future<Map<String, String>> getHeaders() async {
+  Map<String, String> getHeaders() {
     var headers = {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     };
 
-    String? token = await AuthTokenUtils.getAuthToken();
+    String? token = AuthTokenUtils.getAuthToken();
 
     if (token != null) {
       var authHeader = { AuthTokenUtils.authTokenKey: token};
