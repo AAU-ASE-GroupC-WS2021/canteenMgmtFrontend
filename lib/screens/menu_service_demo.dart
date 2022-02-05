@@ -67,7 +67,7 @@ class _MenuDemoScreenState extends State<MenuDemoScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                final newDishes = menuService.fetchMenus();
+                final newDishes = menuService.fetchMenus("MONDAY");
                 setState(() {
                   futureMenus = newDishes;
                 });
@@ -77,12 +77,12 @@ class _MenuDemoScreenState extends State<MenuDemoScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                final newDishes = menuService.fetchMenus("TUESDAY");
+                final newDishes = menuService.fetchMenus();
                 setState(() {
                   futureMenus = newDishes;
                 });
               },
-              child: const Text('Sort by Tuesday'),
+              child: const Text('Show all Menu'),
             ),
             const SizedBox(height: 20),
             // ElevatedButton(
@@ -96,7 +96,11 @@ class _MenuDemoScreenState extends State<MenuDemoScreen> {
               future: futureMenus,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
-                  return MenuTable(dishes: snapshot.data!);
+                  return Expanded(
+                    child: SingleChildScrollView(
+                        child: MenuTable(dishes: snapshot.data!),
+                    ),
+                  );
                 } else if (snapshot.hasError) {
                   return Text('${snapshot.error}');
                 } else {
