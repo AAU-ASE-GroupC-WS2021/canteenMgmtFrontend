@@ -1,4 +1,4 @@
-import 'package:canteen_mgmt_frontend/widgets/create_dish_from.dart';
+import '../widgets/create_dish_from.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -56,23 +56,33 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-               CreateDishForm((newDish) => {GetIt.I.get<DishService>().createDish(newDish)});
-
-                   //     .onError((error, stackTrace) => {
-                   //   ScaffoldMessenger.of(context).showSnackBar(
-                   //     SnackBar(content: Text(error.toString())),
-                   //   ),
-                   // }),
-                 // },
-    // );
-
-
-                // const myDish =Dish(
-                //     name: "Some Test Dish",
-                //     price: 10,
-                //     type: "MAIN",
-                //     dishDay : "MONDAY",);
-                // dishService.createDish( newDish);
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      scrollable: true,
+                      title: Text('Create Dish'),
+                      content: Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: CreateDishForm(
+                          (dish) => {
+                            GetIt.I
+                                .get<DishService>()
+                                .createDish(dish)
+                                .then((value) => {Navigator.pop(context)})
+                                .onError(
+                                  (error, stackTrace) => {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(error.toString())),
+                                    ),
+                                  },
+                                ),
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                );
               },
               child: const Text('Create Dish1'),
             ),

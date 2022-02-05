@@ -4,10 +4,10 @@ import 'package:get_it/get_it.dart';
 import '../models/dish.dart';
 import 'package:flutter/material.dart';
 
-
 class CreateDishForm extends StatefulWidget {
-
   const CreateDishForm(this.callback, {Key? key, this.dish}) : super(key: key);
+
+  // const CreateDishForm({Key? key, this.dish}) : super(key: key);
 
   final Dish? dish;
   final Function(Dish) callback;
@@ -17,7 +17,6 @@ class CreateDishForm extends StatefulWidget {
 }
 
 class _CreateDishFormState extends State<CreateDishForm> {
-
   final _formKey = GlobalKey<FormState>();
   static const spacing = 15.0;
   final controllerName = TextEditingController();
@@ -55,11 +54,12 @@ class _CreateDishFormState extends State<CreateDishForm> {
               hintText: 'Enter price of dish',
               labelText: 'price',
             ),
-            keyboardType: TextInputType.number,
+            keyboardType:
+                TextInputType.numberWithOptions(signed: false, decimal: true),
             validator: (value) => validateInputFloat(value, "dish price"),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.digitsOnly,
+              FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,1}')),
             ],
             textInputAction: TextInputAction.next,
           ),
@@ -76,7 +76,7 @@ class _CreateDishFormState extends State<CreateDishForm> {
           ),
           const SizedBox(height: spacing),
           TextFormField(
-            controller: controllerType,
+            controller: controllerDishDay,
             decoration: const InputDecoration(
               hintText: 'Enter dish day',
               labelText: 'dish day',
@@ -88,15 +88,16 @@ class _CreateDishFormState extends State<CreateDishForm> {
           const SizedBox(height: spacing),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              minimumSize: const Size.fromHeight(40), // fromHeight use double.infinity as width and 40 is the height
+              minimumSize: const Size.fromHeight(
+                  40,), // fromHeight use double.infinity as width and 40 is the height
             ),
             onPressed: () {
               // Validate returns true if the form is valid, or false otherwise.
-              // if (_formKey.currentState!.validate()) {
+              if (_formKey.currentState!.validate()) {
                 processInput();
-              // }
+              }
             },
-            child: const Text('Save'),
+            child: const Text('Create Dish'),
           ),
         ],
       ),
@@ -110,14 +111,14 @@ class _CreateDishFormState extends State<CreateDishForm> {
     return null;
   }
 
-  String? validateInputFloat(String? value, String label, {bool nonNegative = false}) {
+  String? validateInputFloat(String? value, String label,
+      {bool nonNegative = false,}) {
     String? notEmptyValidate = validateInputNotEmpty(value, label);
     if (notEmptyValidate == null) {
       num? result = num.tryParse(value!);
       if (result == null) {
         return '$label must be an float';
-      }
-      else if (nonNegative && result < 0) {
+      } else if (nonNegative && result < 0) {
         return '$label must not be negative';
       }
       return null;
@@ -132,8 +133,9 @@ class _CreateDishFormState extends State<CreateDishForm> {
       name: controllerName.value.text,
       type: controllerType.value.text,
       dishDay: controllerDishDay.value.text,
-      price: double.parse(controllerPrice.value.text),);
-    dishService.createDish(currentCanteenInput);
+      price: double.parse(controllerPrice.value.text),
+    );
+    // dishService.createDish(currentCanteenInput);
     widget.callback(currentCanteenInput);
   }
 }
