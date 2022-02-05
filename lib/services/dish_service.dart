@@ -37,4 +37,38 @@ class DishService extends AbstractService {
       throw Exception('Failed to add dish');
     }
   }
+
+  Future<Dish> updateDish(Dish dish) async {
+    final response = await put('dish', jsonEncode(dish));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      final stringData = response.body;
+      var responseJson = json.decode(stringData);
+
+      return Dish.fromJson(responseJson);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to update dish');
+    }
+  }
+
+  Future<Dish> deleteDish(Dish dish) async {
+    final response = await delete('dish', jsonEncode(dish));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      final stringData = response.body;
+      var responseJson = json.decode(stringData);
+
+      return Dish.fromJson(responseJson);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to delete dish');
+    }
+  }
 }

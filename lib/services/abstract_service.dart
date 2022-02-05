@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 
 abstract class AbstractService {
@@ -33,6 +35,13 @@ abstract class AbstractService {
     return _client.post(_getUri(path), body: body, headers: getHeaders());
   }
 
+  Future<http.Response> put(path, String body) {
+    return _client.put(_getUri(path), body: body, headers: getHeaders(), encoding: Encoding.getByName("utf-8"));
+  }
+
+  Future<http.Response> delete(path, String body) {
+    return _client.delete(_getUri(path), body: body, headers: getHeaders());
+  }
   /// Set X-XSRF-TOKEN header if cookie is set
   Map<String, String> getHeaders() {
     var headers = {

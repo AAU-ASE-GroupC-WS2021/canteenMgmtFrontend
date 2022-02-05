@@ -4,17 +4,17 @@ import 'package:get_it/get_it.dart';
 import '../models/dish.dart';
 import 'package:flutter/material.dart';
 
-class CreateDishForm extends StatefulWidget {
-  const CreateDishForm(this.callback, {Key? key, this.dish}) : super(key: key);
+class UpdateDishForm extends StatefulWidget {
+  const UpdateDishForm(this.callback, {Key? key, this.dish}) : super(key: key);
 
   final Dish? dish;
   final Function(Dish) callback;
 
   @override
-  State<StatefulWidget> createState() => _CreateDishFormState();
+  State<StatefulWidget> createState() => _UpdateDishFormState();
 }
 
-class _CreateDishFormState extends State<CreateDishForm> {
+class _UpdateDishFormState extends State<UpdateDishForm> {
   final _formKey = GlobalKey<FormState>();
   static const spacing = 15.0;
   final controllerName = TextEditingController();
@@ -156,7 +156,7 @@ class _CreateDishFormState extends State<CreateDishForm> {
                 processInput();
               }
             },
-            child: const Text("Create Dish"),
+            child: const Text("Update Dish"),
           ),
         ],
       ),
