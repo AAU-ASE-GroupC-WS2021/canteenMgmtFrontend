@@ -7,7 +7,7 @@ import 'abstract_service.dart';
 class OrderService extends AbstractService {
   Future<dynamic> createOrder(CreateOrder createOrder) async {
     var body = json.encode(createOrder.toJson());
-    final response = await post('create-order', body);
+    final response = await post('api/create-order', body);
 
     if (response.statusCode == 200) {
       final stringData = response.body;
@@ -24,7 +24,7 @@ class OrderService extends AbstractService {
   Future<List<Order>> getOrders() async {
     // TODO get user
     int userId = 1;
-    final response = await get('order?userId=$userId');
+    final response = await get('api/order?userId=$userId');
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(response.body);
@@ -42,7 +42,7 @@ class OrderService extends AbstractService {
   }
 
   Future<Order> getOrderById(int orderId) async {
-    final response = await get('order-by-id?orderId=$orderId');
+    final response = await get('api/order-by-id?orderId=$orderId');
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(response.body);
