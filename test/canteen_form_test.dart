@@ -79,8 +79,7 @@ void main() {
     expect(_getTextFromTextFormInputAt(2), '34');
   });
 
-  @override
-  void tearDown() {
+  tearDown(() {
     _returnedCanteen = null;
-  }
+  });
 }

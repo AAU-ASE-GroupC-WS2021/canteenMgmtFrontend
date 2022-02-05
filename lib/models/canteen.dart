@@ -1,3 +1,4 @@
+
 class Canteen {
   final int id;
   final String name;
@@ -29,6 +30,6 @@ class Canteen {
 
   @override
   String toString() {
-    return 'Dish{id: $id, name: $name, address: $address, numTables: $numTables}';
+    return '$name, $address';
   }
 }

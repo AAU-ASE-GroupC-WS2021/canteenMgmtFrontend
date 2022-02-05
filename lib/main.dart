@@ -1,11 +1,14 @@
 import 'package:beamer/beamer.dart';
+import 'cubits/canteen_cubit.dart';
+import 'cubits/filtered_users_cubit.dart';
+import 'cubits/order_cubit.dart';
+import 'services/owner_user_service.dart';
+import 'services/canteen_service.dart';
+import 'screens/admin_dashboard.dart';
 import 'package:canteen_mgmt_frontend/services/order_data_helper_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-import 'cubits/canteens_cubit.dart';
-import 'cubits/order_cubit.dart';
-import 'screens/admin_dashboard.dart';
 import 'screens/dish_service_demo.dart';
 import 'screens/home.dart';
 import 'screens/my_orders.dart';
@@ -15,15 +18,15 @@ import 'screens/order_select_paramters.dart';
 import 'screens/qr_demo.dart';
 import 'screens/qr_scanner.dart';
 import 'screens/single_order.dart';
-import 'services/canteen_service.dart';
 import 'services/dish_service.dart';
 import 'services/order_service.dart';
 
 void main() {
   GetIt.I.registerFactory<DishService>(() => DishService());
   GetIt.I.registerFactory<CanteenService>(() => CanteenService());
+  GetIt.I.registerFactory<OwnerUserService>(() => OwnerUserService());
   GetIt.I.registerLazySingleton<CanteensCubit>(() => CanteensCubit());
-  // lazy, as the orders depend on the user.
+  GetIt.I.registerLazySingleton<FilteredUsersCubit>(() => FilteredUsersCubit());
   GetIt.I.registerLazySingleton<OrderService>(() => OrderService());
   GetIt.I.registerLazySingleton<OrderDataHelperService>(
     () => OrderDataHelperService(),
