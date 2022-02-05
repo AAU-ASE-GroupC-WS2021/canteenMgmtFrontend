@@ -33,6 +33,9 @@ void main() {
   );
   GetIt.I.registerLazySingleton<OrderCubit>(() => OrderCubit());
 
+  // remove .../#/... from url
+  Beamer.setPathUrlStrategy();
+
   runApp(MyApp());
 }
 
