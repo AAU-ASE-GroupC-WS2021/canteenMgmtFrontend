@@ -1,3 +1,4 @@
+import 'package:canteen_mgmt_frontend/widgets/create_dish_from.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -51,6 +52,29 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
                 );
               },
               child: const Text('Create Dish'),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+               CreateDishForm((newDish) => {GetIt.I.get<DishService>().createDish(newDish)});
+
+                   //     .onError((error, stackTrace) => {
+                   //   ScaffoldMessenger.of(context).showSnackBar(
+                   //     SnackBar(content: Text(error.toString())),
+                   //   ),
+                   // }),
+                 // },
+    // );
+
+
+                // const myDish =Dish(
+                //     name: "Some Test Dish",
+                //     price: 10,
+                //     type: "MAIN",
+                //     dishDay : "MONDAY",);
+                // dishService.createDish( newDish);
+              },
+              child: const Text('Create Dish1'),
             ),
             const SizedBox(height: 20),
             FutureBuilder<List<Dish>>(
