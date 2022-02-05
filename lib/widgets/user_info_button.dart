@@ -21,6 +21,10 @@ class _UserInfoButtonState extends State<UserInfoButton> {
   void initState() {
     super.initState();
 
+    if (!AuthTokenUtils.isLoggedIn()) {
+      return;
+    }
+
     SignupService().getUserSelfInfo().then((value) => {
       super.setState(() {
         _username = value.username;
