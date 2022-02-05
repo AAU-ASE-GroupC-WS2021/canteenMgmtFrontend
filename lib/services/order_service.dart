@@ -40,4 +40,17 @@ class OrderService extends AbstractService {
       throw Exception('Failed to load orders');
     }
   }
+
+  Future<Order> getOrderById(int orderId) async {
+    final response = await get('order-by-id?orderId=$orderId');
+
+    if (response.statusCode == 200) {
+      var responseJson = json.decode(response.body);
+      return Order.fromJson(responseJson);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load order');
+    }
+  }
 }

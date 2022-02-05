@@ -1,14 +1,15 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import '../models/create_order.dart';
 import '../models/create_order_dish.dart';
 import '../models/dish.dart';
 import '../models/order_arguments.dart';
 import '../models/order_dish.dart';
-import '../services/dish_service.dart';
 import '../services/order_data_helper_service.dart';
 import '../services/order_service.dart';
+import '../widgets/dish_table_for_ordering.dart';
 
 class OrderScreen extends StatefulWidget {
   const OrderScreen({
@@ -20,19 +21,17 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
-  final DishService dishService = DishService();
-  final OrderService orderService = OrderService();
+  final OrderService orderService = GetIt.I<OrderService>();
   final OrderDataHelperService orderDataHelperService =
-      OrderDataHelperService();
-  late Future<List<Dish>> currentDishes;
+      GetIt.I<OrderDataHelperService>();
 
   List<OrderDish> selectedDishes = [];
   late OrderArguments orderArguments;
+  double total = 0;
 
   @override
   void initState() {
     super.initState();
-    currentDishes = dishService.fetchDishes();
     orderArguments = orderDataHelperService.getOrderArguments();
     if (!orderArguments.isValid()) {
       Future(() {
@@ -49,100 +48,8 @@ class _OrderScreenState extends State<OrderScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                final newDishes = dishService.fetchDishes();
-                setState(() {
-                  currentDishes = newDishes;
-                });
-              },
-              child: const Text('Refresh'),
-            ),
             const SizedBox(height: 20),
-            FutureBuilder<List<Dish>>(
-              future: currentDishes,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Table(
-                    defaultColumnWidth: const FixedColumnWidth(150.0),
-                    border: TableBorder.all(
-                      color: Colors.black,
-                      style: BorderStyle.solid,
-                      width: 1,
-                    ),
-                    children: [
-                      TableRow(children: [
-                        Column(children: const [
-                          Text(
-                            'ID',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ]),
-                        Column(children: const [
-                          Text(
-                            'Name',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ]),
-                        Column(children: const [
-                          Text(
-                            'Type',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ]),
-                        Column(children: const [
-                          Text(
-                            'Price',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ]),
-                        Column(children: const [
-                          Text(
-                            'Add to order',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ]),
-                      ]),
-                      for (var dish in snapshot.data!)
-                        TableRow(children: [
-                          Column(children: [Text(dish.id.toString())]),
-                          Column(children: [Text(dish.name)]),
-                          Column(children: [Text(dish.type)]),
-                          Column(children: [Text(dish.price.toString())]),
-                          Column(children: [
-                            TextButton(
-                              child: const Text('+'),
-                              onPressed: () {
-                                addDish(dish);
-                              },
-                            ),
-                          ]),
-                        ]),
-                    ],
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                } else {
-                  // By default, show a loading spinner.
-                  return const CircularProgressIndicator();
-                }
-              },
-            ),
+            DishTableForOrder(addOrderCallback: addDish),
             const SizedBox(height: 20),
             Container(
               margin: const EdgeInsets.all(15.0),
@@ -179,15 +86,6 @@ class _OrderScreenState extends State<OrderScreen> {
                     ]),
                     Column(children: const [
                       Text(
-                        'Type',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ]),
-                    Column(children: const [
-                      Text(
                         'Price',
                         style: TextStyle(
                           fontSize: 18,
@@ -206,16 +104,7 @@ class _OrderScreenState extends State<OrderScreen> {
                     ]),
                     Column(children: const [
                       Text(
-                        'Decrease Count',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ]),
-                    Column(children: const [
-                      Text(
-                        'Increase Count',
+                        'Change Count',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -227,7 +116,6 @@ class _OrderScreenState extends State<OrderScreen> {
                     TableRow(children: [
                       Column(children: [Text(dish.id.toString())]),
                       Column(children: [Text(dish.name)]),
-                      Column(children: [Text(dish.type)]),
                       Column(children: [Text(dish.price.toString())]),
                       Column(children: [
                         Text(
@@ -238,24 +126,37 @@ class _OrderScreenState extends State<OrderScreen> {
                           ),
                         ),
                       ]),
-                      Column(children: [
-                        TextButton(
-                          child: const Text('-'),
-                          onPressed: () {
-                            decreaseCount(dish);
-                          },
-                        ),
-                      ]),
-                      Column(children: [
-                        TextButton(
-                          child: const Text('+'),
-                          onPressed: () {
-                            increaseCount(dish);
-                          },
-                        ),
-                      ]),
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              TextButton(
+                                child: const Text('-'),
+                                onPressed: () {
+                                  changeCount(dish, false);
+                                },
+                              ),
+                              const Text(' | '),
+                              TextButton(
+                                child: const Text('+'),
+                                onPressed: () {
+                                  changeCount(dish, true);
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ]),
                 ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Total: ' + total.toString(),
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 22,
               ),
             ),
             const SizedBox(height: 20),
@@ -263,6 +164,11 @@ class _OrderScreenState extends State<OrderScreen> {
               onPressed: () {
                 final orderReturn = orderService.createOrder(prepareSubmit());
                 orderReturn.then((data) {
+                  orderDataHelperService.setOrderArguments(
+                    -1,
+                    DateTime.now(),
+                    false,
+                  );
                   context.beamToNamed('/order/${data.id}', beamBackOnPop: true);
                 });
               },
@@ -286,26 +192,26 @@ class _OrderScreenState extends State<OrderScreen> {
           id: dish.id,
           name: dish.name,
           price: dish.price,
-          type: dish.type,
           count: 1,
         ),
       );
     }
-
+    total += dish.price;
     setState(() {});
   }
 
-  void decreaseCount(OrderDish dish) {
+  void changeCount(OrderDish dish, bool increase) {
     int dishIndex = selectedDishes.indexOf(dish);
-    selectedDishes[dishIndex].count--;
-    if (selectedDishes[dishIndex].count <= 0) {
-      selectedDishes.removeAt(dishIndex);
+    if (increase) {
+      selectedDishes[selectedDishes.indexOf(dish)].count++;
+      total += dish.price;
+    } else {
+      selectedDishes[dishIndex].count--;
+      if (selectedDishes[dishIndex].count <= 0) {
+        selectedDishes.removeAt(dishIndex);
+      }
+      total -= dish.price;
     }
-    setState(() {});
-  }
-
-  void increaseCount(OrderDish dish) {
-    selectedDishes[selectedDishes.indexOf(dish)].count++;
     setState(() {});
   }
 

@@ -1,26 +1,37 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-import '../cubits/order_cubit.dart';
-import '../models/order.dart';
+import '../cubits/single_order_cubit.dart';
 
-class SingleOrderScreen extends StatelessWidget {
+class SingleOrderScreen extends StatefulWidget {
+  final int orderId;
+
   const SingleOrderScreen({
     Key? key,
     required this.orderId,
   }) : super(key: key);
 
-  final int orderId;
+  @override
+  State<SingleOrderScreen> createState() => _SingleOrderScreenState();
+}
+
+class _SingleOrderScreenState extends State<SingleOrderScreen> {
+  final SingleOrderCubit singleOrderCubit = GetIt.I<SingleOrderCubit>();
+
+  @override
+  void initState() {
+    super.initState();
+    singleOrderCubit.setOrderId(widget.orderId);
+    singleOrderCubit.refresh();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<OrderCubit, List<Order>>(
-      bloc: GetIt.I.get<OrderCubit>(),
-      builder: (context, orders) {
-        final order = orders.firstWhereOrNull((o) => o.id == orderId);
-
+    return BlocBuilder<SingleOrderCubit, OrderState>(
+      bloc: singleOrderCubit,
+      builder: (context, state) {
+        final order = state.order;
         if (order == null) {
           return Scaffold(
             appBar: AppBar(title: const Text('Order not found')),

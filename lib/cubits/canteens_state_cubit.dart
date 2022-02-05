@@ -4,10 +4,10 @@ import 'package:get_it/get_it.dart';
 import '../models/canteen.dart';
 import '../services/canteen_service.dart';
 
-class CanteensCubit extends Cubit<CanteensState> {
+class CanteensStateCubit extends Cubit<CanteensState> {
   final CanteenService _canteenService;
 
-  CanteensCubit()
+  CanteensStateCubit()
       : _canteenService = GetIt.I.get<CanteenService>(),
         super(CanteensState(isLoading: true)) {
     refresh();

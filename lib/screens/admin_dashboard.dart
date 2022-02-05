@@ -1,22 +1,18 @@
-import '../cubits/filtered_users_cubit.dart';
-
-import '../cubits/canteen_cubit.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../models/user.dart';
-import '../services/owner_user_service.dart';
-import '../widgets/user_listview.dart';
-
-import '../widgets/create_user_button.dart';
 import 'package:get_it/get_it.dart';
 
-import '../widgets/create_canteen_button.dart';
-import '../widgets/text_heading.dart';
-
-import '../widgets/canteen_listview.dart';
+import '../cubits/canteens_state_cubit.dart';
+import '../cubits/filtered_users_cubit.dart';
 import '../models/canteen.dart';
+import '../models/user.dart';
 import '../services/canteen_service.dart';
-import 'package:flutter/material.dart';
+import '../services/owner_user_service.dart';
+import '../widgets/canteen_listview.dart';
+import '../widgets/create_canteen_button.dart';
+import '../widgets/create_user_button.dart';
+import '../widgets/text_heading.dart';
+import '../widgets/user_listview.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   const AdminDashboardScreen({Key? key}) : super(key: key);
@@ -28,7 +24,8 @@ class AdminDashboardScreen extends StatefulWidget {
 class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   final CanteenService canteenService = GetIt.I<CanteenService>();
   final OwnerUserService userService = GetIt.I<OwnerUserService>();
-  final CanteensCubit canteensCubit = GetIt.I.get<CanteensCubit>();
+  final CanteensStateCubit canteensStateCubit =
+      GetIt.I.get<CanteensStateCubit>();
   final FilteredUsersCubit usersCubit = GetIt.I.get<FilteredUsersCubit>();
 
   Canteen? _selectedCanteen;
@@ -38,7 +35,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     super.initState();
     usersCubit.setTypeFilter(UserType.ADMIN);
     usersCubit.refresh();
-    canteensCubit.refresh();
+    canteensStateCubit.refresh();
   }
 
   void showAdmins(Canteen? c) {
@@ -89,18 +86,24 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         ],
                       ),
                     ),
-                    BlocBuilder<CanteensCubit, CanteensState>(
-                      bloc: GetIt.I.get<CanteensCubit>(),
-                      builder: (context, state) =>
-                      state.exception != null ?
-                        Center(child: Text('${state.exception}'),) :
-                        state.isLoading ?
-                          const CircularProgressIndicator() :
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.8,
-                            width: MediaQuery.of(context).size.width * 0.45,
-                            child: CanteenListview(showAdmins, canteens: state.canteens!),
-                      ),
+                    BlocBuilder<CanteensStateCubit, CanteensState>(
+                      bloc: GetIt.I.get<CanteensStateCubit>(),
+                      builder: (context, state) => state.exception != null
+                          ? Center(
+                              child: Text('${state.exception}'),
+                            )
+                          : state.isLoading
+                              ? const CircularProgressIndicator()
+                              : SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.8,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.45,
+                                  child: CanteenListview(
+                                    showAdmins,
+                                    canteens: state.canteens!,
+                                  ),
+                                ),
                     ),
                   ],
                 ),

@@ -1,9 +1,9 @@
-import '../cubits/canteen_cubit.dart';
-import '../services/canteen_service.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
+import '../cubits/canteens_state_cubit.dart';
+import '../services/canteen_service.dart';
 import '../widgets/canteen_form.dart';
-import 'package:flutter/material.dart';
 
 class CreateCanteenButton extends StatelessWidget {
   const CreateCanteenButton({Key? key}) : super(key: key);
@@ -24,11 +24,15 @@ class CreateCanteenButton extends StatelessWidget {
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.5,
                       child: CanteenForm((canteen) => {
-                        GetIt.I.get<CanteenService>().createCanteen(canteen)
-                            .then((value) => {
-                          Navigator.pop(context),
-                          GetIt.I.get<CanteensCubit>().refresh(),
-                        },)
+                        GetIt.I
+                            .get<CanteenService>()
+                            .createCanteen(canteen)
+                            .then(
+                              (value) => {
+                                Navigator.pop(context),
+                                GetIt.I.get<CanteensStateCubit>().refresh(),
+                              },
+                            )
                             .onError((error, stackTrace) => {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text(error.toString())),

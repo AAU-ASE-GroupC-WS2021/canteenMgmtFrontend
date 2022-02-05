@@ -2,14 +2,12 @@ class OrderDish {
   final int id;
   final String name;
   final double price;
-  final String type;
   int count;
 
   OrderDish({
     required this.id,
     required this.name,
     required this.price,
-    required this.type,
     required this.count,
   });
 
@@ -18,7 +16,6 @@ class OrderDish {
       id: json['id'],
       name: json['name'],
       price: json['price'],
-      type: json['type'],
       count: json['count'],
     );
   }
@@ -27,12 +24,11 @@ class OrderDish {
         'id': id,
         'name': name,
         'price': price,
-        'type': type,
         'count': count,
       };
 
   @override
   String toString() {
-    return 'Dish{id: $id, name: $name, price: $price, type: $type, count: $count}';
+    return 'Dish{id: $id, name: $name, price: $price,  count: $count}';
   }
 }

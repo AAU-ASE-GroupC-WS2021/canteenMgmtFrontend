@@ -2,7 +2,7 @@ import '../models/order_arguments.dart';
 import 'abstract_service.dart';
 
 class OrderDataHelperService extends AbstractService {
-  static OrderArguments orderArguments = OrderArguments(
+  OrderArguments orderArguments = OrderArguments(
     canteenId: -1,
     pickupDate: DateTime.now(),
     reserveTable: false,
