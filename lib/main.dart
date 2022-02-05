@@ -15,6 +15,9 @@ import 'services/dish_service.dart';
 void main() {
   GetIt.I.registerFactory<DishService>(() => DishService());
 
+  // remove .../#/... from url
+  Beamer.setPathUrlStrategy();
+
   runApp(MyApp());
 }
 
@@ -25,14 +28,34 @@ class MyApp extends StatelessWidget {
     locationBuilder: RoutesLocationBuilder(
       routes: {
         // Return either Widgets or BeamPages if more customization is needed
-        '/': (context, state, data) => const HomeScreen(),
-        '/dish': (context, state, data) => const DishDemoScreen(),
-        '/signup': (context, state, data) => const SignupScreen(),
-        '/signin': (context, state, data) => const SignInScreen(),
-        '/signup-finished': (context, state, data) => const SignupFinishedScreen(),
-        '/qr-demo': (context, state, data) =>
-            QrDemoScreen(scanValue: data is String? ? data : null),
-        '/qr-scan': (context, state, data) => const QrScannerScreen(),
+        '/': (context, state, data) => const BeamPage(
+              title: 'Canteen Management',
+              child: HomeScreen(),
+            ),
+        '/dish': (context, state, data) => const BeamPage(
+              title: 'Dish Demo',
+              child: DishDemoScreen(),
+            ),
+        '/qr-demo': (context, state, data) => BeamPage(
+              title: 'QR Scanner Demo',
+              child: QrDemoScreen(scanValue: data is String? ? data : null),
+            ),
+        '/qr-scan': (context, state, data) => const BeamPage(
+              title: 'Scan QR Code',
+              child: QrScannerScreen(),
+            ),
+        '/signup': (context, state, data) => const BeamPage(
+              title: 'Create a new profile',
+              child: SignupScreen(),
+            ),
+        '/signin': (context, state, data) => const BeamPage(
+              title: 'Log in',
+              child: SignInScreen(),
+            ),
+        '/signup-finished': (context, state, data) => const BeamPage(
+              title: 'Profile creation confirmation',
+              child: SignupFinishedScreen(),
+            ),
       },
     ),
   );
