@@ -80,15 +80,11 @@ jobs:
       - run:
           name: Generate Mocks (for mockito)
           command: flutter pub run build_runner build --delete-conflicting-outputs
-      - browser-tools/install-browser-tools:
-          install-chromedriver: false
-          install-firefox: false # if firefox is needed, install jq first: `sudo apt-get -y update && sudo apt-get -y install jq`
-          install-geckodriver: false
       - run:
           name: Run Widget tests
           # creates test report (reports/tests.jsonl) and coverage report (coverage/lcov.info)
           command: |
-            flutter test --platform chrome --coverage --reporter json << pipeline.parameters.flutter-run-args >> \
+            flutter test --coverage --reporter json << pipeline.parameters.flutter-run-args >> \
               > reports/tests.jsonl
 
       #################### TEST RESULTS #######################
