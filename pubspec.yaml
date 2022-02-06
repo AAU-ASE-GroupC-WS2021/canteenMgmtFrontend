@@ -26,9 +26,6 @@ dependencies:
   bloc: ^8.0.2
   flutter_bloc: ^8.0.1
 
-  # fix for dart:html imports breaking tests
-  universal_html: ^2.0.8
-
 dev_dependencies:
   integration_test:
     sdk: flutter

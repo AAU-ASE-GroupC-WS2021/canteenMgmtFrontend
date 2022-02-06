@@ -69,7 +69,7 @@ jobs:
     steps:
       - checkout
       - flutter/install_pub:
-          cache-version: tests
+          cache-version: tests-v2
       - run:
           name: Create reports directory
           command: mkdir reports
