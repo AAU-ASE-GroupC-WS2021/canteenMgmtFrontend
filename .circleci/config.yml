@@ -84,7 +84,7 @@ jobs:
           name: Run Widget tests
           # creates test report (reports/tests.jsonl) and coverage report (coverage/lcov.info)
           command: |
-            flutter test --coverage --reporter json << pipeline.parameters.flutter-run-args >> \
+            flutter test --platform tester --coverage --reporter json << pipeline.parameters.flutter-run-args >> \
               > reports/tests.jsonl
 
       #################### TEST RESULTS #######################
@@ -160,7 +160,7 @@ jobs:
           # `flutter drive` does not support machine-readable reports
           # regarding coverage see also https://stackoverflow.com/questions/57933204/flutter-driver-test-coverage-report
           command: |
-            flutter drive --driver=test_driver/integration_test.dart --target=integration_test/demo_test.dart \
+            flutter drive --driver=test_driver/integration_test.dart --target=integration_test/about_test.dart \
               -d web-server << pipeline.parameters.flutter-run-args >>
 
   analyze:
