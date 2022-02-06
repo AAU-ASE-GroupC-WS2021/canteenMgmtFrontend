@@ -1,7 +1,8 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../services/signin_service.dart';
+import '../cubits/auth.dart';
 import '../utils/auth_token.dart';
 import '../widgets/about_button.dart';
 
@@ -15,13 +16,6 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final SignInService signupService = SignInService();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   final _formKey = GlobalKey<FormState>();
 
   final usernameController = TextEditingController();
@@ -88,7 +82,8 @@ class _SignInScreenState extends State<SignInScreen> {
                       onPressed: () {
                         if (!_formKey.currentState!.validate()) return;
 
-                        signupService
+                        context
+                            .read<AuthCubit>()
                             .login(
                               usernameController.text,
                               passwordController.text,

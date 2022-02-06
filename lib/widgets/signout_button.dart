@@ -1,40 +1,24 @@
 import 'package:beamer/beamer.dart';
+import 'package:canteen_mgmt_frontend/cubits/auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../services/signin_service.dart';
-import '../utils/auth_token.dart';
-
-class SignOutButton extends StatefulWidget {
+class SignOutButton extends StatelessWidget {
   const SignOutButton({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return _SignOutButtonState();
-  }
-}
-
-class _SignOutButtonState extends State<SignOutButton> {
-  final SignInService signupService = SignInService();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (!AuthTokenUtils.isLoggedIn()) {
-      return const Offstage(
-        offstage: true,
-      );
-    }
-
-    return ElevatedButton(
-      onPressed: () async {
-        await signupService.logout();
-        context.beamToNamed('/');
-      },
-      child: const Text("Log out"),
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, state) => Offstage(
+        offstage: !state.authenticated,
+        child: ElevatedButton(
+          child: const Text("Log out"),
+          onPressed: () async {
+            context.read<AuthCubit>().logout();
+            context.beamToNamed('/');
+          },
+        ),
+      ),
     );
   }
 }

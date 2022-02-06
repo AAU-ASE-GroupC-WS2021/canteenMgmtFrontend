@@ -1,7 +1,9 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
+import 'cubits/auth.dart';
 import 'screens/dish_service_demo.dart';
 import 'screens/home.dart';
 import 'screens/qr_demo.dart';
@@ -51,7 +53,7 @@ class MyApp extends StatelessWidget {
               title: 'Log in',
               child: SignInScreen(),
             ),
-        '/signup-finished': (context, state, data) => const BeamPage(
+        '/signup/finished': (context, state, data) => const BeamPage(
               title: 'Profile creation confirmation',
               child: SignupFinishedScreen(),
             ),
@@ -61,10 +63,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Flutter Demo',
-      routeInformationParser: BeamerParser(),
-      routerDelegate: beamerDelegate,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthCubit>.value(value: AuthCubit()),
+      ],
+      child: MaterialApp.router(
+        title: 'Flutter Demo',
+        routeInformationParser: BeamerParser(),
+        routerDelegate: beamerDelegate,
+      ),
     );
   }
 }

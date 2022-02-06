@@ -5,6 +5,8 @@ library utils.authTokenUtils;
 import 'dart:html' as html;
 
 class AuthTokenUtils {
+  AuthTokenUtils._(); // singleton (private constructor)
+
   static const authTokenKey = String.fromEnvironment(
     'AUTH_TOKEN',
     defaultValue: 'Auth-Token',

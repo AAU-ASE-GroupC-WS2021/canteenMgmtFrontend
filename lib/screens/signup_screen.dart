@@ -1,7 +1,8 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../services/signup_service.dart';
+import '../cubits/auth.dart';
 import '../utils/auth_token.dart';
 import '../widgets/about_button.dart';
 
@@ -15,13 +16,6 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
-  final SignupService signupService = SignupService();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   final _formKey = GlobalKey<FormState>();
 
   final usernameController = TextEditingController();
@@ -97,13 +91,14 @@ class _SignupScreenState extends State<SignupScreen> {
                       onPressed: () {
                         if (!_formKey.currentState!.validate()) return;
 
-                        signupService
-                            .createProfile(
+                        context
+                            .read<AuthCubit>()
+                            .register(
                               usernameController.text,
                               passwordController.text,
                             )
                             .then((value) => value == null
-                                ? context.beamToNamed('/signup-finished')
+                                ? context.beamToNamed('/signup/finished')
                                 : showAlertDialog(value))
                             .onError((error, stackTrace) => showAlertDialog(
                                   "Unknown error occurred while trying to create a new profile."

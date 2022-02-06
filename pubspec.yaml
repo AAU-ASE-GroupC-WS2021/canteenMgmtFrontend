@@ -22,6 +22,10 @@ dependencies:
   # service locator (allows for easy injection)
   get_it: ^7.2.0
 
+  # state management
+  bloc: ^8.0.2
+  flutter_bloc: ^8.0.1
+
 dev_dependencies:
   integration_test:
     sdk: flutter
