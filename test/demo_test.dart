@@ -8,6 +8,7 @@
 import 'package:canteen_mgmt_frontend/main.dart';
 import 'package:canteen_mgmt_frontend/models/dish.dart';
 import 'package:canteen_mgmt_frontend/services/dish_service.dart';
+import 'package:canteen_mgmt_frontend/services/key_value_store.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
@@ -19,6 +20,7 @@ import 'demo_test.mocks.dart'; // if this fails run build_runner (see readme)
 // to actually generate the .mocks.dart file, run `flutter pub run build_runner build --delete-conflicting-outputs`
 @GenerateMocks([DishService])
 void main() {
+  GetIt.I.registerSingleton(KeyValueStore());
   testWidgets('demo test', (WidgetTester tester) async {
     // create and register mocked service
     // see how the service is registered in lib/main.dart and accessed in lib/screens/dish_service_demo.dart

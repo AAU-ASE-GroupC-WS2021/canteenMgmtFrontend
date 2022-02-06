@@ -1,6 +1,8 @@
 import 'package:canteen_mgmt_frontend/main.dart';
+import 'package:canteen_mgmt_frontend/services/key_value_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:get_it/get_it.dart';
 
 const aboutItems = [
   String.fromEnvironment('GIT_URL'),
@@ -14,6 +16,7 @@ const aboutItems = [
 ];
 
 void main() {
+  GetIt.I.registerSingleton(KeyValueStore());
   testWidgets('AboutButton test', (WidgetTester tester) async {
     await tester.pumpWidget(MyApp());
 
