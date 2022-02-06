@@ -33,18 +33,12 @@ abstract class AbstractService {
 
   /// Set X-XSRF-TOKEN header if cookie is set
   Map<String, String> getHeaders() {
-    var headers = {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    };
-
     String? token = AuthTokenUtils.getAuthToken();
 
-    if (token != null) {
-      var authHeader = {AuthTokenUtils.authTokenKey: token};
-      headers.addAll(authHeader);
-    }
-
-    return headers;
+    return {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      if (token != null) AuthTokenUtils.authTokenKey: token,
+    };
   }
 }

@@ -19,17 +19,11 @@ class AuthTokenUtils {
 
   static bool? _loggedIn;
 
-  static String? getAuthToken() {
-    if (!isLoggedIn()) {
-      return null;
-    }
+  static String? getAuthToken() => _store.get(authTokenKey);
 
-    return _store.get(authTokenKey);
-  }
-
-  static void setAuthToken(String token) {
+  static void setAuthToken(String? token) {
     _store.set(authTokenKey, token);
-    _loggedIn = token.length.toString() == authTokenLength;
+    _loggedIn = token != null && token.length.toString() == authTokenLength;
   }
 
   static bool isLoggedIn() {
@@ -37,6 +31,6 @@ class AuthTokenUtils {
       return _store.get(authTokenKey)?.isNotEmpty ?? false;
     }
 
-    return _loggedIn == true;
+    return _loggedIn ?? false;
   }
 }

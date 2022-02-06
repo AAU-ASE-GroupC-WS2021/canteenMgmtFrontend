@@ -1,10 +1,11 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:crypto/crypto.dart';
 
 import '../models/signup.dart';
-import 'auth_token.dart';
 import 'abstract_service.dart';
+import 'auth_token.dart';
 
 class SignInService extends AbstractService {
   Future<String?> login(String username, String password) async {
@@ -35,7 +36,7 @@ class SignInService extends AbstractService {
 
     final response = await delete('api/auth', token);
 
-    AuthTokenUtils.setAuthToken("");
+    AuthTokenUtils.setAuthToken(null);
 
     return response.statusCode == 200 ? null : response.body;
   }

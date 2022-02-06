@@ -7,11 +7,11 @@ import '../key_value_store.dart';
 class CookieStore extends KeyValueStore {
   @override
   String? get(String key) {
-    String cookies = html.window.document.cookie ?? "";
-    List<String> listValues = cookies.isNotEmpty ? cookies.split(";") : [];
-    String matchVal = "";
+    String cookies = html.window.document.cookie ?? '';
+    List<String> listValues = cookies.isNotEmpty ? cookies.split(';') : [];
+    String matchVal = '';
     for (int i = 0; i < listValues.length; i++) {
-      List<String> map = listValues[i].split("=");
+      List<String> map = listValues[i].split('=');
       String _key = map[0].trim();
       String _val = map[1].trim();
       if (key == _key) {
@@ -24,17 +24,11 @@ class CookieStore extends KeyValueStore {
 
   @override
   void set(String key, String? value) {
-    String cookies = html.window.document.cookie ?? "";
-    List<String> listValues = cookies.isNotEmpty ? cookies.split(";") : [];
-    for (int i = 0; i < listValues.length; i++) {
-      List<String> map = listValues[i].split("=");
-      if (key == map[0].trim()) {
-        listValues[i] = '';
-        break;
-      }
-    }
+    String cookies = html.window.document.cookie ?? '';
+    List<String> listValues = cookies.isNotEmpty ? cookies.split(';') : [];
+    listValues.removeWhere((cookie) => cookie.split('=').first.trim() == key);
 
-    if (value != null) listValues.add('$key=$value');
+    listValues.add('$key=${value ?? ''}');
     html.window.document.cookie = listValues.join(';') + ';';
   }
 

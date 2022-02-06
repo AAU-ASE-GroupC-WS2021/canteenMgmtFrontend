@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
-import '../services/auth_token.dart';
+import 'package:canteen_mgmt_frontend/models/signup.dart';
 
+import '../services/auth_token.dart';
 import '../services/signin_service.dart';
 import '../services/signup_service.dart';
 
@@ -31,7 +32,13 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> refresh() async {
     if (!AuthTokenUtils.isLoggedIn()) return emit(_loggedOut);
 
-    final info = await SignupService().getUserSelfInfo();
+    final Signup info;
+    try {
+      info = await SignupService().getUserSelfInfo();
+    } on Exception {
+      AuthTokenUtils.setAuthToken(null);
+      return emit(_loggedOut);
+    }
 
     emit(AuthState(
       authenticated: AuthTokenUtils.isLoggedIn(),
