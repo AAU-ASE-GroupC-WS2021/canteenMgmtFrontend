@@ -1,12 +1,12 @@
 import 'dart:convert';
-import 'package:canteen_mgmt_frontend/utils/auth_token.dart';
+
 import 'package:crypto/crypto.dart';
 
 import '../models/signup.dart';
+import '../utils/auth_token.dart';
 import 'abstract_service.dart';
 
 class SignInService extends AbstractService {
-
   Future<String?> login(String username, String password) async {
     var bytes = utf8.encode(password);
     var hash = sha256.convert(bytes).toString();
@@ -22,8 +22,7 @@ class SignInService extends AbstractService {
       return response.body;
     }
 
-    if (response.body.length.toString() !=
-        AuthTokenUtils.authTokenLength) {
+    if (response.body.length.toString() != AuthTokenUtils.authTokenLength) {
       return response.body;
     }
 
@@ -32,7 +31,7 @@ class SignInService extends AbstractService {
   }
 
   Future<String?> logout() async {
-    String token = await AuthTokenUtils.getAuthToken() ?? "";
+    String token = AuthTokenUtils.getAuthToken() ?? "";
 
     final response = await delete('api/auth', token);
 

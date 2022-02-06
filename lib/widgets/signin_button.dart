@@ -1,6 +1,7 @@
-import 'package:canteen_mgmt_frontend/screens/signin_screen.dart';
-import 'package:canteen_mgmt_frontend/utils/auth_token.dart';
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+
+import '../utils/auth_token.dart';
 
 class SignInButton extends StatefulWidget {
   const SignInButton({Key? key}) : super(key: key);
@@ -12,7 +13,6 @@ class SignInButton extends StatefulWidget {
 }
 
 class _SignInButtonState extends State<SignInButton> {
-
   @override
   void initState() {
     super.initState();
@@ -20,18 +20,15 @@ class _SignInButtonState extends State<SignInButton> {
 
   @override
   Widget build(BuildContext context) {
-
     if (AuthTokenUtils.isLoggedIn()) {
-      return Offstage(
+      return const Offstage(
         offstage: true,
       );
     }
 
     return ElevatedButton(
-        onPressed: () => {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignInScreen())),
-        },
-        child: Text("Log in")
+      onPressed: () => context.beamToNamed('/signin'),
+      child: const Text("Log in"),
     );
   }
 }

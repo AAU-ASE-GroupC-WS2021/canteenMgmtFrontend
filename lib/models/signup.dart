@@ -19,9 +19,9 @@ class Signup {
   }
 
   Map<String, dynamic> toJson() => {
-    'username': username,
-    'password': password,
-  };
+        'username': username,
+        'password': password,
+      };
 
   @override
   String toString() {

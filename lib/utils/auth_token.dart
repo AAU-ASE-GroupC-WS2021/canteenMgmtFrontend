@@ -5,7 +5,6 @@ library utils.authTokenUtils;
 import 'dart:html' as html;
 
 class AuthTokenUtils {
-
   static const authTokenKey = String.fromEnvironment(
     'AUTH_TOKEN',
     defaultValue: 'Auth-Token',
@@ -40,7 +39,6 @@ class AuthTokenUtils {
   }
 
   static String getCookie(String key) {
-
     String cookies = html.window.document.cookie ?? "";
     List<String> listValues = cookies.isNotEmpty ? cookies.split(";") : [];
     String matchVal = "";
@@ -55,5 +53,4 @@ class AuthTokenUtils {
     }
     return matchVal;
   }
-
 }

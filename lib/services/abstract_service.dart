@@ -1,5 +1,6 @@
-import 'package:canteen_mgmt_frontend/utils/auth_token.dart';
 import 'package:http/http.dart' as http;
+
+import '../utils/auth_token.dart';
 
 abstract class AbstractService {
   static const backendUrl = String.fromEnvironment(
@@ -40,7 +41,7 @@ abstract class AbstractService {
     String? token = AuthTokenUtils.getAuthToken();
 
     if (token != null) {
-      var authHeader = { AuthTokenUtils.authTokenKey: token};
+      var authHeader = {AuthTokenUtils.authTokenKey: token};
       headers.addAll(authHeader);
     }
 

@@ -1,7 +1,4 @@
 import 'package:beamer/beamer.dart';
-import 'package:canteen_mgmt_frontend/screens/signin_screen.dart';
-import 'screens/signup_finished.dart';
-import 'screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -9,8 +6,10 @@ import 'screens/dish_service_demo.dart';
 import 'screens/home.dart';
 import 'screens/qr_demo.dart';
 import 'screens/qr_scanner.dart';
+import 'screens/signin_screen.dart';
+import 'screens/signup_finished.dart';
+import 'screens/signup_screen.dart';
 import 'services/dish_service.dart';
-
 
 void main() {
   GetIt.I.registerFactory<DishService>(() => DishService());

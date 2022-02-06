@@ -1,7 +1,8 @@
-import 'package:canteen_mgmt_frontend/screens/home.dart';
-import 'package:canteen_mgmt_frontend/services/signin_service.dart';
-import 'package:canteen_mgmt_frontend/utils/auth_token.dart';
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+
+import '../services/signin_service.dart';
+import '../utils/auth_token.dart';
 
 class SignOutButton extends StatefulWidget {
   const SignOutButton({Key? key}) : super(key: key);
@@ -22,19 +23,18 @@ class _SignOutButtonState extends State<SignOutButton> {
 
   @override
   Widget build(BuildContext context) {
-
     if (!AuthTokenUtils.isLoggedIn()) {
-      return Offstage(
+      return const Offstage(
         offstage: true,
       );
     }
 
     return ElevatedButton(
-        onPressed: () => {
-          signupService.logout().
-          then((value) => Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen()))),
-        },
-        child: Text("Log out"),
+      onPressed: () async {
+        await signupService.logout();
+        context.beamToNamed('/');
+      },
+      child: const Text("Log out"),
     );
   }
 }
