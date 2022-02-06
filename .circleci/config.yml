@@ -68,7 +68,8 @@ jobs:
     executor: cirrusci-flutter
     steps:
       - checkout
-      - flutter/install_pub
+      - flutter/install_pub:
+          cache-version: tests
       - run:
           name: Create reports directory
           command: mkdir reports

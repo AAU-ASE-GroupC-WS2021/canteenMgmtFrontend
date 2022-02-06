@@ -18,7 +18,7 @@ import 'services/web/key_value_store_web_stub.dart'
 Future<void> main() async {
   GetIt.I.registerFactory<DishService>(() => DishService());
   GetIt.I.registerSingleton<KeyValueStore>(
-    kDebugMode
+    kDebugMode && kIsWeb
         ? getKeyValueStoreWeb()
         : SharedPrefsStore(await SharedPreferences.getInstance()),
   );
