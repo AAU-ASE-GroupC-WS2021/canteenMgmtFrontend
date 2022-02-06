@@ -1,4 +1,3 @@
-
 class Canteen {
   final int id;
   final String name;
