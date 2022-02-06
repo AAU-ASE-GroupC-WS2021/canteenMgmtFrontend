@@ -21,25 +21,28 @@ class _EditUserButtonState extends State<EditUserButton> {
     return IconButton(
       icon: const Icon(Icons.edit),
       onPressed: () async {
-        canteenService.getCanteens().then((allCanteens) => {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text('Edit User'),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      child: EditUserForm(canteens: allCanteens, user: widget.user,),
+        canteenService.getCanteens().then((allCanteens) {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('Edit User'),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          child: EditUserForm(
+                            canteens: allCanteens,
+                            user: widget.user,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  );
+                },
               );
-            },
-          ),
-        });
+            });
       },
     );
   }

@@ -2,7 +2,6 @@ import 'dart:convert';
 import '../models/canteen.dart';
 import 'abstract_service.dart';
 
-
 class CanteenService extends AbstractService {
   Future<List<Canteen>> getCanteens() async {
     final response = await get('api/canteen');
@@ -29,7 +28,8 @@ class CanteenService extends AbstractService {
   }
 
   Future<Canteen> updateCanteen(Canteen canteen) async {
-    final response = await put('api/canteen/'+canteen.id.toString(), jsonEncode(canteen));
+    final response =
+        await put('api/canteen/' + canteen.id.toString(), jsonEncode(canteen));
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(utf8.decode(response.bodyBytes));

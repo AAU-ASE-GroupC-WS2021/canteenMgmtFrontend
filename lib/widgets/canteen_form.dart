@@ -3,7 +3,6 @@ import '../models/canteen.dart';
 import 'package:flutter/material.dart';
 
 class CanteenForm extends StatefulWidget {
-
   const CanteenForm(this.callback, {Key? key, this.canteen}) : super(key: key);
 
   final Canteen? canteen;
@@ -14,7 +13,6 @@ class CanteenForm extends StatefulWidget {
 }
 
 class _CanteenFormState extends State<CanteenForm> {
-
   final _formKey = GlobalKey<FormState>();
   static const spacing = 15.0;
   final controllerName = TextEditingController();
@@ -50,7 +48,8 @@ class _CanteenFormState extends State<CanteenForm> {
               hintText: 'Enter canteen address',
               labelText: 'Address',
             ),
-            validator: (value) => validateInputNotEmpty(value, "canteen address"),
+            validator: (value) =>
+                validateInputNotEmpty(value, "canteen address"),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             textInputAction: TextInputAction.next,
           ),
@@ -62,7 +61,8 @@ class _CanteenFormState extends State<CanteenForm> {
               labelText: 'Number of tables',
             ),
             keyboardType: TextInputType.number,
-            validator: (value) => validateInputInteger(value, "number of tables"),
+            validator: (value) =>
+                validateInputInteger(value, "number of tables"),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             inputFormatters: <TextInputFormatter>[
               FilteringTextInputFormatter.digitsOnly,
@@ -72,7 +72,8 @@ class _CanteenFormState extends State<CanteenForm> {
           const SizedBox(height: spacing),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              minimumSize: const Size.fromHeight(40), // fromHeight use double.infinity as width and 40 is the height
+              minimumSize: const Size.fromHeight(
+                  40,), // fromHeight use double.infinity as width and 40 is the height
             ),
             onPressed: () {
               // Validate returns true if the form is valid, or false otherwise.
@@ -94,14 +95,14 @@ class _CanteenFormState extends State<CanteenForm> {
     return null;
   }
 
-  String? validateInputInteger(String? value, String label, {bool nonNegative = false}) {
+  String? validateInputInteger(String? value, String label,
+      {bool nonNegative = false,}) {
     String? notEmptyValidate = validateInputNotEmpty(value, label);
     if (notEmptyValidate == null) {
       int? result = int.tryParse(value!);
       if (result == null) {
         return '$label must be an integer';
-      }
-      else if (nonNegative && result < 0) {
+      } else if (nonNegative && result < 0) {
         return '$label must not be negative';
       }
       return null;
@@ -115,7 +116,8 @@ class _CanteenFormState extends State<CanteenForm> {
       id: id,
       name: controllerName.value.text,
       address: controllerAddress.value.text,
-      numTables: int.parse(controllerNumTables.value.text),);
+      numTables: int.parse(controllerNumTables.value.text),
+    );
 
     widget.callback(currentCanteenInput);
   }

@@ -22,25 +22,28 @@ class _CreateUserButtonState extends State<CreateUserButton> {
     return IconButton(
       icon: const Icon(Icons.add),
       onPressed: () async {
-        canteenService.getCanteens().then((allCanteens) => {
-          showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text('Create User'),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      child: CreateUserForm(canteens: allCanteens, defaultCanteen: widget.defaultCanteen,),
+        canteenService.getCanteens().then((allCanteens) {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: const Text('Create User'),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.5,
+                          child: CreateUserForm(
+                            canteens: allCanteens,
+                            defaultCanteen: widget.defaultCanteen,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  );
+                },
               );
-            },
-          ),
-        });
+            });
       },
     );
   }

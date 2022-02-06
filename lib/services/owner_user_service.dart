@@ -3,7 +3,6 @@ import '../models/user.dart';
 
 import 'abstract_service.dart';
 
-
 class OwnerUserService extends AbstractService {
   Future<List<User>> getAllUsers() async {
     return _parseUserListResponse(await get('api/owner/user'));
@@ -17,7 +16,8 @@ class OwnerUserService extends AbstractService {
 
       return User.fromJson(responseJson);
     } else {
-      throw Exception('Failed to create user (${response.statusCode} - ${response.body})');
+      throw Exception(
+          'Failed to create user (${response.statusCode} - ${response.body})',);
     }
   }
 
@@ -29,20 +29,23 @@ class OwnerUserService extends AbstractService {
 
       return User.fromJson(responseJson);
     } else {
-      throw Exception('Failed to update user (${response.statusCode} - ${response.body})');
+      throw Exception(
+          'Failed to update user (${response.statusCode} - ${response.body})',);
     }
   }
 
-  Future<List<User>>  getAllByTypeAndCanteen(UserType type, int id) async {
-    return _parseUserListResponse(await get('api/owner/user?type=${type.name}&canteenID=$id'));
+  Future<List<User>> getAllByTypeAndCanteen(UserType type, int id) async {
+    return _parseUserListResponse(
+        await get('api/owner/user?type=${type.name}&canteenID=$id'));
   }
 
-  Future<List<User>>  getAllByCanteen(int id) async {
+  Future<List<User>> getAllByCanteen(int id) async {
     return _parseUserListResponse(await get('api/owner/user?canteenID=$id'));
   }
 
-  Future<List<User>>  getAllByType(UserType type) async {
-    return _parseUserListResponse(await get('api/owner/user?type=${type.name}'));
+  Future<List<User>> getAllByType(UserType type) async {
+    return _parseUserListResponse(
+        await get('api/owner/user?type=${type.name}'));
   }
 
   List<User> _parseUserListResponse(response) {
@@ -51,7 +54,6 @@ class OwnerUserService extends AbstractService {
 
       return (responseJson as List).map((p) => User.fromJson(p)).toList();
     } else {
-
       throw Exception('Failed to load users: ${response.body}');
     }
   }

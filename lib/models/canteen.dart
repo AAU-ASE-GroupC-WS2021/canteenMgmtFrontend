@@ -21,11 +21,11 @@ class Canteen {
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'address': address,
-    'numTables': numTables,
-  };
+        'id': id,
+        'name': name,
+        'address': address,
+        'numTables': numTables,
+      };
 
   @override
   String toString() {

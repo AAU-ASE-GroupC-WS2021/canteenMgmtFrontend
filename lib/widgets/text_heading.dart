@@ -7,7 +7,7 @@ class TextHeading extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Text(
-      content,
-      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-    );
+        content,
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+      );
 }

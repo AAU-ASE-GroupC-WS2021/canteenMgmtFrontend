@@ -23,12 +23,12 @@ class User {
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'username': username,
-    'password': password,
-    'type': type.name,
-    'canteenID': canteenID,
-  };
+        'id': id,
+        'username': username,
+        'password': password,
+        'type': type.name,
+        'canteenID': canteenID,
+      };
 
   @override
   String toString() {

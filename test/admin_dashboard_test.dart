@@ -42,16 +42,18 @@ void main() {
   GetIt.I.registerLazySingleton<FilteredUsersCubit>(() => FilteredUsersCubit());
 
   setUp(() {
-    when(userService.getAllByType(any))
-        .thenAnswer((i) async => _users.where((u) => (u.type == i.positionalArguments[0])).toList());
-    when(userService.getAllByTypeAndCanteen(any, any))
-        .thenAnswer((i) async => _users.where((u) => (u.type == i.positionalArguments[0] &&
-        u.canteenID == i.positionalArguments[1])).toList());
-    when(canteenService.getCanteens())
-        .thenAnswer((_) async => _canteens);
+    when(userService.getAllByType(any)).thenAnswer((i) async =>
+        _users.where((u) => (u.type == i.positionalArguments[0])).toList());
+    when(userService.getAllByTypeAndCanteen(any, any)).thenAnswer((i) async =>
+        _users
+            .where((u) => (u.type == i.positionalArguments[0] &&
+                u.canteenID == i.positionalArguments[1]))
+            .toList());
+    when(canteenService.getCanteens()).thenAnswer((_) async => _canteens);
   });
 
-  testWidgets('When launched then all canteens and all users displayed', (WidgetTester tester) async {
+  testWidgets('When launched then all canteens and all users displayed',
+      (WidgetTester tester) async {
     useUHDResolution(tester);
     await tester.pumpWidget(testWidget);
     await tester.pumpAndSettle();
@@ -69,26 +71,26 @@ void main() {
         expect(find.textContaining(user.username), findsNothing);
       }
     }
-  });
+  },);
 
-  testWidgets('When no connection then error messages shown', (WidgetTester tester) async {
+  testWidgets('When no connection then error messages shown',
+      (WidgetTester tester) async {
     useUHDResolution(tester);
     const errorUsers = 'Failed to load users';
     const errorCanteens = 'Failed to load canteens';
 
-    when(userService.getAllByType(any))
-        .thenThrow(Exception(errorUsers));
-    when(canteenService.getCanteens())
-        .thenThrow(Exception(errorCanteens));
+    when(userService.getAllByType(any)).thenThrow(Exception(errorUsers));
+    when(canteenService.getCanteens()).thenThrow(Exception(errorCanteens));
 
     await tester.pumpWidget(testWidget);
     await tester.pumpAndSettle();
 
     expect(find.textContaining(errorUsers), findsWidgets);
     expect(find.textContaining(errorCanteens), findsWidgets);
-  });
+  },);
 
-  testWidgets('When add canteen clicked then show dialog', (WidgetTester tester) async {
+  testWidgets('When add canteen clicked then show dialog',
+      (WidgetTester tester) async {
     useUHDResolution(tester);
     await tester.pumpWidget(testWidget);
     await tester.pumpAndSettle();
@@ -96,9 +98,10 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.textContaining('Create Canteen'), findsWidgets);
-  });
+  },);
 
-  testWidgets('When add user clicked then show dialog', (WidgetTester tester) async {
+  testWidgets('When add user clicked then show dialog',
+      (WidgetTester tester) async {
     useUHDResolution(tester);
     await tester.pumpWidget(testWidget);
     await tester.pumpAndSettle();
@@ -106,9 +109,10 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.textContaining('Create User'), findsWidgets);
-  });
+  },);
 
-  testWidgets('When edit user clicked then show dialog', (WidgetTester tester) async {
+  testWidgets('When edit user clicked then show dialog',
+      (WidgetTester tester) async {
     useUHDResolution(tester);
     await tester.pumpWidget(testWidget);
     await tester.pumpAndSettle();
@@ -116,9 +120,10 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.textContaining('Edit User'), findsWidgets);
-  });
+  },);
 
-  testWidgets('When edit canteen clicked then show dialog', (WidgetTester tester) async {
+  testWidgets('When edit canteen clicked then show dialog',
+      (WidgetTester tester) async {
     useUHDResolution(tester);
     await tester.pumpWidget(testWidget);
     await tester.pumpAndSettle();
@@ -126,9 +131,10 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.textContaining('Edit Canteen'), findsWidgets);
-  });
+  },);
 
-  testWidgets('When select canteen then only corresponding admins displayed', (WidgetTester tester) async {
+  testWidgets('When select canteen then only corresponding admins displayed',
+      (WidgetTester tester) async {
     useUHDResolution(tester);
     final canteenToSelect = _canteens[0];
 
@@ -157,5 +163,5 @@ void main() {
         expect(find.textContaining(user.username), findsNothing);
       }
     }
-  });
+  },);
 }
