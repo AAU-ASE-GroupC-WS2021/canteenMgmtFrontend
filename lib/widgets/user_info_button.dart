@@ -1,3 +1,5 @@
+import 'package:canteen_mgmt_frontend/screens/profile_mgmt_screen.dart';
+
 import '../screens/signup_screen.dart';
 import '../services/signup_service.dart';
 import '../utils/auth_token.dart';
@@ -46,6 +48,7 @@ class _UserInfoButtonState extends State<UserInfoButton> {
     return ElevatedButton(
         onPressed: () => {
           // Do some action: either show a popup or dropdown, or go to the user profile page.
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ProfileManagementScreen())),
         },
         child: Text(_username + ' (' + _type + ')'),
     );

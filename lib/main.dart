@@ -1,4 +1,5 @@
 import 'package:beamer/beamer.dart';
+import 'package:canteen_mgmt_frontend/screens/profile_mgmt_screen.dart';
 import 'package:canteen_mgmt_frontend/screens/signin_screen.dart';
 import 'screens/signup_finished.dart';
 import 'screens/signup_screen.dart';
@@ -56,6 +57,10 @@ class MyApp extends StatelessWidget {
               title: 'Profile creation confirmation',
               child: SignupFinishedScreen(),
             ),
+        '/profile': (context, state, data) => const BeamPage(
+          title: 'Profile creation confirmation',
+          child: ProfileManagementScreen(),
+        ),
       },
     ),
   );
