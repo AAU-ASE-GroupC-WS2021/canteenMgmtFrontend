@@ -38,16 +38,15 @@ class DishService extends AbstractService {
     }
   }
 
-  Future<Dish> updateDish(Dish dish) async {
+  Future<String> updateDish(Dish dish) async {
     final response = await put('dish', jsonEncode(dish));
 
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
       final stringData = response.body;
-      var responseJson = json.decode(stringData);
+      return stringData.toString();
 
-      return Dish.fromJson(responseJson);
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -55,20 +54,20 @@ class DishService extends AbstractService {
     }
   }
 
-  Future<Dish> deleteDish(Dish dish) async {
+  Future<String> deleteDish(Dish dish) async {
     final response = await delete('dish', jsonEncode(dish));
 
-    if (response.statusCode == 200) {
-      // If the server did return a 200 OK response,
-      // then parse the JSON.
-      final stringData = response.body;
-      var responseJson = json.decode(stringData);
-
-      return Dish.fromJson(responseJson);
-    } else {
-      // If the server did not return a 200 OK response,
-      // then throw an exception.
-      throw Exception('Failed to delete dish');
+     if (response.statusCode == 200) {
+     //   // If the server did return a 200 OK response,
+     //   // then parse the JSON.
+        final stringData = response.body;
+        return stringData.toString();
+      }
+      else {
+     //    // If the server did not return a 200 OK response,
+     //    // then throw an exception.
+       final stringData = response.body;
+       throw Exception(stringData.toString());
     }
   }
 }

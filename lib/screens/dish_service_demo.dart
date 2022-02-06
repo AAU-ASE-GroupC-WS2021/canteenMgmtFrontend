@@ -8,7 +8,6 @@ import '../widgets/delete_dish_from.dart';
 import '../widgets/update_dish_from.dart';
 import '../widgets/create_dish_from.dart';
 
-
 class DishDemoScreen extends StatefulWidget {
   const DishDemoScreen({Key? key}) : super(key: key);
 
@@ -42,31 +41,6 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
                 });
               },
               child: const Text('Refresh'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                dishService.deleteDish(const Dish(
-                          name: "A",
-                          price: 10,
-                          type: "MAIN",
-                          dishDay: "MONDAY",
-                ));
-              },
-              child: const Text('Delete Dish'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                dishService.createDish(
-                  const Dish(
-                    name: "A",
-                    price: 100,
-                    type: "STARTER",
-                  ),
-                );
-              },
-              child: const Text('Create Dish'),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -113,16 +87,26 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
                       content: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: UpdateDishForm(
-                              (dish) => {
-                            GetIt.I.get<DishService>().updateDish(dish)
-                                .then((value) => {Navigator.pop(context)})
+                          (dish) => {
+                            GetIt.I
+                                .get<DishService>()
+                                .updateDish(dish)
+                                .then((value) => {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(value.toString()),
+                                        ),
+                                      ),
+                                      Navigator.pop(context),
+                                    })
                                 .onError(
                                   (error, stackTrace) => {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(error.toString())),
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(error.toString())),
+                                    ),
+                                  },
                                 ),
-                              },
-                            ),
                           },
                         ),
                       ),
@@ -144,16 +128,26 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
                       content: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: DeleteDishForm(
-                              (dish) => {
-                            GetIt.I.get<DishService>().deleteDish(dish)
-                                .then((value) => {Navigator.pop(context)})
+                          (dish) => {
+                            GetIt.I
+                                .get<DishService>()
+                                .deleteDish(dish)
+                                .then((value) async => {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(value.toString()),
+                                        ),
+                                      ),
+                                      Navigator.pop(context),
+                                    })
                                 .onError(
                                   (error, stackTrace) => {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(error.toString())),
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(error.toString())),
+                                    ),
+                                  },
                                 ),
-                              },
-                            ),
                           },
                         ),
                       ),
@@ -181,6 +175,7 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
                 }
               },
             ),
+            const SizedBox(height: 20),
           ],
         ),
       ),

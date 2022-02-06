@@ -42,6 +42,8 @@ abstract class AbstractService {
   Future<http.Response> delete(path, String body) {
     return _client.delete(_getUri(path), body: body, headers: getHeaders());
   }
+
+
   /// Set X-XSRF-TOKEN header if cookie is set
   Map<String, String> getHeaders() {
     var headers = {
