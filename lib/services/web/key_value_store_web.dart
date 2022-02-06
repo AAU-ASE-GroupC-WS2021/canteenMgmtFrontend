@@ -1,4 +1,6 @@
-import 'package:universal_html/html.dart' as html;
+// ignore_for_file: avoid_web_libraries_in_flutter
+
+import 'dart:html' as html;
 
 import '../key_value_store.dart';
 

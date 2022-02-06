@@ -14,6 +14,7 @@ package="$( cat pubspec.yaml | grep -m 1 '^name: ' | sed 's/^name: \([a-z_]\+\).
     '!' -path 'generated*/*' \
     '!' -name '*.g.dart' \
     '!' -name 'generated_plugin_registrant.dart' \
+    '!' -path '*/web/*' \
     '!' -name '*.part.dart' \
     '!' -name '*.freezed.dart' \
         -name '*.dart' \
