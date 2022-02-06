@@ -1,7 +1,8 @@
 import 'package:beamer/beamer.dart';
-import 'package:canteen_mgmt_frontend/cubits/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../cubits/auth.dart';
 
 class SignOutButton extends StatelessWidget {
   const SignOutButton({Key? key}) : super(key: key);

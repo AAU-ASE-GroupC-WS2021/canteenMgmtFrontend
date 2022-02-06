@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:canteen_mgmt_frontend/models/signup.dart';
 
+import '../models/signup.dart';
 import '../services/auth_token.dart';
 import '../services/signin_service.dart';
 import '../services/signup_service.dart';
