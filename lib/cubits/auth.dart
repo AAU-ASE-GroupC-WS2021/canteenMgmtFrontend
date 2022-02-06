@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import '../utils/auth_token.dart';
+import '../services/auth_token.dart';
 
 import '../services/signin_service.dart';
 import '../services/signup_service.dart';

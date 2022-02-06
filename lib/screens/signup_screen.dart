@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubits/auth.dart';
-import '../utils/auth_token.dart';
+import '../services/auth_token.dart';
 import '../widgets/about_button.dart';
 
 class SignupScreen extends StatefulWidget {

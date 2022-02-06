@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 
 import '../models/signup.dart';
-import '../utils/auth_token.dart';
+import 'auth_token.dart';
 import 'abstract_service.dart';
 
 class SignInService extends AbstractService {

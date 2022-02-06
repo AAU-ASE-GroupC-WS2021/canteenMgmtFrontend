@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 
-import '../utils/auth_token.dart';
+import 'auth_token.dart';
 
 abstract class AbstractService {
   static const backendUrl = String.fromEnvironment(
