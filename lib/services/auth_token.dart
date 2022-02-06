@@ -1,15 +1,11 @@
-import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
 
 import 'key_value_store.dart';
-import 'web/key_value_store_web_stub.dart'
-// ignore: uri_does_not_exist
-    if (dart.library.html) 'web/key_value_store_web.dart'
-    show getKeyValueStoreWeb;
 
 class AuthTokenUtils {
   AuthTokenUtils._(); // singleton (private constructor)
 
-  static final _store = kIsWeb ? getKeyValueStoreWeb() : KeyValueStore();
+  static final _store = GetIt.I.get<KeyValueStore>();
 
   static const authTokenKey = String.fromEnvironment(
     'AUTH_TOKEN',

@@ -14,10 +14,10 @@ dependencies:
 
   qr_code_scanner: ^0.6.1
   http: ^0.13.4
-  shared_preferences: ^2.0.12
+  shared_preferences: ^2.0.13
 
   # navigation
-  beamer: ^1.2.0
+  beamer: ^1.3.0
 
   # service locator (allows for easy injection)
   get_it: ^7.2.0
