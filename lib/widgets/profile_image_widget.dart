@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import '../services/avatar_service.dart';
+
 import '../services/signin_service.dart';
 import '../services/signup_service.dart';
 import '../utils/auth_token.dart';
@@ -22,11 +24,9 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
   late String _username = "";
   late String _type = "";
 
-  bool _hasAvatar = false;
-  String _base64Avatar = "";
+  late bool _hasAvatar = false;
+  late String _base64Avatar = "";
 
-
-  late File _image;
   final picker = ImagePicker();
 
   @override
@@ -41,6 +41,15 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
       super.setState(() {
         _username = value.username;
         _type = value.type;
+      }),
+
+      AvatarService().getAvatar(_username).then((value) => {
+        if (value != null) {
+          super.setState(() {
+            _base64Avatar = value.avatar;
+            _hasAvatar = true;
+          }),
+        },
       }),
     });
   }
@@ -58,12 +67,7 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
       children: [
         InkWell(
           onTap: () {
-            getImage().then((value) =>  {
-              if (value) {
-                // reload page
-              },
-            },
-            );
+            pickNewImage();
           },
           child: _hasAvatar ?
           Image.memory(base64Decode(_base64Avatar), height: 100, fit: BoxFit.contain)
@@ -87,17 +91,25 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
     );
   }
 
-  Future<bool> getImage() async {
+  Future<bool> pickNewImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    bool picked = false;
+    final imageBytes = await pickedFile?.readAsBytes();
 
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-        picked = true;
-      }
+    if (imageBytes == null) {
+      return false;
+    }
+
+    final String imageBase64 = base64Encode(imageBytes);
+
+    AvatarService().updateAvatar(_username, imageBase64).then((value) => {
+      if (value) {
+        super.setState(() {
+          _base64Avatar = imageBase64;
+          _hasAvatar = true;
+        }),
+      },
     });
 
-    return picked;
+    return true;
   }
 }
