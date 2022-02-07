@@ -33,9 +33,6 @@ Future<void> main() async {
   GetIt.I.registerLazySingleton<FilteredUsersCubit>(() => FilteredUsersCubit());
   GetIt.I.registerLazySingleton<http.Client>(() => http.Client());
 
-  // remove .../#/... from url
-  Beamer.setPathUrlStrategy();
-
   runApp(MyApp());
 }
 
