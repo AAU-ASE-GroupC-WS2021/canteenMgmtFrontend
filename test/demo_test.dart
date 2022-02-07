@@ -13,6 +13,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:http/http.dart' as http;
 
 import 'demo_test.mocks.dart'; // if this fails run build_runner (see readme)
 
@@ -21,6 +22,7 @@ import 'demo_test.mocks.dart'; // if this fails run build_runner (see readme)
 @GenerateMocks([DishService])
 void main() {
   GetIt.I.registerSingleton(KeyValueStore());
+  GetIt.I.registerLazySingleton<http.Client>(() => http.Client());
   testWidgets('demo test', (WidgetTester tester) async {
     // create and register mocked service
     // see how the service is registered in lib/main.dart and accessed in lib/screens/dish_service_demo.dart

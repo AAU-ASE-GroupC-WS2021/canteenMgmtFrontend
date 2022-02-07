@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:canteen_mgmt_frontend/services/util/password_encoder.dart';
-import 'package:crypto/crypto.dart';
 
 import '../models/signup.dart';
 import 'abstract_service.dart';

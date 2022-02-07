@@ -61,69 +61,85 @@ void main() {
     expect(_getTextFromTextFormInputAt(2), "");
   });
 
-  testWidgets('When fields empty and button pressed then no submit',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(testWidget);
-    await tester.tap(find.byType(ElevatedButton));
-    await tester.pumpAndSettle(); // wait until error messages are displayed
+  testWidgets(
+    'When fields empty and button pressed then no submit',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(testWidget);
+      await tester.tap(find.byType(ElevatedButton));
+      await tester.pumpAndSettle(); // wait until error messages are displayed
 
-    verifyNever(userService.createUser(any));
-  },);
+      verifyNever(userService.createUser(any));
+    },
+  );
 
   testWidgets(
-      'When fields filled in (no canteen) and button pressed then submit correct data',
-      (WidgetTester tester) async {
-    User? createdUser;
-    when(userService.createUser(any))
-        .thenAnswer((i) async => (createdUser = i.positionalArguments[0]));
+    'When fields filled in (no canteen) and button pressed then submit correct data',
+    (WidgetTester tester) async {
+      User? createdUser;
+      when(userService.createUser(any))
+          .thenAnswer((i) async => (createdUser = i.positionalArguments[0]));
 
-    await tester.pumpWidget(testWidget);
-    await tester.enterText(
-        find.byType(TextFormField).at(0), _defaultUser.username,);
-    await tester.enterText(
-        find.byType(TextFormField).at(1), _defaultUser.password!,);
-    await tester.enterText(
-        find.byType(TextFormField).at(2), _defaultUser.password!,);
+      await tester.pumpWidget(testWidget);
+      await tester.enterText(
+        find.byType(TextFormField).at(0),
+        _defaultUser.username,
+      );
+      await tester.enterText(
+        find.byType(TextFormField).at(1),
+        _defaultUser.password!,
+      );
+      await tester.enterText(
+        find.byType(TextFormField).at(2),
+        _defaultUser.password!,
+      );
 
-    await tester.tap(find.byType(ElevatedButton));
-    await tester.pumpAndSettle();
+      await tester.tap(find.byType(ElevatedButton));
+      await tester.pumpAndSettle();
 
-    verify(userService.createUser(any)).called(1);
-    expect(createdUser!.username, _defaultUser.username);
-    expect(createdUser!.password, _defaultUser.password);
-    expect(createdUser!.canteenID, null);
-  },);
+      verify(userService.createUser(any)).called(1);
+      expect(createdUser!.username, _defaultUser.username);
+      expect(createdUser!.password, _defaultUser.password);
+      expect(createdUser!.canteenID, null);
+    },
+  );
 
   testWidgets(
-      'When fields filled in (with canteen) and button pressed then submit correct data',
-      (WidgetTester tester) async {
-    User? createdUser;
-    when(userService.createUser(any))
-        .thenAnswer((i) async => (createdUser = i.positionalArguments[0]));
+    'When fields filled in (with canteen) and button pressed then submit correct data',
+    (WidgetTester tester) async {
+      User? createdUser;
+      when(userService.createUser(any))
+          .thenAnswer((i) async => (createdUser = i.positionalArguments[0]));
 
-    await tester.pumpWidget(testWidget);
-    await tester.enterText(
-        find.byType(TextFormField).at(0), _defaultUser.username,);
-    await tester.enterText(
-        find.byType(TextFormField).at(1), _defaultUser.password!,);
-    await tester.enterText(
-        find.byType(TextFormField).at(2), _defaultUser.password!,);
+      await tester.pumpWidget(testWidget);
+      await tester.enterText(
+        find.byType(TextFormField).at(0),
+        _defaultUser.username,
+      );
+      await tester.enterText(
+        find.byType(TextFormField).at(1),
+        _defaultUser.password!,
+      );
+      await tester.enterText(
+        find.byType(TextFormField).at(2),
+        _defaultUser.password!,
+      );
 
-    // select canteen in dropdown
-    final dropdown = find.byKey(const ValueKey('dropdown'));
-    await tester.tap(dropdown);
-    await tester.pumpAndSettle();
-    final dropdownItem =
-        find.text(_canteens[_defaultCanteenIndex].toString()).last;
-    await tester.tap(dropdownItem);
-    await tester.pumpAndSettle();
+      // select canteen in dropdown
+      final dropdown = find.byKey(const ValueKey('dropdown'));
+      await tester.tap(dropdown);
+      await tester.pumpAndSettle();
+      final dropdownItem =
+          find.text(_canteens[_defaultCanteenIndex].toString()).last;
+      await tester.tap(dropdownItem);
+      await tester.pumpAndSettle();
 
-    await tester.tap(find.byType(ElevatedButton));
-    await tester.pumpAndSettle();
+      await tester.tap(find.byType(ElevatedButton));
+      await tester.pumpAndSettle();
 
-    verify(userService.createUser(any)).called(1);
-    expect(createdUser!.username, _defaultUser.username);
-    expect(createdUser!.password, _defaultUser.password);
-    expect(createdUser!.canteenID, _canteens[_defaultCanteenIndex].id);
-  },);
+      verify(userService.createUser(any)).called(1);
+      expect(createdUser!.username, _defaultUser.username);
+      expect(createdUser!.password, _defaultUser.password);
+      expect(createdUser!.canteenID, _canteens[_defaultCanteenIndex].id);
+    },
+  );
 }

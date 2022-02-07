@@ -1,5 +1,4 @@
-import 'dart:convert';
-
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
 import 'auth_token.dart';
@@ -10,7 +9,9 @@ abstract class AbstractService {
     defaultValue: 'http://localhost:8080/',
   );
 
-  final _client = http.Client();
+  final http.Client _client;
+
+  AbstractService() : _client = GetIt.I.get<http.Client>();
 
   Uri _getUri(String path) {
     String uriString = backendUrl + path;

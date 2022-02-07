@@ -1,8 +1,8 @@
 import 'dart:convert';
+
 import 'package:canteen_mgmt_frontend/services/util/password_encoder.dart';
 
 import '../models/user.dart';
-
 import 'abstract_service.dart';
 
 class OwnerUserService extends AbstractService {
@@ -12,7 +12,9 @@ class OwnerUserService extends AbstractService {
 
   Future<User> createUser(User user) async {
     final response = await post(
-        'api/owner/user', jsonEncode(getUserWithEncodedPassword(user)),);
+      'api/owner/user',
+      jsonEncode(getUserWithEncodedPassword(user)),
+    );
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(utf8.decode(response.bodyBytes));
@@ -26,8 +28,10 @@ class OwnerUserService extends AbstractService {
   }
 
   Future<User> updateUser(User user) async {
-    final response = await put('api/owner/user/${user.id}',
-        jsonEncode(getUserWithEncodedPassword(user)),);
+    final response = await put(
+      'api/owner/user/${user.id}',
+      jsonEncode(getUserWithEncodedPassword(user)),
+    );
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(utf8.decode(response.bodyBytes));

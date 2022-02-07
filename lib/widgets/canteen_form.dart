@@ -1,6 +1,7 @@
-import 'package:flutter/services.dart';
-import '../models/canteen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import '../models/canteen.dart';
 
 class CanteenForm extends StatefulWidget {
   const CanteenForm(this.callback, {Key? key, this.canteen}) : super(key: key);
@@ -73,7 +74,8 @@ class _CanteenFormState extends State<CanteenForm> {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               minimumSize: const Size.fromHeight(
-                  40,), // fromHeight use double.infinity as width and 40 is the height
+                40,
+              ), // fromHeight use double.infinity as width and 40 is the height
             ),
             onPressed: () {
               // Validate returns true if the form is valid, or false otherwise.
@@ -95,8 +97,11 @@ class _CanteenFormState extends State<CanteenForm> {
     return null;
   }
 
-  String? validateInputInteger(String? value, String label,
-      {bool nonNegative = false,}) {
+  String? validateInputInteger(
+    String? value,
+    String label, {
+    bool nonNegative = false,
+  }) {
     String? notEmptyValidate = validateInputNotEmpty(value, label);
     if (notEmptyValidate == null) {
       int? result = int.tryParse(value!);
