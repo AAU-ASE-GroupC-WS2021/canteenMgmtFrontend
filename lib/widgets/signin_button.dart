@@ -1,37 +1,22 @@
-import 'package:canteen_mgmt_frontend/screens/signin_screen.dart';
-import 'package:canteen_mgmt_frontend/utils/auth_token.dart';
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SignInButton extends StatefulWidget {
+import '../cubits/auth.dart';
+
+class SignInButton extends StatelessWidget {
   const SignInButton({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() {
-    return _SignInButtonState();
-  }
-}
-
-class _SignInButtonState extends State<SignInButton> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-
-    if (AuthTokenUtils.isLoggedIn()) {
-      return Offstage(
-        offstage: true,
-      );
-    }
-
-    return ElevatedButton(
-        onPressed: () => {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignInScreen())),
-        },
-        child: Text("Log in")
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, state) => Offstage(
+        offstage: state.authenticated,
+        child: ElevatedButton(
+          child: const Text("Log in"),
+          onPressed: () => context.beamToNamed('/signin'),
+        ),
+      ),
     );
   }
 }

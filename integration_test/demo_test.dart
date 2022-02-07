@@ -1,21 +1,27 @@
 import 'package:canteen_mgmt_frontend/main.dart' as app;
+import 'package:canteen_mgmt_frontend/models/signup.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
+import 'util/auth_helper.dart';
 import 'util/widget_tester_wait_for.dart';
+
+const _userCredentials = Signup(
+  username: 'SomeTestUser',
+  password: 'SomeTestPassword123',
+);
 
 // allow running this test by itself
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  test();
-}
 
-Future<void> test() async {
   testWidgets("demo test", (WidgetTester tester) async {
     app.main();
     await tester.pumpAndSettle();
-
     expect(find.text('Canteen Management'), findsOneWidget);
+
+    await signUp(tester, _userCredentials);
+    await logIn(tester, _userCredentials);
 
     await tester.tap(find.text('Dish Service Demo'));
     await tester.pumpAndSettle();

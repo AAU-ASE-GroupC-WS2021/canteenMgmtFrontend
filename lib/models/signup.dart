@@ -4,7 +4,7 @@ class Signup {
   final String password;
   final String type;
 
-  Signup({
+  const Signup({
     this.id = -1,
     required this.username,
     this.password = '',
@@ -19,9 +19,9 @@ class Signup {
   }
 
   Map<String, dynamic> toJson() => {
-    'username': username,
-    'password': password,
-  };
+        'username': username,
+        'password': password,
+      };
 
   @override
   String toString() {

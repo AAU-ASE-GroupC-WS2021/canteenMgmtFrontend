@@ -1,10 +1,10 @@
 import 'package:beamer/beamer.dart';
-import 'package:canteen_mgmt_frontend/services/signin_service.dart';
-import 'package:canteen_mgmt_frontend/utils/auth_token.dart';
-import 'package:canteen_mgmt_frontend/widgets/about_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'home.dart';
+import '../cubits/auth.dart';
+import '../services/auth_token.dart';
+import '../widgets/about_button.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -16,13 +16,6 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final SignInService signupService = SignInService();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   final _formKey = GlobalKey<FormState>();
 
   final usernameController = TextEditingController();
@@ -42,7 +35,7 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               const SizedBox(height: 20), // space between buttons
               ElevatedButton(
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen())),
+                onPressed: () => context.beamToNamed('/'),
                 child: const Text('Go to the Homepage'),
               ),
             ],
@@ -52,18 +45,17 @@ class _SignInScreenState extends State<SignInScreen> {
     }
 
     return Form(
-        key: _formKey,
-        child:
-        Scaffold(
-      appBar: AppBar(
-        title: const Text('Log in'),
-        actions: const [AboutButton()],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
+      key: _formKey,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Log in'),
+          actions: const [AboutButton()],
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
                 width: 350.0,
                 child: Column(
                   children: [
@@ -73,45 +65,46 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                       controller: usernameController,
                       validator: (value) => validateUsername(value),
-                      autofillHints: [AutofillHints.username],
+                      autofillHints: const [AutofillHints.username],
                     ),
                     const SizedBox(height: 20), // space between buttons
                     TextFormField(
                       obscureText: true,
                       controller: passwordController,
                       validator: (value) => validatePassword(value),
-                      autofillHints: [AutofillHints.password],
+                      autofillHints: const [AutofillHints.password],
                       decoration: const InputDecoration(
                         labelText: 'Password',
                       ),
                     ),
                     const SizedBox(height: 20), // space between buttons
                     ElevatedButton(
-                      onPressed: () => {
-                      if (_formKey.currentState!.validate()) {
-                        signupService.login(usernameController.text, passwordController.text)
-                            .then((value) => {
-                          if (value == null) {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen())),
-                          }
-                          else {
-                            showAlertDialog(value),
-                          },
-                        })
-                            .onError((error, stackTrace) => {
-                          showAlertDialog("Unknown error occurred while trying to log you in.\nPlease refresh the page and try again.!"),
-                        }),
-                      },
+                      onPressed: () {
+                        if (!_formKey.currentState!.validate()) return;
+
+                        context
+                            .read<AuthCubit>()
+                            .login(
+                              usernameController.text,
+                              passwordController.text,
+                            )
+                            .then((value) => value == null
+                                ? context.beamToNamed('/')
+                                : showAlertDialog(value))
+                            .onError((error, stackTrace) => showAlertDialog(
+                                  "Unknown error occurred while trying to log you in."
+                                  "\nPlease refresh the page and try again.!",
+                                ));
                       },
                       child: const Text('Log in'),
                     ),
                   ],
                 ),
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
-    ),
     );
   }
 
@@ -119,35 +112,29 @@ class _SignInScreenState extends State<SignInScreen> {
     // set up the button
     Widget okButton = TextButton(
       child: const Text("Close"),
-      onPressed: () { Navigator.pop(context); },
+      onPressed: () => Navigator.pop(context),
     );
 
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: const Text("Could not log in"),
       content: Text(error),
-      actions: [
-        okButton,
-      ],
+      actions: [okButton],
     );
 
     // show the dialog
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
+      builder: (BuildContext context) => alert,
     );
   }
 
   String? validatePassword(String? password) {
     if (password == null || password.isEmpty) {
       return 'Password field cannot be empty.';
-    }
-    else if (password.length < 9) {
+    } else if (password.length < 9) {
       return 'Password has to be at least 9 characters long.';
-    }
-    else if (password.length > 64) {
+    } else if (password.length > 64) {
       return 'Password cannot be longer than 64 characters.';
     }
 
@@ -157,11 +144,9 @@ class _SignInScreenState extends State<SignInScreen> {
   String? validateUsername(String? username) {
     if (username == null || username.isEmpty) {
       return 'Username field cannot be empty.';
-    }
-    else if (username.length < 3) {
+    } else if (username.length < 3) {
       return 'Username has to be at least 3 characters long.';
-    }
-    else if (username.length > 24) {
+    } else if (username.length > 24) {
       return 'Username cannot be longer than 24 characters.';
     }
 
