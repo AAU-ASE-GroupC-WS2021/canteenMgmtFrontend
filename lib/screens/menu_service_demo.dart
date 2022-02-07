@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import '../models/menu.dart';
@@ -64,7 +66,7 @@ class _MenuDemoScreenState extends State<MenuDemoScreen> {
               ],
               onSelected: (value) {
                 _myfunc(value.toString());
-                print("value:$value");
+                log("value:$value");
               },
             ),
             const SizedBox(height: 20),
@@ -113,7 +115,7 @@ class _MenuDemoScreenState extends State<MenuDemoScreen> {
                             menuService
                                 .createMenu(menu)
                                 .then((value) => {
-                                      print(value.toString()),
+                                      log(value.toString()),
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
@@ -154,7 +156,7 @@ class _MenuDemoScreenState extends State<MenuDemoScreen> {
                             menuService
                                 .updateMenu(menu)
                                 .then((value) => {
-                                      print(value.toString()),
+                                      log(value.toString()),
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
@@ -195,7 +197,7 @@ class _MenuDemoScreenState extends State<MenuDemoScreen> {
                             menuService
                                 .deleteMenu(menu)
                                 .then((value) => {
-                                      print(value.toString()),
+                                      log(value.toString()),
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(

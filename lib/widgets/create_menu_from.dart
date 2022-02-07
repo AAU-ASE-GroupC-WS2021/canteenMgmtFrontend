@@ -53,7 +53,7 @@ class _CreateMenuFormState extends State<CreateMenuForm> {
     menuDishNames = [];
     var dishList = await DishService().fetchDishes(newValue);
     for (Dish element in dishList) {
-      // print(element.name);
+      // log(element.name);
       menuDishNames.insert(0, element.name);
     }
   }
@@ -168,9 +168,8 @@ class _CreateMenuFormState extends State<CreateMenuForm> {
                 actions: [
                   TextButton(
                     child: const Text('Update'),
-                    onPressed: () {
-                      setState(() {});
-                    },
+                    // ignore: no-empty-block
+                    onPressed: () => setState(() {}),
                   ),
                   // ElevatedButton(
                   //   child: const Text('Save Dishes'),

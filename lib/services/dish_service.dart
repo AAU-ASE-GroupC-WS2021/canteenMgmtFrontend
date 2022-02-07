@@ -19,6 +19,7 @@ class DishService extends AbstractService {
     return Uri.parse(uriString);
   }
 
+  @override
   Future<http.Response> get(path, [dishDay]) {
     if (dishDay != null) {
       var pathnew = Uri.parse(backendUrl + path).replace(queryParameters: {
