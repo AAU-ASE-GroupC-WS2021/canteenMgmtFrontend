@@ -4,7 +4,7 @@ class Signup {
   final String password;
   final String type;
 
-  Signup({
+  const Signup({
     this.id = -1,
     required this.username,
     this.password = '',
