@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:canteen_mgmt_frontend/screens/pw_change_screen.dart';
+
 import '../services/avatar_service.dart';
 
 import '../services/signin_service.dart';
@@ -106,7 +108,7 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
         // Change password button
         ElevatedButton(
           onPressed: () => {
-
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PwChangeScreen())),
           },
           child: const Text('Change password', style: TextStyle(fontSize: 10)),),
 
