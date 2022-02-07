@@ -24,7 +24,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Canteen Management'), findsOneWidget);
 
-    // await signUp(tester, _userCredentials);
+    await signUp(tester, _userCredentials);
     await logIn(tester, _userCredentials);
 
     await tester.tap(find.text('Dish Service Demo'));
