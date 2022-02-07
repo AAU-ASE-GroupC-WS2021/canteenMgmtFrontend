@@ -81,6 +81,8 @@ Future<void> _toggleCanteenSelection(
 }
 
 Future<void> _homeToAdminDashboard(WidgetTester tester) async {
+  await tester.tap(find.byTooltip('Open navigation menu'));
+  await tester.pumpAndSettle();
   await tester.tap(find.text('Admin Dashboard').first);
   await tester.pumpAndSettle();
   expect(find.text('Canteens'), findsWidgets);

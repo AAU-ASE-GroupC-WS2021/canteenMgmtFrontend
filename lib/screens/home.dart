@@ -66,7 +66,7 @@ class HomeMenu extends StatelessWidget {
                 child: Wrap(
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: const [
-                    TextHeading('Canteen Management'),
+                    TextHeading('Canteen Management', color: Colors.white,),
                   ],
                 ),),
             ),
