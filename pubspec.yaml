@@ -26,6 +26,9 @@ dependencies:
   bloc: ^8.0.2
   flutter_bloc: ^8.0.1
 
+  # form widgets
+  flutter_form_builder: ^7.1.0
+
 dev_dependencies:
   integration_test:
     sdk: flutter
