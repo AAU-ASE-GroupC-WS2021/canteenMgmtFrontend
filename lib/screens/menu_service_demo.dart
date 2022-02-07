@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../models/menu.dart';
 import '../services/menu_service.dart';
 import '../widgets/create_menu_from.dart';
+import '../widgets/delete_menu_from.dart';
 import '../widgets/menu_table.dart';
 import '../widgets/update_menu_from.dart';
 
@@ -192,7 +193,7 @@ class _MenuDemoScreenState extends State<MenuDemoScreen> {
                       title: const Text('Delete Menu'),
                       content: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: CreateMenuForm(
+                        child: DeleteMenuForm(
                           (menu) => {
                             menuService
                                 .deleteMenu(menu)
