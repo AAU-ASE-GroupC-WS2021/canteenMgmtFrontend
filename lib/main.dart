@@ -16,12 +16,16 @@ import 'services/web/key_value_store_web_stub.dart'
     show getKeyValueStoreWeb;
 
 Future<void> main() async {
-  GetIt.I.registerFactory<DishService>(() => DishService());
-  GetIt.I.registerSingleton<KeyValueStore>(
-    kDebugMode && kIsWeb
-        ? getKeyValueStoreWeb()
-        : SharedPrefsStore(await SharedPreferences.getInstance()),
-  );
+  if (!GetIt.I.isRegistered<DishService>()) {
+    GetIt.I.registerFactory<DishService>(() => DishService());
+  }
+  if (!GetIt.I.isRegistered<KeyValueStore>()) {
+    GetIt.I.registerSingleton<KeyValueStore>(
+      kDebugMode && kIsWeb
+          ? getKeyValueStoreWeb()
+          : SharedPrefsStore(await SharedPreferences.getInstance()),
+    );
+  }
 
   // remove .../#/... from url
   Beamer.setPathUrlStrategy();
