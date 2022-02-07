@@ -1,8 +1,8 @@
 import 'package:canteen_mgmt_frontend/cubits/canteen_cubit.dart';
 import 'package:canteen_mgmt_frontend/cubits/filtered_users_cubit.dart';
-import 'package:canteen_mgmt_frontend/main.dart';
 import 'package:canteen_mgmt_frontend/models/canteen.dart';
 import 'package:canteen_mgmt_frontend/models/user.dart';
+import 'package:canteen_mgmt_frontend/screens/admin_dashboard.dart';
 import 'package:canteen_mgmt_frontend/services/canteen_service.dart';
 import 'package:canteen_mgmt_frontend/services/owner_user_service.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +16,11 @@ import 'test_utils.dart';
 
 @GenerateMocks([OwnerUserService, CanteenService])
 void main() {
-  MyApp testWidget = MyApp();
-  testWidget.beamerDelegate.beamToNamed('/admin');
+  Widget testWidget = const MaterialApp(
+    home: Scaffold(
+      body: AdminDashboardScreen(),
+    ),
+  );
 
   const _canteens = [
     Canteen(name: "Canteen1", address: "SomeAddress1", numTables: 11, id: 1),
@@ -52,116 +55,131 @@ void main() {
     when(canteenService.getCanteens()).thenAnswer((_) async => _canteens);
   });
 
-  testWidgets('When launched then all canteens and all users displayed',
-      (WidgetTester tester) async {
-    useUHDResolution(tester);
-    await tester.pumpWidget(testWidget);
-    await tester.pumpAndSettle();
+  testWidgets(
+    'When launched then all canteens and all users displayed',
+    (WidgetTester tester) async {
+      useUHDResolution(tester);
+      await tester.pumpWidget(testWidget);
+      await tester.pumpAndSettle();
 
-    for (final canteen in _canteens) {
-      expect(find.textContaining(canteen.name), findsWidgets);
-      expect(find.textContaining(canteen.address), findsWidgets);
-      expect(find.textContaining(canteen.numTables.toString()), findsWidgets);
-    }
-
-    for (final user in _users) {
-      if (user.type == UserType.ADMIN) {
-        expect(find.textContaining(user.username), findsWidgets);
-      } else {
-        expect(find.textContaining(user.username), findsNothing);
+      for (final canteen in _canteens) {
+        expect(find.textContaining(canteen.name), findsWidgets);
+        expect(find.textContaining(canteen.address), findsWidgets);
+        expect(find.textContaining(canteen.numTables.toString()), findsWidgets);
       }
-    }
-  },);
 
-  testWidgets('When no connection then error messages shown',
-      (WidgetTester tester) async {
-    useUHDResolution(tester);
-    const errorUsers = 'Failed to load users';
-    const errorCanteens = 'Failed to load canteens';
-
-    when(userService.getAllByType(any)).thenThrow(Exception(errorUsers));
-    when(canteenService.getCanteens()).thenThrow(Exception(errorCanteens));
-
-    await tester.pumpWidget(testWidget);
-    await tester.pumpAndSettle();
-
-    expect(find.textContaining(errorUsers), findsWidgets);
-    expect(find.textContaining(errorCanteens), findsWidgets);
-  },);
-
-  testWidgets('When add canteen clicked then show dialog',
-      (WidgetTester tester) async {
-    useUHDResolution(tester);
-    await tester.pumpWidget(testWidget);
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(Icons.add).at(0));
-    await tester.pumpAndSettle();
-
-    expect(find.textContaining('Create Canteen'), findsWidgets);
-  },);
-
-  testWidgets('When add user clicked then show dialog',
-      (WidgetTester tester) async {
-    useUHDResolution(tester);
-    await tester.pumpWidget(testWidget);
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(Icons.add).at(1));
-    await tester.pumpAndSettle();
-
-    expect(find.textContaining('Create User'), findsWidgets);
-  },);
-
-  testWidgets('When edit user clicked then show dialog',
-      (WidgetTester tester) async {
-    useUHDResolution(tester);
-    await tester.pumpWidget(testWidget);
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(Icons.edit).last);
-    await tester.pumpAndSettle();
-
-    expect(find.textContaining('Edit User'), findsWidgets);
-  },);
-
-  testWidgets('When edit canteen clicked then show dialog',
-      (WidgetTester tester) async {
-    useUHDResolution(tester);
-    await tester.pumpWidget(testWidget);
-    await tester.pumpAndSettle();
-    await tester.tap(find.byIcon(Icons.edit).first);
-    await tester.pumpAndSettle();
-
-    expect(find.textContaining('Edit Canteen'), findsWidgets);
-  },);
-
-  testWidgets('When select canteen then only corresponding admins displayed',
-      (WidgetTester tester) async {
-    useUHDResolution(tester);
-    final canteenToSelect = _canteens[0];
-
-    await tester.pumpWidget(testWidget);
-    await tester.pumpAndSettle();
-
-    final listviewItem = find.textContaining(canteenToSelect.name);
-    await tester.tap(listviewItem);
-    await tester.pumpAndSettle();
-
-    for (final user in _users) {
-      if (user.type == UserType.ADMIN && user.canteenID == canteenToSelect.id) {
-        expect(find.textContaining(user.username), findsWidgets);
-      } else {
-        expect(find.textContaining(user.username), findsNothing);
+      for (final user in _users) {
+        if (user.type == UserType.ADMIN) {
+          expect(find.textContaining(user.username), findsWidgets);
+        } else {
+          expect(find.textContaining(user.username), findsNothing);
+        }
       }
-    }
+    },
+  );
 
-    await tester.tap(listviewItem);
-    await tester.pumpAndSettle();
+  testWidgets(
+    'When no connection then error messages shown',
+    (WidgetTester tester) async {
+      useUHDResolution(tester);
+      const errorUsers = 'Failed to load users';
+      const errorCanteens = 'Failed to load canteens';
 
-    for (final user in _users) {
-      if (user.type == UserType.ADMIN) {
-        expect(find.textContaining(user.username), findsWidgets);
-      } else {
-        expect(find.textContaining(user.username), findsNothing);
+      when(userService.getAllByType(any)).thenThrow(Exception(errorUsers));
+      when(canteenService.getCanteens()).thenThrow(Exception(errorCanteens));
+
+      await tester.pumpWidget(testWidget);
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining(errorUsers), findsWidgets);
+      expect(find.textContaining(errorCanteens), findsWidgets);
+    },
+  );
+
+  testWidgets(
+    'When add canteen clicked then show dialog',
+    (WidgetTester tester) async {
+      useUHDResolution(tester);
+      await tester.pumpWidget(testWidget);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Icons.add).at(0));
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('Create Canteen'), findsWidgets);
+    },
+  );
+
+  testWidgets(
+    'When add user clicked then show dialog',
+    (WidgetTester tester) async {
+      useUHDResolution(tester);
+      await tester.pumpWidget(testWidget);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Icons.add).at(1));
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('Create User'), findsWidgets);
+    },
+  );
+
+  testWidgets(
+    'When edit user clicked then show dialog',
+    (WidgetTester tester) async {
+      useUHDResolution(tester);
+      await tester.pumpWidget(testWidget);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Icons.edit).last);
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('Edit User'), findsWidgets);
+    },
+  );
+
+  testWidgets(
+    'When edit canteen clicked then show dialog',
+    (WidgetTester tester) async {
+      useUHDResolution(tester);
+      await tester.pumpWidget(testWidget);
+      await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Icons.edit).first);
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('Edit Canteen'), findsWidgets);
+    },
+  );
+
+  testWidgets(
+    'When select canteen then only corresponding admins displayed',
+    (WidgetTester tester) async {
+      useUHDResolution(tester);
+      final canteenToSelect = _canteens[0];
+
+      await tester.pumpWidget(testWidget);
+      await tester.pumpAndSettle();
+
+      final listviewItem = find.textContaining(canteenToSelect.name);
+      await tester.tap(listviewItem);
+      await tester.pumpAndSettle();
+
+      for (final user in _users) {
+        if (user.type == UserType.ADMIN &&
+            user.canteenID == canteenToSelect.id) {
+          expect(find.textContaining(user.username), findsWidgets);
+        } else {
+          expect(find.textContaining(user.username), findsNothing);
+        }
       }
-    }
-  },);
+
+      await tester.tap(listviewItem);
+      await tester.pumpAndSettle();
+
+      for (final user in _users) {
+        if (user.type == UserType.ADMIN) {
+          expect(find.textContaining(user.username), findsWidgets);
+        } else {
+          expect(find.textContaining(user.username), findsNothing);
+        }
+      }
+    },
+  );
 }
