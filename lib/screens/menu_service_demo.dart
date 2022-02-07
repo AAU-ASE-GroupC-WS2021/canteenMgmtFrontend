@@ -1,14 +1,10 @@
-import '../widgets/update_menu_from.dart';
-
-import '../widgets/create_menu_from.dart';
-
-
-import '../models/menu.dart';
 import 'package:flutter/material.dart';
 
-
+import '../models/menu.dart';
 import '../services/menu_service.dart';
+import '../widgets/create_menu_from.dart';
 import '../widgets/menu_table.dart';
+import '../widgets/update_menu_from.dart';
 
 class MenuDemoScreen extends StatefulWidget {
   const MenuDemoScreen({Key? key}) : super(key: key);
@@ -27,12 +23,13 @@ class _MenuDemoScreenState extends State<MenuDemoScreen> {
     futureMenus = menuService.fetchMenus();
   }
 
-  void _myfunc([String dishDay="MONDAY"]){
+  void _myfunc([String dishDay = "MONDAY"]) {
     final newDishes = menuService.fetchMenus(dishDay);
     setState(() {
       futureMenus = newDishes;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,32 +39,32 @@ class _MenuDemoScreenState extends State<MenuDemoScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             PopupMenuButton(
-                child: const Text("Filter by Day"),
-                itemBuilder: (context) => [
-                  const PopupMenuItem(
-                    child: Text("MONDAY"),
-                    value: "MONDAY",
-                  ),
-                  const PopupMenuItem(
-                    child: Text("TUESDAY"),
-                    value: "TUESDAY",
-                  ),
-                  const PopupMenuItem(
-                    child: Text("WEDNESDAY"),
-                    value: "WEDNESDAY",
-                  ),
-                  const PopupMenuItem(
-                    child: Text("THURSDAY"),
-                    value: "THURSDAY",
-                  ),
-                  const PopupMenuItem(
-                    child: Text("FRIDAY"),
-                    value: "FRIDAY",
-                  ),
-                ],
-              onSelected: (value){
-                  _myfunc(value.toString());
-                  print("value:$value");
+              child: const Text("Filter by Day"),
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  child: Text("MONDAY"),
+                  value: "MONDAY",
+                ),
+                const PopupMenuItem(
+                  child: Text("TUESDAY"),
+                  value: "TUESDAY",
+                ),
+                const PopupMenuItem(
+                  child: Text("WEDNESDAY"),
+                  value: "WEDNESDAY",
+                ),
+                const PopupMenuItem(
+                  child: Text("THURSDAY"),
+                  value: "THURSDAY",
+                ),
+                const PopupMenuItem(
+                  child: Text("FRIDAY"),
+                  value: "FRIDAY",
+                ),
+              ],
+              onSelected: (value) {
+                _myfunc(value.toString());
+                print("value:$value");
               },
             ),
             const SizedBox(height: 20),
@@ -112,24 +109,26 @@ class _MenuDemoScreenState extends State<MenuDemoScreen> {
                       content: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: CreateMenuForm(
-                              (menu) => {menuService.createMenu(menu)
-                                  .then((value) => {
-                                    print(value.toString()),
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(
-                                  SnackBar(
-                                    content: Text(value.toString()),
-                                  ),
-                                ),
-                                Navigator.pop(context),
-                              })
+                          (menu) => {
+                            menuService
+                                .createMenu(menu)
+                                .then((value) => {
+                                      print(value.toString()),
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(value.toString()),
+                                        ),
+                                      ),
+                                      Navigator.pop(context),
+                                    })
                                 .onError(
                                   (error, stackTrace) => {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text(error.toString())),
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(error.toString())),
+                                    ),
+                                  },
                                 ),
-                              },
-                            ),
                           },
                         ),
                       ),
@@ -151,24 +150,26 @@ class _MenuDemoScreenState extends State<MenuDemoScreen> {
                       content: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: UpdateMenuForm(
-                              (menu) => {menuService.updateMenu(menu)
-                              .then((value) => {
-                            print(value.toString()),
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(
-                              SnackBar(
-                                content: Text(value.toString()),
-                              ),
-                            ),
-                            Navigator.pop(context),
-                          })
-                              .onError(
-                                (error, stackTrace) => {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(error.toString())),
-                              ),
-                            },
-                          ),
+                          (menu) => {
+                            menuService
+                                .updateMenu(menu)
+                                .then((value) => {
+                                      print(value.toString()),
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(value.toString()),
+                                        ),
+                                      ),
+                                      Navigator.pop(context),
+                                    })
+                                .onError(
+                                  (error, stackTrace) => {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(error.toString())),
+                                    ),
+                                  },
+                                ),
                           },
                         ),
                       ),
@@ -190,24 +191,26 @@ class _MenuDemoScreenState extends State<MenuDemoScreen> {
                       content: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: CreateMenuForm(
-                              (menu) => {menuService.deleteMenu(menu)
-                              .then((value) => {
-                            print(value.toString()),
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(
-                              SnackBar(
-                                content: Text(value.toString()),
-                              ),
-                            ),
-                            Navigator.pop(context),
-                          })
-                              .onError(
-                                (error, stackTrace) => {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(error.toString())),
-                              ),
-                            },
-                          ),
+                          (menu) => {
+                            menuService
+                                .deleteMenu(menu)
+                                .then((value) => {
+                                      print(value.toString()),
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(value.toString()),
+                                        ),
+                                      ),
+                                      Navigator.pop(context),
+                                    })
+                                .onError(
+                                  (error, stackTrace) => {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(error.toString())),
+                                    ),
+                                  },
+                                ),
                           },
                         ),
                       ),
@@ -224,7 +227,7 @@ class _MenuDemoScreenState extends State<MenuDemoScreen> {
                 if (snapshot.hasData) {
                   return Expanded(
                     child: SingleChildScrollView(
-                        child: MenuTable(menus: snapshot.data!),
+                      child: MenuTable(menus: snapshot.data!),
                     ),
                   );
                 } else if (snapshot.hasError) {

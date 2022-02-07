@@ -1,11 +1,10 @@
-import '../models/menu.dart';
-
-import '../services/menu_service.dart';
-
-import '../services/dish_service.dart';
-import 'package:flutter/services.dart';
-import '../models/dish.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import '../models/dish.dart';
+import '../models/menu.dart';
+import '../services/dish_service.dart';
+import '../services/menu_service.dart';
 
 class DeleteMenuForm extends StatefulWidget {
   const DeleteMenuForm(this.callback, {Key? key, this.menu}) : super(key: key);
@@ -51,7 +50,7 @@ class _DeleteMenuFormState extends State<DeleteMenuForm> {
   }
 
   Future<void> _changeAvailableDishes(String newValue) async {
-    menuDishNames =[];
+    menuDishNames = [];
     var dishList = await DishService().fetchDishes(newValue);
     for (Dish element in dishList) {
       // print(element.name);
@@ -59,16 +58,15 @@ class _DeleteMenuFormState extends State<DeleteMenuForm> {
     }
   }
 
-   bool checkDishSelection(){
-    if (_selectedItems.isEmpty){
-      ScaffoldMessenger.of(context)
-          .showSnackBar(
-          const SnackBar(
-            content: Text("At least one dish must be selected"),
-          ),);
+  bool checkDishSelection() {
+    if (_selectedItems.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("At least one dish must be selected"),
+        ),
+      );
       return false;
-    }
-    else {
+    } else {
       return true;
     }
   }

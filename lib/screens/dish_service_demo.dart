@@ -3,10 +3,10 @@ import 'package:get_it/get_it.dart';
 
 import '../models/dish.dart';
 import '../services/dish_service.dart';
-import '../widgets/dish_table.dart';
-import '../widgets/delete_dish_from.dart';
-import '../widgets/update_dish_from.dart';
 import '../widgets/create_dish_from.dart';
+import '../widgets/delete_dish_from.dart';
+import '../widgets/dish_table.dart';
+import '../widgets/update_dish_from.dart';
 
 class DishDemoScreen extends StatefulWidget {
   const DishDemoScreen({Key? key}) : super(key: key);

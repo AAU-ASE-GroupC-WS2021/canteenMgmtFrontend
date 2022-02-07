@@ -22,18 +22,14 @@ abstract class AbstractService {
   }
 
   Future<http.Response> get(path, [menuDay]) {
-    if (menuDay != null)
-    {
+    if (menuDay != null) {
       var pathnew = Uri.parse(backendUrl + path).replace(queryParameters: {
         'menuDay': menuDay,
-        });
+      });
       return _client.get(pathnew, headers: getHeaders());
-    }
-    else
-    {
+    } else {
       return _client.get(_getUri(path), headers: getHeaders());
     }
-
   }
 
   Future<http.Response> post(path, String body) {
@@ -45,7 +41,12 @@ abstract class AbstractService {
   }
 
   Future<http.Response> put(path, String body) {
-    return _client.put(_getUri(path), body: body, headers: getHeaders(), encoding: Encoding.getByName("utf-8"));
+    return _client.put(
+      _getUri(path),
+      body: body,
+      headers: getHeaders(),
+      encoding: Encoding.getByName("utf-8"),
+    );
   }
 
   /// Set X-XSRF-TOKEN header if cookie is set

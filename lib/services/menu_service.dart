@@ -1,13 +1,11 @@
 import 'dart:convert';
 
 import '../models/menu.dart';
-
 import 'abstract_service.dart';
 
 class MenuService extends AbstractService {
   Future<List<Menu>> fetchMenus([menuDay]) async {
-
-    final response = await get('menu',menuDay);
+    final response = await get('menu', menuDay);
     // print(response.statusCode);
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
@@ -45,7 +43,6 @@ class MenuService extends AbstractService {
       // then parse the JSON.
       final stringData = response.body;
       return stringData.toString();
-
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -61,8 +58,7 @@ class MenuService extends AbstractService {
       //   // then parse the JSON.
       final stringData = response.body;
       return stringData.toString();
-    }
-    else {
+    } else {
       //    // If the server did not return a 200 OK response,
       //    // then throw an exception.
       final stringData = response.body;
