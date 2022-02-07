@@ -52,7 +52,6 @@ void main() {
     await tester.tap(find.text('Refresh'));
     await tester.pumpAndSettle();
 
-    // expect(find.text(_exampleDish.name), findsWidgets);
     await tester.waitFor(find.text(_exampleDish.name));
     expect(find.text(_exampleDish.name), findsWidgets);
 

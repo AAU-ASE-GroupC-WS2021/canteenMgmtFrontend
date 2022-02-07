@@ -13,7 +13,7 @@ Future<void> logIn(WidgetTester tester, Signup credentials) async {
   await tester.enterText(textField.at(0), credentials.username);
   await tester.enterText(textField.at(1), credentials.password);
 
-  await tester.tap(find.byType(ElevatedButton));
+  await tester.tap(find.widgetWithText(ElevatedButton, 'Log in'));
   await tester.pumpAndSettle();
 
   expect(find.textContaining(credentials.username), findsOneWidget);
