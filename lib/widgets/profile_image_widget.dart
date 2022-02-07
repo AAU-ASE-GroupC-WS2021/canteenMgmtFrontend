@@ -1,8 +1,11 @@
-import 'package:canteen_mgmt_frontend/screens/home.dart';
-import 'package:canteen_mgmt_frontend/services/signin_service.dart';
-import 'package:canteen_mgmt_frontend/services/signup_service.dart';
-import 'package:canteen_mgmt_frontend/utils/auth_token.dart';
+import 'dart:convert';
+import 'dart:io';
+
+import '../services/signin_service.dart';
+import '../services/signup_service.dart';
+import '../utils/auth_token.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfileImageWidget extends StatefulWidget {
   const ProfileImageWidget({Key? key}) : super(key: key);
@@ -18,6 +21,13 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
 
   late String _username = "";
   late String _type = "";
+
+  bool _hasAvatar = true;
+  String _base64Avatar = "";
+
+
+  late File _image;
+  final picker = ImagePicker();
 
   @override
   void initState() {
@@ -48,9 +58,17 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
       children: [
         InkWell(
           onTap: () {
-            // Browse new image!
+            getImage().then((value) =>  {
+              if (value) {
+                // reload page
+              },
+            },
+            );
           },
-          child: Image.asset('assets/graphics/blank-avatar.png', height: 100, fit: BoxFit.contain),
+          child: _hasAvatar ?
+          Image.memory(base64Decode(_base64Avatar), height: 100, fit: BoxFit.contain)
+          :
+          Image.asset('assets/graphics/blank-avatar.png', height: 100, fit: BoxFit.contain),
         ),
 
         const SizedBox(height: 10), // space between buttons
@@ -60,12 +78,26 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
         Row(
           children: [
             const Text('Type: ', style: TextStyle(fontWeight: FontWeight.w400, color: Colors.grey)),
-            Text(_type, style: const TextStyle(fontWeight: FontWeight.w400, color: Colors.blueAccent)),
+            Text(_type, style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.blueAccent)),
           ],
           mainAxisAlignment: MainAxisAlignment.center,
         ),
 
       ],
     );
+  }
+
+  Future<bool> getImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    bool picked = false;
+
+    setState(() {
+      if (pickedFile != null) {
+        _image = File(pickedFile.path);
+        picked = true;
+      }
+    });
+
+    return picked;
   }
 }
