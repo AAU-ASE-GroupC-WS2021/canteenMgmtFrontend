@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class CreateUserForm extends StatefulWidget {
-
-  const CreateUserForm({Key? key, required this.canteens, this.defaultCanteen}) : super(key: key);
+  const CreateUserForm({Key? key, required this.canteens, this.defaultCanteen})
+      : super(key: key);
 
   final List<Canteen> canteens;
   final Canteen? defaultCanteen;
@@ -18,7 +18,6 @@ class CreateUserForm extends StatefulWidget {
 }
 
 class _CreateUserFormState extends State<CreateUserForm> {
-
   final _formKey = GlobalKey<FormBuilderState>();
   static const spacing = 15.0;
   final controllerUsername = TextEditingController();
@@ -83,17 +82,17 @@ class _CreateUserFormState extends State<CreateUserForm> {
             hint: const Text('Select Home Canteen'),
             items: widget.canteens
                 .map((canteen) => DropdownMenuItem(
-              value: canteen,
-              child: Text('$canteen'),
-            )).toList(),
-            onChanged: (Canteen? canteen) => {
-              _selectedCanteen = canteen,
-            },
+                      value: canteen,
+                      child: Text('$canteen'),
+                    ))
+                .toList(),
+            onChanged: (Canteen? canteen) => _selectedCanteen = canteen,
           ),
           const SizedBox(height: spacing),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              minimumSize: const Size.fromHeight(40), // fromHeight use double.infinity as width and 40 is the height
+              minimumSize: const Size.fromHeight(
+                  40,), // fromHeight use double.infinity as width and 40 is the height
             ),
             onPressed: () {
               // Validate returns true if the form is valid, or false otherwise.
@@ -143,17 +142,20 @@ class _CreateUserFormState extends State<CreateUserForm> {
       username: controllerUsername.value.text,
       password: controllerPassword.value.text,
       canteenID: _selectedCanteen != null ? _selectedCanteen!.id : null,
-      type: UserType.ADMIN,);
+      type: UserType.ADMIN,
+    );
 
-    GetIt.I.get<OwnerUserService>().createUser(currentUserInput)
-        .then((value) => {
-          Navigator.pop(context),
-          GetIt.I.get<FilteredUsersCubit>().refresh(),
-        })
-        .onError((error, stackTrace) => {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(error.toString())),
-          ),
-    });
+    GetIt.I
+        .get<OwnerUserService>()
+        .createUser(currentUserInput)
+        .then((value) {
+              Navigator.pop(context);
+              GetIt.I.get<FilteredUsersCubit>().refresh();
+            })
+        .onError((error, stackTrace) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(error.toString())),
+              );
+            });
   }
 }

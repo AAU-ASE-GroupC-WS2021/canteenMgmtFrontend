@@ -5,7 +5,7 @@ class User {
   final UserType type;
   final int? canteenID;
 
-  User({
+  const User({
     this.id = -1,
     required this.username,
     this.password,
@@ -23,12 +23,12 @@ class User {
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'username': username,
-    'password': password,
-    'type': type.name,
-    'canteenID': canteenID,
-  };
+        'id': id,
+        'username': username,
+        'password': password,
+        'type': type.name,
+        'canteenID': canteenID,
+      };
 
   @override
   String toString() {

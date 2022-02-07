@@ -1,31 +1,34 @@
 import 'package:beamer/beamer.dart';
-import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-
-import 'cubits/canteens_cubit.dart';
-import 'cubits/canteens_state_cubit.dart';
-import 'cubits/dish_cubit.dart';
+import 'package:flutter/foundation.dart';
+import 'cubits/canteen_cubit.dart';
 import 'cubits/filtered_users_cubit.dart';
+import 'services/owner_user_service.dart';
+import 'services/canteen_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'beamer_locations.dart';
+import 'cubits/dish_cubit.dart';
 import 'cubits/order_cubit.dart';
 import 'cubits/single_order_cubit.dart';
-import 'screens/admin_dashboard.dart';
-import 'screens/dish_service_demo.dart';
-import 'screens/home.dart';
-import 'screens/my_orders.dart';
-import 'screens/order.dart';
-import 'screens/order_select_canteen.dart';
-import 'screens/order_select_paramters.dart';
-import 'screens/qr_demo.dart';
-import 'screens/qr_scanner.dart';
-import 'screens/single_order.dart';
-import 'services/canteen_service.dart';
+import 'cubits/auth.dart';
 import 'services/dish_service.dart';
-import 'services/order_data_helper_service.dart';
-import 'services/order_service.dart';
-import 'services/owner_user_service.dart';
+import 'services/key_value_shared_prefs.dart';
+import 'services/key_value_store.dart';
+import 'services/web/key_value_store_web_stub.dart'
+// ignore: uri_does_not_exist
+    if (dart.library.html) 'services/web/key_value_store_web.dart'
+    show getKeyValueStoreWeb;
 
-void main() {
+Future<void> main() async {
   GetIt.I.registerFactory<DishService>(() => DishService());
+  GetIt.I.registerSingleton<KeyValueStore>(
+      kDebugMode && kIsWeb
+          ? getKeyValueStoreWeb()
+          : SharedPrefsStore(await SharedPreferences.getInstance()),
+  );
   GetIt.I.registerFactory<CanteenService>(() => CanteenService());
   GetIt.I.registerFactory<OwnerUserService>(() => OwnerUserService());
   GetIt.I.registerLazySingleton<CanteensStateCubit>(() => CanteensStateCubit());
@@ -48,83 +51,19 @@ void main() {
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
-  final beamerDelegate = BeamerDelegate(
-    locationBuilder: RoutesLocationBuilder(
-      routes: {
-        // Return either Widgets or BeamPages if more customization is needed
-        '/': (context, state, data) => const BeamPage(
-              title: 'Canteen Management',
-              child: HomeScreen(),
-            ),
-        '/dish': (context, state, data) => const BeamPage(
-              title: 'Dish Demo',
-              child: DishDemoScreen(),
-            ),
-        '/order': (context, state, data) => const BeamPage(
-              title: 'My Orders',
-              key: ValueKey('my-orders'),
-              child: MyOrdersScreen(),
-            ),
-        '/order/:orderId': (context, state, data) {
-          var orderId = int.tryParse(state.pathParameters['orderId']!);
-          if (orderId == null) {
-            context.beamToNamed('/order');
-            return const SizedBox();
-          }
-
-          return BeamPage(
-            // the key is required for flutter to differentiate between similar widgets.
-            // necessary, if multiple different widgets of the same type are used in the same place in the widget tree.
-            key: ValueKey('order-$orderId'),
-            title: 'Order from SomeCanteen',
-            child: SingleOrderScreen(orderId: orderId),
-          );
-        },
-        '/order-select-canteen': (context, state, data) => const BeamPage(
-              title: 'Start a new Order',
-              child: OrderSelectCanteenScreen(),
-            ),
-        '/order-select-parameters/:canteenId': (context, state, data) {
-          var canteenId = int.tryParse(state.pathParameters['canteenId']!);
-          if (canteenId == null) {
-            context.beamToNamed('/order-select-canteen');
-            return const SizedBox();
-          }
-
-          return BeamPage(
-            // the key is required for flutter to differentiate between similar widgets.
-            // necessary, if multiple different widgets of the same type are used in the same place in the widget tree.
-            key: ValueKey('canteenId-$canteenId'),
-            title: 'Order from Canteen',
-            child: OrderSelectParameterScreen(canteenId: canteenId),
-          );
-        },
-        '/order-select-dishes': (context, state, data) => const BeamPage(
-              title: 'Select food',
-              child: OrderScreen(),
-            ),
-        '/qr-demo': (context, state, data) => BeamPage(
-              title: 'QR Scanner Demo',
-              child: QrDemoScreen(scanValue: data is String? ? data : null),
-            ),
-        '/qr-scan': (context, state, data) => const BeamPage(
-              title: 'Scan QR Code',
-              child: QrScannerScreen(),
-            ),
-        '/admin': (context, state, data) => const BeamPage(
-              title: 'Admin board',
-              child: AdminDashboardScreen(),
-            ),
-      },
-    ),
-  );
+  final beamerDelegate = getBeamerDelegate();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Flutter Demo',
-      routeInformationParser: BeamerParser(),
-      routerDelegate: beamerDelegate,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthCubit>(create: (context) => AuthCubit()),
+      ],
+      child: MaterialApp.router(
+        title: 'Flutter Demo',
+        routeInformationParser: BeamerParser(),
+        routerDelegate: beamerDelegate,
+      ),
     );
   }
 }

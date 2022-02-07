@@ -1,11 +1,10 @@
-
 class Canteen {
   final int id;
   final String name;
   final String address;
   final int numTables;
 
-  Canteen({
+  const Canteen({
     this.id = -1,
     required this.name,
     required this.address,
@@ -22,11 +21,11 @@ class Canteen {
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'name': name,
-    'address': address,
-    'numTables': numTables,
-  };
+        'id': id,
+        'name': name,
+        'address': address,
+        'numTables': numTables,
+      };
 
   @override
   String toString() {

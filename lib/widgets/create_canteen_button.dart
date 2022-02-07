@@ -14,36 +14,38 @@ class CreateCanteenButton extends StatelessWidget {
       icon: const Icon(Icons.add),
       onPressed: () async {
         showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text('Create Canteen'),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      child: CanteenForm((canteen) => {
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Create Canteen'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    child: CanteenForm(
+                      (canteen) {
                         GetIt.I
                             .get<CanteenService>()
                             .createCanteen(canteen)
                             .then(
-                              (value) => {
-                                Navigator.pop(context),
-                                GetIt.I.get<CanteensStateCubit>().refresh(),
+                              (value) {
+                                Navigator.pop(context);
+                                GetIt.I.get<CanteensStateCubit>().refresh();
                               },
                             )
-                            .onError((error, stackTrace) => {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text(error.toString())),
-                          ),
-                        }),
-                      },),
+                            .onError((error, stackTrace) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(error.toString())),
+                                  );
+                                });
+                      },
                     ),
-                  ],
-                ),
-              );
-            },
+                  ),
+                ],
+              ),
+            );
+          },
         );
       },
     );

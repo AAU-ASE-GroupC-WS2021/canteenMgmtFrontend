@@ -10,8 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
 class EditUserForm extends StatefulWidget {
-
-  const EditUserForm({Key? key, required this.canteens, required this.user}) : super(key: key);
+  const EditUserForm({Key? key, required this.canteens, required this.user})
+      : super(key: key);
 
   final List<Canteen> canteens;
   final User user;
@@ -21,7 +21,6 @@ class EditUserForm extends StatefulWidget {
 }
 
 class _EditUserFormState extends State<EditUserForm> {
-
   final _formKey = GlobalKey<FormBuilderState>();
   static const spacing = 15.0;
   final controllerUsername = TextEditingController();
@@ -63,31 +62,33 @@ class _EditUserFormState extends State<EditUserForm> {
             },
           ),
           const SizedBox(height: spacing),
-          if (_changePassword) TextFormField(
-            controller: controllerPassword,
-            decoration: const InputDecoration(
-              hintText: 'Enter password',
-              labelText: 'Password',
+          if (_changePassword)
+            TextFormField(
+              controller: controllerPassword,
+              decoration: const InputDecoration(
+                hintText: 'Enter password',
+                labelText: 'Password',
+              ),
+              validator: (value) => validatePassword(value, "password"),
+              textInputAction: TextInputAction.next,
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
             ),
-            validator: (value) => validatePassword(value, "password"),
-            textInputAction: TextInputAction.next,
-            obscureText: true,
-            enableSuggestions: false,
-            autocorrect: false,
-          ),
           if (_changePassword) const SizedBox(height: spacing),
-          if (_changePassword) TextFormField(
-            controller: controllerPasswordRepeat,
-            decoration: const InputDecoration(
-              hintText: 'Repeat password',
-              labelText: 'Repeat Password',
+          if (_changePassword)
+            TextFormField(
+              controller: controllerPasswordRepeat,
+              decoration: const InputDecoration(
+                hintText: 'Repeat password',
+                labelText: 'Repeat Password',
+              ),
+              validator: (value) => validatePasswordRepeat(value, "password"),
+              textInputAction: TextInputAction.next,
+              obscureText: true,
+              enableSuggestions: false,
+              autocorrect: false,
             ),
-            validator: (value) => validatePasswordRepeat(value, "password"),
-            textInputAction: TextInputAction.next,
-            obscureText: true,
-            enableSuggestions: false,
-            autocorrect: false,
-          ),
           if (_changePassword) const SizedBox(height: spacing),
           FormBuilderDropdown(
             key: const ValueKey('dropdown'),
@@ -100,17 +101,17 @@ class _EditUserFormState extends State<EditUserForm> {
             hint: const Text('Select Home Canteen'),
             items: widget.canteens
                 .map((canteen) => DropdownMenuItem(
-              value: canteen,
-              child: Text('$canteen'),
-            )).toList(),
-            onChanged: (Canteen? canteen) => {
-              _selectedCanteen = canteen,
-            },
+                      value: canteen,
+                      child: Text('$canteen'),
+                    ))
+                .toList(),
+            onChanged: (Canteen? canteen) => _selectedCanteen = canteen,
           ),
           const SizedBox(height: spacing),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              minimumSize: const Size.fromHeight(40), // fromHeight use double.infinity as width and 40 is the height
+              minimumSize: const Size.fromHeight(
+                  40,), // fromHeight use double.infinity as width and 40 is the height
             ),
             onPressed: () {
               // Validate returns true if the form is valid, or false otherwise.
@@ -161,17 +162,20 @@ class _EditUserFormState extends State<EditUserForm> {
       username: controllerUsername.value.text,
       password: _changePassword ? controllerPassword.value.text : null,
       canteenID: _selectedCanteen != null ? _selectedCanteen!.id : null,
-      type: UserType.ADMIN,);
+      type: UserType.ADMIN,
+    );
 
-    GetIt.I.get<OwnerUserService>().updateUser(currentUserInput)
-    .then((value) => {
-      Navigator.pop(context),
-      GetIt.I.get<FilteredUsersCubit>().refresh(),
-    })
-    .onError((error, stackTrace) => {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(error.toString())),
-      ),
-    });
+    GetIt.I
+        .get<OwnerUserService>()
+        .updateUser(currentUserInput)
+        .then((value) {
+              Navigator.pop(context);
+              GetIt.I.get<FilteredUsersCubit>().refresh();
+            })
+        .onError((error, stackTrace) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text(error.toString())),
+              );
+            });
   }
 }

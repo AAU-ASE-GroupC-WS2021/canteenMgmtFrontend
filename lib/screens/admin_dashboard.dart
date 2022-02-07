@@ -33,6 +33,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   @override
   void initState() {
     super.initState();
+    usersCubit.setCanteenIDFilter(null);
     usersCubit.setTypeFilter(UserType.ADMIN);
     usersCubit.refresh();
     canteensStateCubit.refresh();
@@ -99,17 +100,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                                       MediaQuery.of(context).size.height * 0.8,
                                   width:
                                       MediaQuery.of(context).size.width * 0.45,
-                                  child: CanteenListview(
-                                    showAdmins,
-                                    canteens: state.canteens!,
-                                  ),
+                                  child: CanteenListview(showAdmins,
+                                      canteens: state.canteens!,),
                                 ),
                     ),
                   ],
                 ),
               ),
             ),
-
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
@@ -122,28 +120,36 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           const SizedBox(width: 32.0),
-                          TextHeading(_selectedCanteen != null ? 'Staff [filtered]' : 'Staff [all]'),
+                          TextHeading(_selectedCanteen != null
+                              ? 'Staff [filtered]'
+                              : 'Staff [all]'),
                           Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                CreateUserButton(defaultCanteen: _selectedCanteen),
-                              ],
-                            ),
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              CreateUserButton(
+                                  defaultCanteen: _selectedCanteen,),
+                            ],
+                          ),
                         ],
                       ),
                     ),
                     BlocBuilder<FilteredUsersCubit, FilteredUsersState>(
                       bloc: GetIt.I.get<FilteredUsersCubit>(),
-                      builder: (context, state) =>
-                      state.exception != null ?
-                      Center(child: Text('${state.exception}'),) :
-                      state.isLoading ?
-                      const CircularProgressIndicator() :
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.8,
-                        width: MediaQuery.of(context).size.width * 0.45,
-                        child: UserListview(users: state.users!,),
-                      ),
+                      builder: (context, state) => state.exception != null
+                          ? Center(
+                              child: Text('${state.exception}'),
+                            )
+                          : state.isLoading
+                              ? const CircularProgressIndicator()
+                              : SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.8,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.45,
+                                  child: UserListview(
+                                    users: state.users!,
+                                  ),
+                                ),
                     ),
                   ],
                 ),

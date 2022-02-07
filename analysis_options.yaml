@@ -7,6 +7,9 @@ linter:
 analyzer:
   plugins:
     - dart_code_metrics
+  exclude:
+    - "**/*.mocks.dart" # generated files (mockito)
+    - "**/*.g.dart"
 
 dart_code_metrics:
   metrics:
