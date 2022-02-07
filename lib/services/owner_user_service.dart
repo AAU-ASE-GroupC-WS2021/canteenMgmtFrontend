@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:canteen_mgmt_frontend/services/util/password_encoder.dart';
+
 import '../models/user.dart';
 
 import 'abstract_service.dart';
@@ -9,7 +11,8 @@ class OwnerUserService extends AbstractService {
   }
 
   Future<User> createUser(User user) async {
-    final response = await post('api/owner/user', jsonEncode(user));
+    final response = await post(
+        'api/owner/user', jsonEncode(getUserWithEncodedPassword(user)),);
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(utf8.decode(response.bodyBytes));
@@ -17,12 +20,14 @@ class OwnerUserService extends AbstractService {
       return User.fromJson(responseJson);
     } else {
       throw Exception(
-          'Failed to create user (${response.statusCode} - ${response.body})',);
+        'Failed to create user (${response.statusCode} - ${response.body})',
+      );
     }
   }
 
   Future<User> updateUser(User user) async {
-    final response = await put('api/owner/user/${user.id}', jsonEncode(user));
+    final response = await put('api/owner/user/${user.id}',
+        jsonEncode(getUserWithEncodedPassword(user)),);
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(utf8.decode(response.bodyBytes));
@@ -30,13 +35,15 @@ class OwnerUserService extends AbstractService {
       return User.fromJson(responseJson);
     } else {
       throw Exception(
-          'Failed to update user (${response.statusCode} - ${response.body})',);
+        'Failed to update user (${response.statusCode} - ${response.body})',
+      );
     }
   }
 
   Future<List<User>> getAllByTypeAndCanteen(UserType type, int id) async {
     return _parseUserListResponse(
-        await get('api/owner/user?type=${type.name}&canteenID=$id'));
+      await get('api/owner/user?type=${type.name}&canteenID=$id'),
+    );
   }
 
   Future<List<User>> getAllByCanteen(int id) async {
@@ -45,7 +52,8 @@ class OwnerUserService extends AbstractService {
 
   Future<List<User>> getAllByType(UserType type) async {
     return _parseUserListResponse(
-        await get('api/owner/user?type=${type.name}'));
+      await get('api/owner/user?type=${type.name}'),
+    );
   }
 
   List<User> _parseUserListResponse(response) {
@@ -56,5 +64,14 @@ class OwnerUserService extends AbstractService {
     } else {
       throw Exception('Failed to load users: ${response.body}');
     }
+  }
+
+  User getUserWithEncodedPassword(User user) {
+    return User(
+      username: user.username,
+      password: user.password != null ? encodePassword(user.password!) : null,
+      type: user.type,
+      canteenID: user.canteenID,
+    );
   }
 }

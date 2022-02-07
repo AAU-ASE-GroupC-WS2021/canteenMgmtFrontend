@@ -1,9 +1,17 @@
 import 'package:canteen_mgmt_frontend/main.dart' as app;
 import 'package:canteen_mgmt_frontend/models/canteen.dart';
+import 'package:canteen_mgmt_frontend/models/signup.dart';
 import 'package:canteen_mgmt_frontend/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+
+import 'util/auth_helper.dart';
+
+const _ownerCredentials = Signup(
+  username: 'owner',
+  password: 'defaultownerpassword',
+);
 
 const _canteenToCreate = Canteen(
   name: "TestCanteen",
@@ -13,7 +21,7 @@ const _canteenToCreate = Canteen(
 
 const _userToCreate = User(
   username: "MyUsername",
-  password: "5e884898da28047151d0e56f8dc6292773603d0d6aabbdd62a11ef721d1542d8",
+  password: "MyPassword123",
   type: UserType.ADMIN,
 );
 
@@ -24,6 +32,9 @@ void main() {
   testWidgets("Admin Dashboard test", (WidgetTester tester) async {
     app.main();
     await tester.pumpAndSettle();
+
+    await logIn(tester, _ownerCredentials);
+
     await _homeToAdminDashboard(tester);
 
     await _createCanteen(tester, _canteenToCreate);
@@ -98,6 +109,4 @@ Future<void> _createCanteen(WidgetTester tester, Canteen canteen) async {
   await tester.tap(find.byType(ElevatedButton).first);
   await Future.value(1).timeout(const Duration(seconds: 3));
   await tester.pumpAndSettle();
-
-  expect(find.text('Create Canteen'), findsNothing);
 }
