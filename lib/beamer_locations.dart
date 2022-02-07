@@ -1,8 +1,9 @@
 import 'package:beamer/beamer.dart';
-import 'package:canteen_mgmt_frontend/screens/admin_dashboard.dart';
 
+import 'screens/admin_dashboard.dart';
 import 'screens/dish_service_demo.dart';
 import 'screens/home.dart';
+import 'screens/menu_service_demo.dart';
 import 'screens/qr_demo.dart';
 import 'screens/qr_scanner.dart';
 import 'screens/signin_screen.dart';
@@ -43,6 +44,10 @@ BeamerDelegate getBeamerDelegate() => BeamerDelegate(
           '/admin': (context, state, data) => const BeamPage(
                 title: 'Admin Dashboard',
                 child: AdminDashboardScreen(),
+              ),
+          '/menu': (context, state, data) => const BeamPage(
+                title: 'Menu Demo',
+                child: MenuDemoScreen(),
               ),
         },
       ),

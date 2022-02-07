@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
@@ -19,8 +21,19 @@ abstract class AbstractService {
     return Uri.parse(uriString);
   }
 
-  Future<http.Response> get(path) {
-    return _client.get(_getUri(path), headers: getHeaders());
+  Future<http.Response> get(path, [menuDay]) {
+    if (menuDay != null)
+    {
+      var pathnew = Uri.parse(backendUrl + path).replace(queryParameters: {
+        'menuDay': menuDay,
+        });
+      return _client.get(pathnew, headers: getHeaders());
+    }
+    else
+    {
+      return _client.get(_getUri(path), headers: getHeaders());
+    }
+
   }
 
   Future<http.Response> post(path, String body) {
@@ -32,7 +45,7 @@ abstract class AbstractService {
   }
 
   Future<http.Response> put(path, String body) {
-    return _client.put(_getUri(path), body: body, headers: getHeaders());
+    return _client.put(_getUri(path), body: body, headers: getHeaders(), encoding: Encoding.getByName("utf-8"));
   }
 
   /// Set X-XSRF-TOKEN header if cookie is set

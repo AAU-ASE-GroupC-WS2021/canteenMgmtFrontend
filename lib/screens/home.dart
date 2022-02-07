@@ -32,6 +32,11 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
+              onPressed: () => context.beamToNamed('/menu'),
+              child: const Text('Menu Service Demo'),
+            ),
+            const SizedBox(height: 20), // space between buttons
+            ElevatedButton(
               onPressed: () => context.beamToNamed('/dish'),
               child: const Text('Dish Service Demo'),
             ),
