@@ -112,15 +112,6 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
           },
           child: const Text('Change password', style: TextStyle(fontSize: 10)),),
 
-        const SizedBox(height: 10), // space between buttons
-
-        // Change password button
-        ElevatedButton(
-          onPressed: () => {
-
-          },
-          child: const Text('Change username', style: TextStyle(fontSize: 10)),),
-
         // Button: Remove avatar
         if (_hasAvatar) ... [
           const SizedBox(height: 10), // space between buttons
