@@ -13,22 +13,61 @@ abstract class AbstractService {
 
   AbstractService() : _client = GetIt.I.get<http.Client>();
 
-  Uri _getUri(String path) => Uri.parse(backendUrl + path);
+  Uri _getUri(
+    String path, [
+    Map<String, String>? queryParams,
+  ]) {
+    final uri = Uri.parse(backendUrl + path);
+    return queryParams == null
+        ? uri
+        : uri.replace(queryParameters: queryParams);
+  }
 
-  Future<http.Response> get(path) =>
-      _client.get(_getUri(path), headers: getHeaders());
+  Future<http.Response> get(
+    String path, {
+    Map<String, String>? queryParams,
+  }) {
+    return _client.get(_getUri(path, queryParams), headers: headers);
+  }
 
-  Future<http.Response> post(path, String body) =>
-      _client.post(_getUri(path), body: body, headers: getHeaders());
+  Future<http.Response> post(
+    String path,
+    String body, {
+    Map<String, String>? queryParams,
+  }) {
+    return _client.post(
+      _getUri(path, queryParams),
+      body: body,
+      headers: headers,
+    );
+  }
 
-  Future<http.Response> delete(path, String body) =>
-      _client.delete(_getUri(path), body: body, headers: getHeaders());
+  Future<http.Response> delete(
+    String path,
+    String body, {
+    Map<String, String>? queryParams,
+  }) {
+    return _client.delete(
+      _getUri(path, queryParams),
+      body: body,
+      headers: headers,
+    );
+  }
 
-  Future<http.Response> put(path, String body) =>
-      _client.put(_getUri(path), body: body, headers: getHeaders());
+  Future<http.Response> put(
+    String path,
+    String body, {
+    Map<String, String>? queryParams,
+  }) {
+    return _client.put(
+      _getUri(path, queryParams),
+      body: body,
+      headers: headers,
+    );
+  }
 
   /// Set X-XSRF-TOKEN header if cookie is set
-  Map<String, String> getHeaders() {
+  Map<String, String> get headers {
     final String? token = AuthTokenUtils.getAuthToken();
 
     return {
