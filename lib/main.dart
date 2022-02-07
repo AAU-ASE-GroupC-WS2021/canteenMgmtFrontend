@@ -27,9 +27,6 @@ Future<void> main() async {
     );
   }
 
-  // remove .../#/... from url
-  Beamer.setPathUrlStrategy();
-
   runApp(MyApp());
 }
 
