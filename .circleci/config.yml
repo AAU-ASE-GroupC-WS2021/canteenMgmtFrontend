@@ -163,19 +163,19 @@ jobs:
           # `flutter drive` does not support machine-readable reports
           # regarding coverage see also https://stackoverflow.com/questions/57933204/flutter-driver-test-coverage-report
           command: |
-            for TEST_FILE in ../integration_test/*_test.dart
+            for TEST_FILE in integration_test/*_test.dart
             do
               filename=$(basename -- "$TEST_FILE")
               filename="${filename%.*}"
             
-              if [ -f "../integration_test/fixtures/${filename}.sql" ]; then
+              if [ -f "integration_test/fixtures/${filename}.sql" ]; then
                 echo "Setting up fixture for $TEST_FILE"
-                cat "../integration_test/fixtures/reset.sql" "../integration_test/fixtures/${filename}.sql" | PGPASSWORD=mysecretpassword psql \
+                cat "integration_test/fixtures/reset.sql" "integration_test/fixtures/${filename}.sql" | PGPASSWORD=mysecretpassword psql \
                     -h 127.0.0.1 -p 5432 -d postgres -U postgres -f - > /dev/null
               else
                 echo "Found no fixture for $TEST_FILE. Only resetting to default"
                 PGPASSWORD=mysecretpassword psql -h 127.0.0.1 -p 5432 -d postgres -U postgres \
-                     -f "../integration_test/fixtures/reset.sql" > /dev/null
+                     -f "integration_test/fixtures/reset.sql" > /dev/null
               fi
             
               echo "Running $TEST_FILE"
