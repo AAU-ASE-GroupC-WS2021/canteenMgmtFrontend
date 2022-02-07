@@ -26,7 +26,7 @@ class _MenuDemoScreenState extends State<MenuDemoScreen> {
   }
 
   void _myfunc([String dishDay = "MONDAY"]) {
-    final newDishes = menuService.fetchMenus(dishDay);
+    final newDishes = menuService.fetchMenus(menuDay: dishDay);
     setState(() {
       futureMenus = newDishes;
     });

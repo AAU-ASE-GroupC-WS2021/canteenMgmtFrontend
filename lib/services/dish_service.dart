@@ -31,9 +31,9 @@ class DishService extends AbstractService {
     }
   }
 
-  Future<List<Dish>> fetchDishes([dishDay]) async {
+  Future<List<Dish>> fetchDishes({String dishDay = ''}) async {
     // final response = dishDay != null ? await get('dish', dishDay = dishDay) : await get('dish');
-    final response = await get('dish', dishDay);
+    final response = await get('dish?dishDay=$dishDay');
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.

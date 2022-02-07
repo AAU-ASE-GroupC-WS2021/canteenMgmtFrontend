@@ -4,8 +4,8 @@ import '../models/menu.dart';
 import 'abstract_service.dart';
 
 class MenuService extends AbstractService {
-  Future<List<Menu>> fetchMenus([menuDay]) async {
-    final response = await get('menu', menuDay);
+  Future<List<Menu>> fetchMenus({String menuDay = ''}) async {
+    final response = await get('menu?menuDay=$menuDay');
     // log(response.statusCode);
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,

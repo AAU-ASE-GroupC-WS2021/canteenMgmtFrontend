@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,43 +13,23 @@ abstract class AbstractService {
 
   AbstractService() : _client = GetIt.I.get<http.Client>();
 
-  Uri _getUri(String path) {
-    String uriString = backendUrl + path;
+  Uri _getUri(String path) => Uri.parse(backendUrl + path);
 
-    return Uri.parse(uriString);
-  }
+  Future<http.Response> get(path) =>
+      _client.get(_getUri(path), headers: getHeaders());
 
-  Future<http.Response> get(path, [menuDay]) {
-    if (menuDay != null) {
-      var pathnew = Uri.parse(backendUrl + path).replace(queryParameters: {
-        'menuDay': menuDay,
-      });
-      return _client.get(pathnew, headers: getHeaders());
-    } else {
-      return _client.get(_getUri(path), headers: getHeaders());
-    }
-  }
+  Future<http.Response> post(path, String body) =>
+      _client.post(_getUri(path), body: body, headers: getHeaders());
 
-  Future<http.Response> post(path, String body) {
-    return _client.post(_getUri(path), body: body, headers: getHeaders());
-  }
+  Future<http.Response> delete(path, String body) =>
+      _client.delete(_getUri(path), body: body, headers: getHeaders());
 
-  Future<http.Response> delete(path, String body) {
-    return _client.delete(_getUri(path), body: body, headers: getHeaders());
-  }
-
-  Future<http.Response> put(path, String body) {
-    return _client.put(
-      _getUri(path),
-      body: body,
-      headers: getHeaders(),
-      encoding: Encoding.getByName("utf-8"),
-    );
-  }
+  Future<http.Response> put(path, String body) =>
+      _client.put(_getUri(path), body: body, headers: getHeaders());
 
   /// Set X-XSRF-TOKEN header if cookie is set
   Map<String, String> getHeaders() {
-    String? token = AuthTokenUtils.getAuthToken();
+    final String? token = AuthTokenUtils.getAuthToken();
 
     return {
       "Content-Type": "application/json",

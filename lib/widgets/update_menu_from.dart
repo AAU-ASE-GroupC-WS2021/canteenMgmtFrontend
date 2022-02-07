@@ -51,7 +51,7 @@ class _UpdateMenuFormState extends State<UpdateMenuForm> {
 
   Future<void> _changeAvailableDishes(String newValue) async {
     menuDishNames = [];
-    var dishList = await DishService().fetchDishes(newValue);
+    var dishList = await DishService().fetchDishes(dishDay: newValue);
     for (Dish element in dishList) {
       // log(element.name);
       menuDishNames.insert(0, element.name);
