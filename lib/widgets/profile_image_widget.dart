@@ -77,8 +77,19 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
 
         const SizedBox(height: 10), // space between buttons
 
+        // Username
         Text('@' + _username, style: TextStyle(fontWeight: FontWeight.w500, color: Colors.primaries.first.shade500)),
 
+        // Display name
+        Row(
+          children: [
+            const Text('Name: ', style: TextStyle(fontWeight: FontWeight.w400, color: Colors.grey)),
+            Text(_username, style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.blueAccent)),
+          ],
+          mainAxisAlignment: MainAxisAlignment.center,
+        ),
+
+        // User type
         Row(
           children: [
             const Text('Type: ', style: TextStyle(fontWeight: FontWeight.w400, color: Colors.grey)),
@@ -86,6 +97,51 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
           ],
           mainAxisAlignment: MainAxisAlignment.center,
         ),
+
+        const SizedBox(height: 20), //
+        const Text('Profile management', style: TextStyle(fontWeight: FontWeight.w400, color: Colors.grey)),
+
+        const SizedBox(height: 10), // space between buttons
+
+        // Change password button
+        ElevatedButton(
+          onPressed: () => {
+
+          },
+          child: const Text('Change password', style: TextStyle(fontSize: 10)),),
+
+        const SizedBox(height: 10), // space between buttons
+
+        // Change password button
+        ElevatedButton(
+          onPressed: () => {
+
+          },
+          child: const Text('Change username', style: TextStyle(fontSize: 10)),),
+
+        const SizedBox(height: 10), // space between buttons
+
+        // Change password button
+        ElevatedButton(
+          onPressed: () => {
+
+          },
+          child: const Text('Change name', style: TextStyle(fontSize: 10)),),
+
+        // Button: Remove avatar
+        if (_hasAvatar) ... [
+          const SizedBox(height: 10), // space between buttons
+
+          ElevatedButton(
+            onPressed: () => {
+              AvatarService().deleteAvatar(_username).then((value) => {
+                super.setState(() {
+                  _hasAvatar = false;
+                }),
+              }),
+            },
+            child: const Text('Delete avatar', style: TextStyle(fontSize: 10)),),
+        ],
 
       ],
     );
