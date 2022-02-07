@@ -1,42 +1,72 @@
 import 'dart:convert';
 
-import '../models/dish.dart';
+import '../models/menu.dart';
+
 import 'abstract_service.dart';
 
 class MenuService extends AbstractService {
-  Future<List<Dish>> fetchMenus([String menuDay= ' ']) async {
+  Future<List<Menu>> fetchMenus([menuDay]) async {
 
     final response = await get('menu',menuDay);
-
+    // print(response.statusCode);
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
       final stringData = response.body;
       var responseJson = json.decode(stringData);
-
-      return (responseJson as List).map((p) => Dish.fromJson(p)).toList();
+      // print(responseJson.toString());
+      return (responseJson as List).map((p) => Menu.fromJson(p)).toList();
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
-      throw Exception('Failed to load dishes');
+      throw Exception('Failed to load Menus');
     }
   }
 
-  // Future<Dish> createDish() async {
-  //   final menuDay = "MONDAY";
-  //   final response = await get('menu', menuDay);
-  //
-  //   if (response.statusCode == 200) {
-  //     // If the server did return a 200 OK response,
-  //     // then parse the JSON.
-  //     final stringData = response.body;
-  //     var responseJson = json.decode(stringData);
-  //
-  //     return Dish.fromJson(responseJson);
-  //   } else {
-  //     // If the server did not return a 200 OK response,
-  //     // then throw an exception.
-  //     throw Exception('Failed to add dish');
-  //   }
-  // }
+  Future<String> createMenu(Menu menu) async {
+    final response = await post('menu', jsonEncode(menu));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      return response.body;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to add dish');
+    }
+  }
+
+  Future<String> updateMenu(Menu menu) async {
+    final response = await put('menu', jsonEncode(menu));
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      final stringData = response.body;
+      return stringData.toString();
+
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to update dish');
+    }
+  }
+
+  Future<String> deleteMenu(Menu menu) async {
+    final response = await delete('menu', jsonEncode(menu));
+
+    if (response.statusCode == 200) {
+      //   // If the server did return a 200 OK response,
+      //   // then parse the JSON.
+      final stringData = response.body;
+      return stringData.toString();
+    }
+    else {
+      //    // If the server did not return a 200 OK response,
+      //    // then throw an exception.
+      final stringData = response.body;
+      throw Exception(stringData.toString());
+    }
+  }
 }
