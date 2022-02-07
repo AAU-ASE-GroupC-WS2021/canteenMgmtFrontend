@@ -22,7 +22,7 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
   late String _username = "";
   late String _type = "";
 
-  bool _hasAvatar = true;
+  bool _hasAvatar = false;
   String _base64Avatar = "";
 
 
