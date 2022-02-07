@@ -1,5 +1,7 @@
 import 'package:http/http.dart' as http;
 
+import 'auth_token.dart';
+
 abstract class AbstractService {
   static const backendUrl = String.fromEnvironment(
     'BACKEND_URL',
@@ -15,19 +17,28 @@ abstract class AbstractService {
   }
 
   Future<http.Response> get(path) {
-    return _client.get(_getUri(path), headers: getHeaders());
+    var headers = getHeaders();
+    return _client.get(_getUri(path), headers: headers);
   }
 
   Future<http.Response> post(path, String body) {
-    return _client.post(_getUri(path), body: body, headers: getHeaders());
+    var headers = getHeaders();
+    return _client.post(_getUri(path), body: body, headers: headers);
+  }
+
+  Future<http.Response> delete(path, String body) {
+    var headers = getHeaders();
+    return _client.delete(_getUri(path), body: body, headers: headers);
   }
 
   /// Set X-XSRF-TOKEN header if cookie is set
   Map<String, String> getHeaders() {
-    var headers = {
+    String? token = AuthTokenUtils.getAuthToken();
+
+    return {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
+      if (token != null) AuthTokenUtils.authTokenKey: token,
     };
-    return headers;
   }
 }
