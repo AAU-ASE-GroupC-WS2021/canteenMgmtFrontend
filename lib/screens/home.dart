@@ -1,13 +1,13 @@
 import 'package:beamer/beamer.dart';
-import 'package:canteen_mgmt_frontend/cubits/auth.dart';
-import 'package:canteen_mgmt_frontend/widgets/text_heading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../cubits/auth.dart';
 import '../widgets/about_button.dart';
 import '../widgets/signin_button.dart';
 import '../widgets/signout_button.dart';
 import '../widgets/signup_button.dart';
+import '../widgets/text_heading.dart';
 import '../widgets/user_info_button.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 20), // space between buttons
             ElevatedButton(
               onPressed: () => context.beamToNamed('/order'),
-              child: const Text('Order Demo'),
+              child: const Text('Your Orders'),
             ),
             const SizedBox(height: 20), // space between buttons
             ElevatedButton(
