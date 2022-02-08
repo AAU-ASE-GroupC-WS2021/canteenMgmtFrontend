@@ -1,3 +1,4 @@
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 
 import 'auth_token.dart';
@@ -8,7 +9,9 @@ abstract class AbstractService {
     defaultValue: 'http://localhost:8080/',
   );
 
-  final _client = http.Client();
+  final http.Client _client;
+
+  AbstractService() : _client = GetIt.I.get<http.Client>();
 
   Uri _getUri(String path) {
     String uriString = backendUrl + path;
@@ -17,18 +20,19 @@ abstract class AbstractService {
   }
 
   Future<http.Response> get(path) {
-    var headers = getHeaders();
-    return _client.get(_getUri(path), headers: headers);
+    return _client.get(_getUri(path), headers: getHeaders());
   }
 
   Future<http.Response> post(path, String body) {
-    var headers = getHeaders();
-    return _client.post(_getUri(path), body: body, headers: headers);
+    return _client.post(_getUri(path), body: body, headers: getHeaders());
   }
 
   Future<http.Response> delete(path, String body) {
-    var headers = getHeaders();
-    return _client.delete(_getUri(path), body: body, headers: headers);
+    return _client.delete(_getUri(path), body: body, headers: getHeaders());
+  }
+
+  Future<http.Response> put(path, String body) {
+    return _client.put(_getUri(path), body: body, headers: getHeaders());
   }
 
   /// Set X-XSRF-TOKEN header if cookie is set

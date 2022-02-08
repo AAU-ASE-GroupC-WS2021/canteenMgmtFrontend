@@ -1,4 +1,5 @@
 import 'package:beamer/beamer.dart';
+import 'package:canteen_mgmt_frontend/screens/admin_dashboard.dart';
 
 import 'screens/dish_service_demo.dart';
 import 'screens/home.dart';
@@ -38,6 +39,10 @@ BeamerDelegate getBeamerDelegate() => BeamerDelegate(
           '/signup/finished': (context, state, data) => const BeamPage(
                 title: 'Profile creation confirmation',
                 child: SignupFinishedScreen(),
+              ),
+          '/admin': (context, state, data) => const BeamPage(
+                title: 'Admin Dashboard',
+                child: AdminDashboardScreen(),
               ),
         },
       ),

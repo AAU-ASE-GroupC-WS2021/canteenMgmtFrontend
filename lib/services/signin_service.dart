@@ -1,19 +1,15 @@
 import 'dart:convert';
 
-import 'package:crypto/crypto.dart';
-
 import '../models/signup.dart';
 import 'abstract_service.dart';
 import 'auth_token.dart';
+import 'util/password_encoder.dart';
 
 class SignInService extends AbstractService {
   Future<String?> login(String username, String password) async {
-    var bytes = utf8.encode(password);
-    var hash = sha256.convert(bytes).toString();
-
     var body = json.encode(Signup(
       username: username,
-      password: hash,
+      password: encodePassword(password),
     ).toJson());
 
     final response = await post('api/auth', body);

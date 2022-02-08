@@ -3,6 +3,7 @@ import 'package:canteen_mgmt_frontend/services/key_value_store.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:http/http.dart' as http;
 
 const aboutItems = [
   String.fromEnvironment('GIT_URL'),
@@ -17,6 +18,7 @@ const aboutItems = [
 
 void main() {
   GetIt.I.registerSingleton(KeyValueStore());
+  GetIt.I.registerLazySingleton<http.Client>(() => http.Client());
   testWidgets('AboutButton test', (WidgetTester tester) async {
     await tester.pumpWidget(MyApp());
 
