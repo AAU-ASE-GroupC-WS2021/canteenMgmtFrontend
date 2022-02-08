@@ -46,7 +46,6 @@ class _OrderSelectCanteenScreenState extends State<OrderSelectCanteenScreen> {
                               icon: const Icon(Icons.arrow_right),
                               onPressed: () => context.beamToNamed(
                                 '/create-order/${canteen.id}',
-                                beamBackOnPop: true,
                               ),
                             ),
                           ),

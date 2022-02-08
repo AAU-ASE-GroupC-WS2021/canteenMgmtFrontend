@@ -6,31 +6,17 @@ import '../services/order_service.dart';
 
 class SingleOrderCubit extends Cubit<OrderState> {
   final OrderService _orderService;
-  int? orderId;
 
   SingleOrderCubit()
       : _orderService = GetIt.I.get<OrderService>(),
-        super(OrderState(isLoading: true)) {
-    // only refresh if the orderId is set
-    if (orderId != null) {
-      refresh();
-    }
-  }
+        super(OrderState(isLoading: true)) {}
 
-  Future<void> refresh() async {
-    if (orderId == null) {
-      emit(OrderState(exception: Exception('OrderId not set')));
-    } else {
-      try {
-        emit(OrderState(order: await _orderService.getOrderById(orderId!)));
-      } catch (e) {
-        emit(OrderState(exception: e));
-      }
+  Future<void> refresh(int orderId) async {
+    try {
+      emit(OrderState(order: await _orderService.getOrderById(orderId)));
+    } catch (e) {
+      emit(OrderState(exception: e));
     }
-  }
-
-  setOrderId(int? orderId) {
-    this.orderId = orderId;
   }
 }
 
@@ -40,4 +26,8 @@ class OrderState {
   final bool isLoading;
 
   OrderState({this.order, this.exception, this.isLoading = false});
+
+  getOrderDishes() {
+    return order == null ? [] : order?.dishes.entries;
+  }
 }

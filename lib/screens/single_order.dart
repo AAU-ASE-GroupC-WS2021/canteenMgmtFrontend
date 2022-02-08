@@ -22,35 +22,41 @@ class _SingleOrderScreenState extends State<SingleOrderScreen> {
   @override
   void initState() {
     super.initState();
-    singleOrderCubit.setOrderId(widget.orderId);
-    singleOrderCubit.refresh();
+    singleOrderCubit.refresh(widget.orderId);
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<SingleOrderCubit, OrderState>(
-      bloc: singleOrderCubit,
-      builder: (context, state) {
-        final order = state.order;
-        if (order == null) {
-          return Scaffold(
-            appBar: AppBar(title: const Text('Order not found')),
-            body: const Center(child: Text('Nothing here')),
-          );
-        }
-
-        return Scaffold(
-          appBar: AppBar(title: Text('Order #${order.id}')),
-          body: ListView(children: [
-            for (final dishEntry in order.dishes.entries)
-              ListTile(
-                title: Text(dishEntry.key.name),
-                subtitle: Text('${dishEntry.value} × \$${dishEntry.key.price}'),
-                trailing: Text('${dishEntry.value * dishEntry.key.price}'),
-              ),
-          ]),
-        );
-      },
+    return Scaffold(
+      appBar: AppBar(title: Text('Order #${widget.orderId}')),
+      body: SizedBox(
+        width: MediaQuery.of(context).size.height * 0.8,
+        child: BlocBuilder<SingleOrderCubit, OrderState>(
+          bloc: GetIt.I.get<SingleOrderCubit>(),
+          builder: (context, state) => state.exception != null
+              ? Center(
+                  child: Text('${state.exception}'),
+                )
+              : state.isLoading
+                  ? const CircularProgressIndicator()
+                  : SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.8,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child: ListView(children: [
+                        for (final dishEntry in state.getOrderDishes())
+                          ListTile(
+                            title: Text(dishEntry.key.name),
+                            subtitle: Text(
+                              '${dishEntry.value} × \$${dishEntry.key.price}',
+                            ),
+                            trailing: Text(
+                              '${dishEntry.value * dishEntry.key.price}',
+                            ),
+                          ),
+                      ]),
+                    ),
+        ),
+      ),
     );
   }
 }
