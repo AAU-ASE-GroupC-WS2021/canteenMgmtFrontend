@@ -28,6 +28,10 @@ dependencies:
 
   # form widgets
   flutter_form_builder: ^7.1.0
+  date_time_picker: ^2.1.0 # TODO a date-time-picker is included in flutter_form_builder. is this import necessary?
+
+  # qr scanner
+  qr_flutter: ^4.0.0
 
 dev_dependencies:
   integration_test:
@@ -36,8 +40,8 @@ dev_dependencies:
     sdk: flutter
 
   # static analysis tools
-  flutter_lints: ^1.0.0
-  dart_code_metrics: ^4.8.1
+  flutter_lints: ^1.0.4
+  dart_code_metrics: ^4.10.1
 
   # convert flutter test results (json) to JUnit format
   junitreport: ^2.0.2
@@ -46,12 +50,6 @@ dev_dependencies:
 
   # code generation, required for mockito
   build_runner: ^2.1.7
-
-  # qr scanner
-  qr_flutter: ^4.0.0
-
-  # datetime picker
-  date_time_picker: ^2.1.0
 
 flutter:
   uses-material-design: true
