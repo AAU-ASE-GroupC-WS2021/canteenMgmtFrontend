@@ -5,11 +5,13 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'package:canteen_mgmt_frontend/main.dart';
+import 'package:canteen_mgmt_frontend/cubits/auth.dart';
 import 'package:canteen_mgmt_frontend/models/dish.dart';
+import 'package:canteen_mgmt_frontend/screens/dish_service_demo.dart';
 import 'package:canteen_mgmt_frontend/services/dish_service.dart';
 import 'package:canteen_mgmt_frontend/services/key_value_store.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
@@ -22,10 +24,26 @@ const _exampleDish = Dish(name: 'Some Test Dish', price: 123, type: 'MAIN');
 
 // generate a mocked version of DishService
 // to actually generate the .mocks.dart file, run `flutter pub run build_runner build --delete-conflicting-outputs`
-@GenerateMocks([DishService])
+@GenerateMocks([DishService, AuthCubit])
 void main() {
   GetIt.I.registerSingleton(KeyValueStore());
   GetIt.I.registerLazySingleton<http.Client>(() => http.Client());
+
+  MockAuthCubit authCubit = MockAuthCubit();
+  when(authCubit.state).thenAnswer((realInvocation) => const AuthState(
+      authenticated: true, username: 'username', type: 'ADMIN',));
+
+  Widget testWidget = MultiBlocProvider(
+    providers: [
+      BlocProvider<AuthCubit>(create: (context) => authCubit),
+    ],
+    child: const MaterialApp(
+      home: Scaffold(
+        body: DishDemoScreen(),
+      ),
+    ),
+  );
+
   testWidgets('demo test', (WidgetTester tester) async {
     // create and register mocked service
     // see how the service is registered in lib/main.dart and accessed in lib/screens/dish_service_demo.dart
@@ -56,17 +74,7 @@ void main() {
         .thenAnswer((call) => Future.value(call.positionalArguments[0]));
 
     // start the app in the test environment
-    await tester.pumpWidget(MyApp());
-
-    // check if some text we expect to see at this point is actually here
-    // note that find.text matches the complete text exactly, so find.text('Canteen') finds nothing
-    // see the other methods of "find" for different approaches
-    expect(find.text('Canteen Management'), findsOneWidget);
-
-    // push a button
-    // we need to await the tap itself and then wait for any ongoing animations to finish
-    await tester.tap(find.text('Dish Service Demo'));
-    await tester.pumpAndSettle();
+    await tester.pumpWidget(testWidget);
 
     expect(find.text('Refresh'), findsWidgets);
     // check if the expected (mocked) dishes are actually shown
@@ -76,6 +84,8 @@ void main() {
     // the createDish method should not have been called up to now, so we check that
     verifyNever(dishService.createDish(any));
 
+    await tester.tap(find.byTooltip('Open navigation menu'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Create Dish'));
     await tester.pumpAndSettle();
 

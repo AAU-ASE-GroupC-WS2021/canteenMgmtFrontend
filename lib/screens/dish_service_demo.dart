@@ -134,7 +134,7 @@ class DishManagement extends StatelessWidget {
                   Icons.home,
                   color: Colors.black,
                 ),
-                onTap: () {
+                onTap: () async {
                   context.beamToNamed("/");
                 },
               ),

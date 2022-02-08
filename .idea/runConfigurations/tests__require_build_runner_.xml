@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="tests (require build_runner)" type="FlutterTestConfigType" factoryName="Flutter Test">
-    <option name="testDir" value="D:\sapana\AAU\sem2_w2021\advance_software\IdeaProjects\canteenMgmtFrontend\test" />
+    <option name="testDir" value="D:\Users\Elias\IntelliJ_Projects\canteenMgmtFrontend\test" />
     <option name="useRegexp" value="false" />
     <option name="additionalArgs" value="" />
     <method v="2" />
