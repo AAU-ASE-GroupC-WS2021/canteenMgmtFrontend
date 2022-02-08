@@ -1,6 +1,7 @@
-import 'dart:convert';
-
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
+
+import 'auth_token.dart';
 
 abstract class AbstractService {
   static const backendUrl = String.fromEnvironment(
@@ -8,48 +9,71 @@ abstract class AbstractService {
     defaultValue: 'http://localhost:8080/',
   );
 
-  final _client = http.Client();
+  final http.Client _client;
 
-  Uri _getUri(String path) {
-    String uriString = backendUrl + path;
+  AbstractService() : _client = GetIt.I.get<http.Client>();
 
-    return Uri.parse(uriString);
+  Uri _getUri(
+    String path, [
+    Map<String, String>? queryParams,
+  ]) {
+    final uri = Uri.parse(backendUrl + path);
+    return queryParams == null
+        ? uri
+        : uri.replace(queryParameters: queryParams);
   }
 
-  Future<http.Response> get(path, [menuDay]) {
-    if (menuDay != null)
-    {
-      var pathnew = Uri.parse(backendUrl + path).replace(queryParameters: {
-        'menuDay': menuDay,
-        });
-      return _client.get(pathnew, headers: getHeaders());
-    }
-    else
-    {
-      return _client.get(_getUri(path), headers: getHeaders());
-    }
-
+  Future<http.Response> get(
+    String path, {
+    Map<String, String>? queryParams,
+  }) {
+    return _client.get(_getUri(path, queryParams), headers: headers);
   }
 
-  Future<http.Response> post(path, String body) {
-    return _client.post(_getUri(path), body: body, headers: getHeaders());
+  Future<http.Response> post(
+    String path,
+    String body, {
+    Map<String, String>? queryParams,
+  }) {
+    return _client.post(
+      _getUri(path, queryParams),
+      body: body,
+      headers: headers,
+    );
   }
 
-  Future<http.Response> put(path, String body) {
-    return _client.put(_getUri(path), body: body, headers: getHeaders(), encoding: Encoding.getByName("utf-8"));
+  Future<http.Response> delete(
+    String path,
+    String body, {
+    Map<String, String>? queryParams,
+  }) {
+    return _client.delete(
+      _getUri(path, queryParams),
+      body: body,
+      headers: headers,
+    );
   }
 
-  Future<http.Response> delete(path, String body) {
-    return _client.delete(_getUri(path), body: body, headers: getHeaders());
+  Future<http.Response> put(
+    String path,
+    String body, {
+    Map<String, String>? queryParams,
+  }) {
+    return _client.put(
+      _getUri(path, queryParams),
+      body: body,
+      headers: headers,
+    );
   }
-
 
   /// Set X-XSRF-TOKEN header if cookie is set
-  Map<String, String> getHeaders() {
-    var headers = {
+  Map<String, String> get headers {
+    final String? token = AuthTokenUtils.getAuthToken();
+
+    return {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
+      if (token != null) AuthTokenUtils.authTokenKey: token,
     };
-    return headers;
   }
 }

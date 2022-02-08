@@ -1,5 +1,3 @@
-
-
 class Menu {
   final int id;
   final String name;
@@ -30,7 +28,7 @@ class Menu {
         'name': name,
         'price': price,
         'menuDishNames': menuDishNames,
-        'menuDay':menuDay,
+        'menuDay': menuDay,
       };
 
   @override

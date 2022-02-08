@@ -28,7 +28,7 @@ class Dish {
         'name': name,
         'price': price,
         'type': type,
-        'dishDay':dishDay,
+        'dishDay': dishDay,
       };
 
   @override

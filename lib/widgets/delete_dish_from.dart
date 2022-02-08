@@ -1,8 +1,9 @@
-import '../services/dish_service.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+
 import '../models/dish.dart';
-import 'package:flutter/material.dart';
+import '../services/dish_service.dart';
 
 class DeleteDishForm extends StatefulWidget {
   const DeleteDishForm(this.callback, {Key? key, this.dish}) : super(key: key);
@@ -37,8 +38,6 @@ class _DeleteDishFormState extends State<DeleteDishForm> {
     "FRIDAY",
   ];
 
-
-
   @override
   Widget build(BuildContext context) {
     if (widget.dish != null) {
@@ -69,7 +68,9 @@ class _DeleteDishFormState extends State<DeleteDishForm> {
               labelText: 'price',
             ),
             keyboardType: const TextInputType.numberWithOptions(
-                signed: false, decimal: true,),
+              signed: false,
+              decimal: true,
+            ),
             validator: (value) => validateInputFloat(value, "dish price"),
             autovalidateMode: AutovalidateMode.onUserInteraction,
             inputFormatters: <TextInputFormatter>[

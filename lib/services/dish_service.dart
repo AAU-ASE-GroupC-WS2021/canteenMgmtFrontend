@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import '../models/dish.dart';
 import 'abstract_service.dart';
-import 'package:http/http.dart' as http;
 
 class DishService extends AbstractService {
   static const backendUrl = String.fromEnvironment(
@@ -10,31 +9,11 @@ class DishService extends AbstractService {
     defaultValue: 'http://localhost:8080/',
   );
 
-  final _client = http.Client();
-
-  Uri _getUri(String path) {
-    String uriString = backendUrl + path;
-
-    return Uri.parse(uriString);
-  }
-  Future<http.Response> get(path, [dishDay]) {
-    if (dishDay != null)
-    {
-      var pathnew = Uri.parse(backendUrl + path).replace(queryParameters: {
-        'dishDay': dishDay,
-      });
-      return _client.get(pathnew, headers: getHeaders());
-    }
-    else
-    {
-      return _client.get(_getUri(path), headers: getHeaders());
-    }
-
-  }
-
-  Future<List<Dish>> fetchDishes([dishDay]) async {
-    // final response = dishDay != null ? await get('dish', dishDay = dishDay) : await get('dish');
-    final response = await get('dish', dishDay);
+  Future<List<Dish>> fetchDishes({String? dishDay}) async {
+    final response = await get(
+      'dish',
+      queryParams: dishDay != null ? {'dishDay': dishDay} : null,
+    );
     if (response.statusCode == 200) {
       // If the server did return a 200 OK response,
       // then parse the JSON.
@@ -74,7 +53,6 @@ class DishService extends AbstractService {
       // then parse the JSON.
       final stringData = response.body;
       return stringData.toString();
-
     } else {
       // If the server did not return a 200 OK response,
       // then throw an exception.
@@ -85,17 +63,16 @@ class DishService extends AbstractService {
   Future<String> deleteDish(Dish dish) async {
     final response = await delete('dish', jsonEncode(dish));
 
-     if (response.statusCode == 200) {
-     //   // If the server did return a 200 OK response,
-     //   // then parse the JSON.
-        final stringData = response.body;
-        return stringData.toString();
-      }
-      else {
-     //    // If the server did not return a 200 OK response,
-     //    // then throw an exception.
-       final stringData = response.body;
-       throw Exception(stringData.toString());
+    if (response.statusCode == 200) {
+      //   // If the server did return a 200 OK response,
+      //   // then parse the JSON.
+      final stringData = response.body;
+      return stringData.toString();
+    } else {
+      //    // If the server did not return a 200 OK response,
+      //    // then throw an exception.
+      final stringData = response.body;
+      throw Exception(stringData.toString());
     }
   }
 }
