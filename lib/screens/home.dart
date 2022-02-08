@@ -32,16 +32,6 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () => context.beamToNamed('/menu'),
-              child: const Text('Menus'),
-            ),
-            const SizedBox(height: 20), // space between buttons
-            // ElevatedButton(
-            //   onPressed: () => context.beamToNamed('/dish'),
-            //   child: const Text('Dish Service Demo'),
-            // ),
-            const SizedBox(height: 20), // space between buttons
-            ElevatedButton(
               onPressed: () => context.beamToNamed('/qr-demo'),
               child: const Text('QR Scanner Demo'),
             ),
@@ -91,11 +81,22 @@ class HomeMenu extends StatelessWidget {
               ),
             ),
             Offstage(
-              offstage: ((state.type == 'USER') | (state.type =='GUEST')),
+              offstage: !state.authenticated,
+              child: ListTile(
+                title: const Text('Menu Management'),
+                leading: const Icon(
+                  Icons.menu_book,
+                  color: Colors.black,
+                ),
+                onTap: () => context.beamToNamed('/menu'),
+              ),
+            ),
+            Offstage(
+              offstage: !state.authenticated,
               child: ListTile(
                 title: const Text('Dish Management'),
                 leading: const Icon(
-                  Icons.local_restaurant,
+                  Icons.local_restaurant  ,
                   color: Colors.black,
                 ),
                 onTap: () => context.beamToNamed('/dish'),
