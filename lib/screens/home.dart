@@ -1,13 +1,13 @@
 import 'package:beamer/beamer.dart';
-import 'package:canteen_mgmt_frontend/cubits/auth.dart';
-import 'package:canteen_mgmt_frontend/widgets/text_heading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../cubits/auth.dart';
 import '../widgets/about_button.dart';
 import '../widgets/signin_button.dart';
 import '../widgets/signout_button.dart';
 import '../widgets/signup_button.dart';
+import '../widgets/text_heading.dart';
 import '../widgets/user_info_button.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -31,11 +31,6 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: () => context.beamToNamed('/dish'),
-              child: const Text('Dish Service Demo'),
-            ),
-            const SizedBox(height: 20), // space between buttons
             ElevatedButton(
               onPressed: () => context.beamToNamed('/qr-demo'),
               child: const Text('QR Scanner Demo'),
@@ -83,6 +78,28 @@ class HomeMenu extends StatelessWidget {
                   color: Colors.black,
                 ),
                 onTap: () => context.beamToNamed('/admin'),
+              ),
+            ),
+            Offstage(
+              offstage: state.type != 'OWNER' && state.type != 'ADMIN',
+              child: ListTile(
+                title: const Text('Menu Management'),
+                leading: const Icon(
+                  Icons.menu_book,
+                  color: Colors.black,
+                ),
+                onTap: () => context.beamToNamed('/menu'),
+              ),
+            ),
+            Offstage(
+              offstage: state.type != 'OWNER' && state.type != 'ADMIN',
+              child: ListTile(
+                title: const Text('Dish Management'),
+                leading: const Icon(
+                  Icons.local_restaurant,
+                  color: Colors.black,
+                ),
+                onTap: () => context.beamToNamed('/dish'),
               ),
             ),
             Offstage(

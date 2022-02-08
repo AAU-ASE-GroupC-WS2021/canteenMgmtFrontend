@@ -1,9 +1,8 @@
 import 'dart:convert';
 
-import 'package:canteen_mgmt_frontend/services/util/password_encoder.dart';
-
 import '../models/user.dart';
 import 'abstract_service.dart';
+import 'util/password_encoder.dart';
 
 class OwnerUserService extends AbstractService {
   Future<List<User>> getAllUsers() async {
