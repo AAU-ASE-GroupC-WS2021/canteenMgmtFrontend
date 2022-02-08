@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-
 class DeleteDishForm extends StatefulWidget {
-  const DeleteDishForm(this.callback, {Key? key, this.dishName = ""}) : super(key: key);
+  const DeleteDishForm(this.callback, {Key? key, this.dishName = ""})
+      : super(key: key);
 
-  final String dishName ;
+  final String dishName;
+
   final Function(String) callback;
 
   @override
@@ -16,7 +17,6 @@ class _DeleteDishFormState extends State<DeleteDishForm> {
   final _formKey = GlobalKey<FormState>();
   static const spacing = 15.0;
   final controllerName = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,6 @@ class _DeleteDishFormState extends State<DeleteDishForm> {
             autovalidateMode: AutovalidateMode.onUserInteraction,
             textInputAction: TextInputAction.next,
           ),
-
           const SizedBox(height: spacing),
           ElevatedButton(
             style: ElevatedButton.styleFrom(

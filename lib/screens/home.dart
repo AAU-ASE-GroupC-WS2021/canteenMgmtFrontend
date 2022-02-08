@@ -96,7 +96,7 @@ class HomeMenu extends StatelessWidget {
               child: ListTile(
                 title: const Text('Dish Management'),
                 leading: const Icon(
-                  Icons.local_restaurant  ,
+                  Icons.local_restaurant,
                   color: Colors.black,
                 ),
                 onTap: () => context.beamToNamed('/dish'),

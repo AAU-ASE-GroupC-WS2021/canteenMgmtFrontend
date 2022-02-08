@@ -45,20 +45,21 @@ class _MenuDemoScreenState extends State<MenuDemoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Menus'),
+      appBar: AppBar(
+        title: const Text('Menus'),
         actions: const [
           SignInButton(),
           UserInfoButton(),
           SignOutButton(),
           SignUpButton(),
           AboutButton(),
-        ],),
+        ],
+      ),
       drawer: const MenuManagement(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
@@ -76,43 +77,40 @@ class _MenuDemoScreenState extends State<MenuDemoScreen> {
                 if (snapshot.hasData) {
                   return Expanded(
                     child: SingleChildScrollView(
-                      child:
-                      Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                              PopupMenuButton(
-                                child: const Text("Filter by Day"),
-                                itemBuilder: (context) => [
-                                  const PopupMenuItem(
-                                    child: Text("MONDAY"),
-                                    value: "MONDAY",
-                                  ),
-                                  const PopupMenuItem(
-                                    child: Text("TUESDAY"),
-                                    value: "TUESDAY",
-                                  ),
-                                  const PopupMenuItem(
-                                    child: Text("WEDNESDAY"),
-                                    value: "WEDNESDAY",
-                                  ),
-                                  const PopupMenuItem(
-                                    child: Text("THURSDAY"),
-                                    value: "THURSDAY",
-                                  ),
-                                  const PopupMenuItem(
-                                    child: Text("FRIDAY"),
-                                    value: "FRIDAY",
-                                  ),
-                                ],
-                                onSelected: (value) {
-                                  _myfunc(value.toString());
-                                  log("value:$value");
-                                },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          PopupMenuButton(
+                            child: const Text("Filter by Day"),
+                            itemBuilder: (context) => [
+                              const PopupMenuItem(
+                                child: Text("MONDAY"),
+                                value: "MONDAY",
                               ),
-
-
-                            MenuTable(menus: snapshot.data!),
-                      ],
+                              const PopupMenuItem(
+                                child: Text("TUESDAY"),
+                                value: "TUESDAY",
+                              ),
+                              const PopupMenuItem(
+                                child: Text("WEDNESDAY"),
+                                value: "WEDNESDAY",
+                              ),
+                              const PopupMenuItem(
+                                child: Text("THURSDAY"),
+                                value: "THURSDAY",
+                              ),
+                              const PopupMenuItem(
+                                child: Text("FRIDAY"),
+                                value: "FRIDAY",
+                              ),
+                            ],
+                            onSelected: (value) {
+                              _myfunc(value.toString());
+                              log("value:$value");
+                            },
+                          ),
+                          MenuTable(menus: snapshot.data!),
+                        ],
                       ),
                     ),
                   );
@@ -161,7 +159,7 @@ class MenuManagement extends StatelessWidget {
               ),
             ),
             Offstage(
-              offstage: ((state.type == 'USER') | (state.type =='GUEST')),
+              offstage: ((state.type == 'USER') | (state.type == 'GUEST')),
               child: ListTile(
                 title: const Text('Home'),
                 leading: const Icon(
@@ -174,15 +172,16 @@ class MenuManagement extends StatelessWidget {
               ),
             ),
             Offstage(
-              offstage: ((state.type == 'USER') | (state.type =='GUEST')),
+              offstage: ((state.type == 'USER') | (state.type == 'GUEST')),
               child: ListTile(
                 title: const Text('Create Menu'),
                 leading: const Icon(
                   Icons.my_library_add,
                   color: Colors.black,
                 ),
-                onTap: () {Navigator.pop(context);
-                showDialog(
+                onTap: () {
+                  Navigator.pop(context);
+                  showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
@@ -191,26 +190,28 @@ class MenuManagement extends StatelessWidget {
                         content: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: CreateMenuForm(
-                                (menu) => {
+                            (menu) => {
                               menuService
                                   .createMenu(menu)
                                   .then((value) => {
-                                log(value.toString()),
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(
-                                  SnackBar(
-                                    content: Text(value.toString()),
-                                  ),
-                                ),
-                                Navigator.pop(context),
-                              })
+                                        log(value.toString()),
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(value.toString()),
+                                          ),
+                                        ),
+                                        Navigator.pop(context),
+                                      })
                                   .onError(
                                     (error, stackTrace) => {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(error.toString())),
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                            content: Text(error.toString()),),
+                                      ),
+                                    },
                                   ),
-                                },
-                              ),
                             },
                           ),
                         ),
@@ -221,14 +222,15 @@ class MenuManagement extends StatelessWidget {
               ),
             ),
             Offstage(
-              offstage: ((state.type == 'USER') | (state.type =='GUEST')),
+              offstage: ((state.type == 'USER') | (state.type == 'GUEST')),
               child: ListTile(
                 title: const Text('Update Menu'),
                 leading: const Icon(
                   Icons.update,
                   color: Colors.black,
                 ),
-                onTap: () {Navigator.pop(context);
+                onTap: () {
+                  Navigator.pop(context);
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -238,26 +240,28 @@ class MenuManagement extends StatelessWidget {
                         content: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: UpdateMenuForm(
-                                (menu) => {
+                            (menu) => {
                               menuService
                                   .updateMenu(menu)
                                   .then((value) => {
-                                log(value.toString()),
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(
-                                  SnackBar(
-                                    content: Text(value.toString()),
-                                  ),
-                                ),
-                                Navigator.pop(context),
-                              })
+                                        log(value.toString()),
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(value.toString()),
+                                          ),
+                                        ),
+                                        Navigator.pop(context),
+                                      })
                                   .onError(
                                     (error, stackTrace) => {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(error.toString())),
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                            content: Text(error.toString()),),
+                                      ),
+                                    },
                                   ),
-                                },
-                              ),
                             },
                           ),
                         ),
@@ -268,14 +272,15 @@ class MenuManagement extends StatelessWidget {
               ),
             ),
             Offstage(
-              offstage: ((state.type == 'USER') | (state.type =='GUEST')),
+              offstage: ((state.type == 'USER') | (state.type == 'GUEST')),
               child: ListTile(
                 title: const Text('Delete Menu'),
                 leading: const Icon(
                   Icons.delete,
                   color: Colors.black,
                 ),
-                onTap: () {Navigator.pop(context);
+                onTap: () {
+                  Navigator.pop(context);
                   showDialog(
                     context: context,
                     builder: (BuildContext context) {
@@ -285,26 +290,16 @@ class MenuManagement extends StatelessWidget {
                         content: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: DeleteMenuForm(
-                                (menu) => {
-                              menuService
-                                  .deleteMenu(menu)
-                                  .then((value) => {
-                                log(value.toString()),
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(
-                                  SnackBar(
-                                    content: Text(value.toString()),
-                                  ),
-                                ),
-                                Navigator.pop(context),
-                              })
-                                  .onError(
-                                    (error, stackTrace) => {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(error.toString())),
-                                  ),
-                                },
-                              ),
+                            (menu) => {
+                              menuService.deleteMenu(menu).then((value) => {
+                                    log(value.toString()),
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(value.toString()),
+                                      ),
+                                    ),
+                                    Navigator.pop(context),
+                                  }),
                             },
                           ),
                         ),
@@ -347,4 +342,3 @@ class MenuManagement extends StatelessWidget {
     );
   }
 }
-

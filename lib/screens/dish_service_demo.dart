@@ -176,7 +176,8 @@ class DishManagement extends StatelessWidget {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
-                                            content: Text(error.toString()),),
+                                          content: Text(error.toString()),
+                                        ),
                                       ),
                                     },
                                   ),
@@ -226,7 +227,8 @@ class DishManagement extends StatelessWidget {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
-                                            content: Text(error.toString()),),
+                                          content: Text(error.toString()),
+                                        ),
                                       ),
                                     },
                                   ),
