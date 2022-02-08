@@ -2,7 +2,6 @@ import 'package:beamer/beamer.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'screens/admin_dashboard.dart';
-import 'screens/admin_dashboard.dart';
 import 'screens/create_order.dart';
 import 'screens/dish_service_demo.dart';
 import 'screens/home.dart';
@@ -33,7 +32,7 @@ BeamerDelegate getBeamerDelegate() => BeamerDelegate(
           '/qr-demo': (context, state, data) => BeamPage(
                 title: 'QR Scanner Demo',
                 child: QrDemoScreen(scanValue: data is String? ? data : null),
-                key: ValueKey('QRDemoScreen'),
+                key: const ValueKey('QRDemoScreen'),
               ),
           '/qr-scan': (context, state, data) => const BeamPage(
                 title: 'Scan QR Code',

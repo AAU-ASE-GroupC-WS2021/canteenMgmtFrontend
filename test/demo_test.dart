@@ -5,8 +5,6 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
-import 'dart:async';
-
 import 'package:canteen_mgmt_frontend/models/dish.dart';
 import 'package:canteen_mgmt_frontend/screens/dish_service_demo.dart';
 import 'package:canteen_mgmt_frontend/services/dish_service.dart';

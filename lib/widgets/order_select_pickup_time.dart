@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 class OrderSelectPickupTimeWidget extends StatefulWidget {
   final Function(DateTime) pickuptimeCallback;
 
-  const OrderSelectPickupTimeWidget(
-      {Key? key, required this.pickuptimeCallback})
-      : super(key: key);
+  const OrderSelectPickupTimeWidget({
+    Key? key,
+    required this.pickuptimeCallback,
+  }) : super(key: key);
 
   @override
   State<OrderSelectPickupTimeWidget> createState() =>

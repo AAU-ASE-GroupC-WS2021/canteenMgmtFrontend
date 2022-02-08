@@ -9,7 +9,7 @@ class SingleOrderCubit extends Cubit<OrderState> {
 
   SingleOrderCubit()
       : _orderService = GetIt.I.get<OrderService>(),
-        super(OrderState(isLoading: true)) {}
+        super(OrderState(isLoading: true));
 
   Future<void> refresh(int orderId) async {
     try {
