@@ -255,7 +255,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
               onPressed: () {
                 final orderReturn = orderService.createOrder(prepareSubmit());
                 orderReturn.then((data) {
-                  context.popToNamed('/order/${data.id}', beamBackOnPop: true);
+                  context.beamToNamed('/order/${data.id}', beamBackOnPop: true);
                 });
               },
             );
