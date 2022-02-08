@@ -16,7 +16,7 @@ Future<void> logIn(WidgetTester tester, Signup credentials) async {
 
   await tester.tapAndWait(
     find.widgetWithText(ElevatedButton, 'Log in'),
-    waitUntil: find.byKey(const Key('HomeScreenScaffold')),
+    waitUntil: find.text('Canteen Management'),
     timeout: const Duration(seconds: 10),
   );
 

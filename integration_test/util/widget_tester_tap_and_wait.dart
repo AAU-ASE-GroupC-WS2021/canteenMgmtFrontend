@@ -16,6 +16,8 @@ extension WidgetTesterTapAndWait on WidgetTester {
     await tap(finder);
     await pumpAndSettle();
 
-    if (waitUntil != null) waitFor(waitUntil, timeout: timeout, steps: steps);
+    if (waitUntil != null) {
+      await waitFor(waitUntil, timeout: timeout, steps: steps);
+    }
   }
 }
