@@ -7,9 +7,11 @@ extension WidgetTesterTapAndWait on WidgetTester {
   ///
   /// If [waitUntil] is provided, it will [waitFor] the element to appear.
   /// Note that [timeout] and [steps] are only relevant to [waitFor].
+  // ignore: long-parameter-list
   Future<void> tapAndWait(
     Finder finder, {
     Finder? waitUntil,
+    bool isNoLongerVisible = false,
     Duration timeout = const Duration(seconds: 30),
     Duration steps = const Duration(milliseconds: 200),
   }) async {
