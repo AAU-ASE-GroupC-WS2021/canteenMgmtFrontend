@@ -16,6 +16,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: const Key('HomeScreenScaffold'),
       appBar: AppBar(
         title: const Text('Canteen Management'),
         actions: const [
