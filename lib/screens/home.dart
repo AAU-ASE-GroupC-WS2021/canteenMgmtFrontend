@@ -45,12 +45,6 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20), // space between buttons
-            ElevatedButton.icon(
-              icon: const Icon(Icons.qr_code),
-              label: const Text('Scan Order'),
-              onPressed: () => context.beamToNamed('/scan-order'),
-            ),
           ],
         ),
       ),
@@ -116,6 +110,17 @@ class HomeMenu extends StatelessWidget {
                   color: Colors.black,
                 ),
                 onTap: () => context.beamToNamed('/dish'),
+              ),
+            ),
+            Offstage(
+              offstage: !{'ADMIN', 'OWNER'}.contains(state.type),
+              child: ListTile(
+                title: const Text('Scan Order'),
+                leading: const Icon(
+                  Icons.qr_code,
+                  color: Colors.black,
+                ),
+                onTap: () => context.beamToNamed('/scan-order'),
               ),
             ),
             Offstage(
