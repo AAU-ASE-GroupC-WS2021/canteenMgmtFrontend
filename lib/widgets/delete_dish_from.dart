@@ -7,7 +7,7 @@ class DeleteDishForm extends StatefulWidget {
 
   final String dishName;
 
-  final Function(Dish) callback;
+  final Function(String) callback;
 
   @override
   State<StatefulWidget> createState() => _DeleteDishFormState();
@@ -44,7 +44,7 @@ class _DeleteDishFormState extends State<DeleteDishForm> {
             onPressed: () {
               // Validate returns true if the form is valid, or false otherwise.
               if (_formKey.currentState!.validate()) {
-                widget.callback(Dish(name: controllerName.value.text, price: 1.0, type: 'STARTER', dishDay: 'MONDAY', id: 1));
+                widget.callback(controllerName.value.text);
               }
             },
             child: const Text("Delete Dish"),

@@ -53,8 +53,8 @@ class MenuService extends AbstractService {
     }
   }
 
-  Future<String> deleteMenu(Menu menu) async {
-    final response = await delete('menu', jsonEncode(menu));
+  Future<String> deleteMenu(String menuName) async {
+    final response = await delete('menu', menuName);
 
     if (response.statusCode == 200) {
       //   // If the server did return a 200 OK response,

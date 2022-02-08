@@ -6,7 +6,7 @@ class DeleteMenuForm extends StatefulWidget {
       : super(key: key);
 
   final String menuName;
-  final Function(Menu) callback;
+  final Function(String) callback;
 
   @override
   State<StatefulWidget> createState() => _DeleteMenuFormState();
@@ -45,12 +45,7 @@ class _DeleteMenuFormState extends State<DeleteMenuForm> {
             onPressed: () {
               // Validate returns true if the form is valid, or false otherwise.
               if (_formKey.currentState!.validate()) {
-                widget.callback(Menu(
-                    name: controllerName.value.text,
-                    price: 1,
-                    menuDay: 'MONDAY',
-                    menuDishNames: ['Dish1'],
-                    id: 1,));
+                widget.callback(controllerName.value.text);
               }
             },
             child: const Text("Delete Menu"),
