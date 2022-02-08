@@ -39,9 +39,6 @@ Future<void> main() async {
   GetIt.I.registerLazySingleton<OrderCubit>(() => OrderCubit());
   GetIt.I.registerLazySingleton<DishCubit>(() => DishCubit());
   GetIt.I.registerLazySingleton<SingleOrderCubit>(() => SingleOrderCubit());
-
-  // remove .../#/... from url
-  Beamer.setPathUrlStrategy();
   GetIt.I.registerLazySingleton<http.Client>(() => http.Client());
 
   runApp(MyApp());
