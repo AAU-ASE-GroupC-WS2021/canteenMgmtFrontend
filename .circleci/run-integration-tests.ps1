@@ -1,7 +1,8 @@
 $Passed = @()
 $Failed = @()
 
-Get-Item integration_test/*_test.dart -Exclude $ExcludeIntegrationTests |ForEach-Object {
+Get-Item integration_test/*_test.dart -Include $IncludeIntegrationTests -Exclude $ExcludeIntegrationTests `
+        | ForEach-Object {
     $TestFile = $_
     $TestName = $TestFile.Name
     Write-Host "Running $TestName" -ForegroundColor DarkYellow
@@ -21,8 +22,13 @@ Get-Item integration_test/*_test.dart -Exclude $ExcludeIntegrationTests |ForEach
 }
 
 If ($Failed.Length -eq 0) {
-    Write-Host "All tests passed." -ForegroundColor DarkGreen
-} else {
-    $Passed |ForEach-Object { Write-Host "$($_.Name) passed" -ForegroundColor DarkGreen }
-    $Failed |ForEach-Object { Write-Host "$($_.Name) failed" -ForegroundColor DarkRed }
+    If ($Passed.Length -eq 0) {
+        Write-Host "No tests were run. Adjust `$IncludeIntegrationTests and `$ExcludeIntegrationTests." -ForegroundColor DarkYellow
+    } Else {
+        Write-Host "`n`nAll tests passed." -ForegroundColor DarkGreen
+    }
+} Else {
+    Write-Host "`n`nResults:`n" -ForegroundColor DarkYellow
+    $Passed |ForEach-Object { Write-Host "$( $_.Name ) passed" -ForegroundColor DarkGreen }
+    $Failed |ForEach-Object { Write-Host "$( $_.Name ) failed" -ForegroundColor DarkRed }
 }
