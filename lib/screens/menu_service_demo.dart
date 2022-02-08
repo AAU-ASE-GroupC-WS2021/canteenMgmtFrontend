@@ -1,21 +1,16 @@
 import 'dart:developer';
 
 import 'package:beamer/src/beamer.dart';
-import '../cubits/auth.dart';
-import '../widgets/about_button.dart';
-import '../widgets/signin_button.dart';
-import '../widgets/signout_button.dart';
-import '../widgets/signup_button.dart';
-import '../widgets/text_heading.dart';
-import '../widgets/user_info_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../cubits/auth.dart';
 import '../models/menu.dart';
 import '../services/menu_service.dart';
 import '../widgets/create_menu_from.dart';
 import '../widgets/delete_menu_from.dart';
 import '../widgets/menu_table.dart';
+import '../widgets/text_heading.dart';
 import '../widgets/update_menu_from.dart';
 
 class MenuDemoScreen extends StatefulWidget {
@@ -47,13 +42,6 @@ class _MenuDemoScreenState extends State<MenuDemoScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Menus'),
-        actions: const [
-          SignInButton(),
-          UserInfoButton(),
-          SignOutButton(),
-          SignUpButton(),
-          AboutButton(),
-        ],
       ),
       drawer: const MenuManagement(),
       body: Center(
@@ -158,183 +146,144 @@ class MenuManagement extends StatelessWidget {
                 ),
               ),
             ),
-            Offstage(
-              offstage: ((state.type == 'USER') | (state.type == 'GUEST')),
-              child: ListTile(
-                title: const Text('Home'),
-                leading: const Icon(
-                  Icons.home,
-                  color: Colors.black,
-                ),
-                onTap: () {
-                  context.beamToNamed("/");
-                },
+            ListTile(
+              title: const Text('Home'),
+              leading: const Icon(
+                Icons.home,
+                color: Colors.black,
               ),
+              onTap: () {
+                context.beamToNamed("/");
+              },
             ),
-            Offstage(
-              offstage: ((state.type == 'USER') | (state.type == 'GUEST')),
-              child: ListTile(
-                title: const Text('Create Menu'),
-                leading: const Icon(
-                  Icons.my_library_add,
-                  color: Colors.black,
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        scrollable: true,
-                        title: const Text('Create Menu'),
-                        content: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: CreateMenuForm(
-                            (menu) => {
-                              menuService
-                                  .createMenu(menu)
-                                  .then((value) => {
-                                        log(value.toString()),
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(value.toString()),
-                                          ),
-                                        ),
-                                        Navigator.pop(context),
-                                      })
-                                  .onError(
-                                    (error, stackTrace) => {
+            ListTile(
+              title: const Text('Create Menu'),
+              leading: const Icon(
+                Icons.my_library_add,
+                color: Colors.black,
+              ),
+              onTap: () {
+                Navigator.pop(context);
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      scrollable: true,
+                      title: const Text('Create Menu'),
+                      content: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CreateMenuForm(
+                          (menu) => {
+                            menuService
+                                .createMenu(menu)
+                                .then((value) => {
+                                      log(value.toString()),
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
-                                            content: Text(error.toString()),),
-                                      ),
-                                    },
-                                  ),
-                            },
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-            Offstage(
-              offstage: ((state.type == 'USER') | (state.type == 'GUEST')),
-              child: ListTile(
-                title: const Text('Update Menu'),
-                leading: const Icon(
-                  Icons.update,
-                  color: Colors.black,
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        scrollable: true,
-                        title: const Text('Update Menu'),
-                        content: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: UpdateMenuForm(
-                            (menu) => {
-                              menuService
-                                  .updateMenu(menu)
-                                  .then((value) => {
-                                        log(value.toString()),
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          SnackBar(
-                                            content: Text(value.toString()),
-                                          ),
+                                          content: Text(value.toString()),
                                         ),
-                                        Navigator.pop(context),
-                                      })
-                                  .onError(
-                                    (error, stackTrace) => {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                            content: Text(error.toString()),),
                                       ),
-                                    },
-                                  ),
-                            },
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
-              ),
-            ),
-            Offstage(
-              offstage: ((state.type == 'USER') | (state.type == 'GUEST')),
-              child: ListTile(
-                title: const Text('Delete Menu'),
-                leading: const Icon(
-                  Icons.delete,
-                  color: Colors.black,
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        scrollable: true,
-                        title: const Text('Delete Menu'),
-                        content: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: DeleteMenuForm(
-                            (menu) => {
-                              menuService.deleteMenu(menu).then((value) => {
-                                    log(value.toString()),
+                                      Navigator.pop(context),
+                                    })
+                                .onError(
+                                  (error, stackTrace) => {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
-                                        content: Text(value.toString()),
+                                        content: Text(error.toString()),
                                       ),
                                     ),
-                                    Navigator.pop(context),
-                                  }),
-                            },
-                          ),
+                                  },
+                                ),
+                          },
                         ),
-                      );
-                    },
-                  );
-                },
-              ),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
-            Offstage(
-              offstage: !state.authenticated,
-              child: ListTile(
-                title: const Text('Log out'),
-                leading: const Icon(
-                  Icons.logout,
-                  color: Colors.black,
-                ),
-                onTap: () async {
-                  context.read<AuthCubit>().logout();
-                  context.beamToNamed('/');
-                },
+            ListTile(
+              title: const Text('Update Menu'),
+              leading: const Icon(
+                Icons.update,
+                color: Colors.black,
               ),
+              onTap: () {
+                Navigator.pop(context);
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      scrollable: true,
+                      title: const Text('Update Menu'),
+                      content: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: UpdateMenuForm(
+                          (menu) => {
+                            menuService
+                                .updateMenu(menu)
+                                .then((value) => {
+                                      log(value.toString()),
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(value.toString()),
+                                        ),
+                                      ),
+                                      Navigator.pop(context),
+                                    })
+                                .onError(
+                                  (error, stackTrace) => {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(error.toString()),
+                                      ),
+                                    ),
+                                  },
+                                ),
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
-            Offstage(
-              offstage: state.authenticated,
-              child: ListTile(
-                title: const Text('Log in'),
-                leading: const Icon(
-                  Icons.login,
-                  color: Colors.black,
-                ),
-                onTap: () async {
-                  context.beamToNamed('/signin');
-                },
+            ListTile(
+              title: const Text('Delete Menu'),
+              leading: const Icon(
+                Icons.delete,
+                color: Colors.black,
               ),
+              onTap: () {
+                Navigator.pop(context);
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      scrollable: true,
+                      title: const Text('Delete Menu'),
+                      content: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DeleteMenuForm(
+                          (menu) => {
+                            menuService.deleteMenu(menu).then((value) => {
+                                  log(value.toString()),
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text(value.toString()),
+                                    ),
+                                  ),
+                                  Navigator.pop(context),
+                                }),
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
             ),
           ],
         ),
