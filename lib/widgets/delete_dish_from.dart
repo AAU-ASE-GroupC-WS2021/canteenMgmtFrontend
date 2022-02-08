@@ -1,5 +1,5 @@
+import '../models/dish.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class DeleteDishForm extends StatefulWidget {
   const DeleteDishForm(this.callback, {Key? key, this.dishName = ""})
@@ -7,7 +7,7 @@ class DeleteDishForm extends StatefulWidget {
 
   final String dishName;
 
-  final Function(String) callback;
+  final Function(Dish) callback;
 
   @override
   State<StatefulWidget> createState() => _DeleteDishFormState();
@@ -44,7 +44,7 @@ class _DeleteDishFormState extends State<DeleteDishForm> {
             onPressed: () {
               // Validate returns true if the form is valid, or false otherwise.
               if (_formKey.currentState!.validate()) {
-                widget.callback(controllerName.value.text);
+                widget.callback(Dish(name: controllerName.value.text, price: 1.0, type: 'STARTER', dishDay: 'MONDAY', id: 1));
               }
             },
             child: const Text("Delete Dish"),

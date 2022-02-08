@@ -60,8 +60,8 @@ class DishService extends AbstractService {
     }
   }
 
-  Future<String> deleteDish(String dishName) async {
-    final response = await delete('dish', dishName);
+  Future<String> deleteDish(Dish dish) async {
+    final response = await delete('dish', jsonEncode(dish));
 
     if (response.statusCode == 200) {
       //   // If the server did return a 200 OK response,

@@ -1,3 +1,4 @@
+import '../models/menu.dart';
 import 'package:flutter/material.dart';
 
 class DeleteMenuForm extends StatefulWidget {
@@ -5,7 +6,7 @@ class DeleteMenuForm extends StatefulWidget {
       : super(key: key);
 
   final String menuName;
-  final Function(String) callback;
+  final Function(Menu) callback;
 
   @override
   State<StatefulWidget> createState() => _DeleteMenuFormState();
@@ -44,7 +45,12 @@ class _DeleteMenuFormState extends State<DeleteMenuForm> {
             onPressed: () {
               // Validate returns true if the form is valid, or false otherwise.
               if (_formKey.currentState!.validate()) {
-                widget.callback(controllerName.value.text);
+                widget.callback(Menu(
+                    name: controllerName.value.text,
+                    price: 1,
+                    menuDay: 'MONDAY',
+                    menuDishNames: ['Dish1'],
+                    id: 1,));
               }
             },
             child: const Text("Delete Menu"),
