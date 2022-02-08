@@ -1,0 +1,1 @@
+INSERT INTO users VALUES(2, '9b0cb48f41e0921f1388b57182bd8ab72a0e520cc08bab1d84c2673d7f2ec402', 1, 'adminUsername', null);

@@ -81,7 +81,7 @@ class HomeMenu extends StatelessWidget {
               ),
             ),
             Offstage(
-              offstage: !state.authenticated,
+              offstage: state.type != 'OWNER' && state.type != 'ADMIN',
               child: ListTile(
                 title: const Text('Menu Management'),
                 leading: const Icon(
@@ -92,7 +92,7 @@ class HomeMenu extends StatelessWidget {
               ),
             ),
             Offstage(
-              offstage: !state.authenticated,
+              offstage: state.type != 'OWNER' && state.type != 'ADMIN',
               child: ListTile(
                 title: const Text('Dish Management'),
                 leading: const Icon(
