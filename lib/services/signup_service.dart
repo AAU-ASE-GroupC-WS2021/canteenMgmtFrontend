@@ -1,9 +1,8 @@
 import 'dart:convert';
 
-import 'package:canteen_mgmt_frontend/services/util/password_encoder.dart';
-
 import '../models/signup.dart';
 import 'abstract_service.dart';
+import 'util/password_encoder.dart';
 
 class SignupService extends AbstractService {
   Future<String?> createProfile(String username, String password) async {

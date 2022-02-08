@@ -6,6 +6,7 @@ extension WidgetTesterWaitFor on WidgetTester {
   /// Wait until an element is found or the time runs out.
   Future<void> waitFor(
     Finder finder, {
+    bool isNoLongerVisible = false,
     Duration timeout = const Duration(seconds: 30),
     Duration steps = const Duration(milliseconds: 200),
   }) async {
@@ -15,7 +16,7 @@ extension WidgetTesterWaitFor on WidgetTester {
     );
 
     bool found = false;
-    while (!found) {
+    while (found == isNoLongerVisible) {
       await Future.delayed(steps);
       await pumpAndSettle();
       found = any(finder);

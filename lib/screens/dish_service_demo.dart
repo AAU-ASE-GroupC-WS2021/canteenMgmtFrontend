@@ -1,9 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
 import '../models/dish.dart';
 import '../services/dish_service.dart';
+import '../widgets/create_dish_from.dart';
+import '../widgets/delete_dish_from.dart';
 import '../widgets/dish_table.dart';
+import '../widgets/update_dish_from.dart';
 
 class DishDemoScreen extends StatefulWidget {
   const DishDemoScreen({Key? key}) : super(key: key);
@@ -22,14 +27,24 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
     futureDishes = dishService.fetchDishes();
   }
 
+  void refreshState() {
+    final newDishes = dishService.fetchDishes();
+    setState(() {
+      futureDishes = newDishes;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Dish Service Demo')),
+      appBar: AppBar(
+        title: const Text('Dish Service Demo'),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
                 final newDishes = dishService.fetchDishes();
@@ -40,17 +55,9 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
               child: const Text('Refresh'),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                dishService.createDish(
-                  const Dish(
-                    name: "Some Test Dish",
-                    price: 10,
-                    type: "MAIN",
-                  ),
-                );
-              },
-              child: const Text('Create Dish'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: _getButtons(context, dishService),
             ),
             const SizedBox(height: 20),
             FutureBuilder<List<Dish>>(
@@ -70,9 +77,115 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
                 }
               },
             ),
+            const SizedBox(height: 20),
           ],
         ),
       ),
     );
   }
+}
+
+List<Widget> _getButtons(BuildContext context, DishService dishService) {
+  return [
+    ElevatedButton(
+      child: const Text('Create Dish'),
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              scrollable: true,
+              title: const Text('Create Dish'),
+              content: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CreateDishForm(
+                  (Dish dish) {
+                    dishService.createDish(dish).then((value) {
+                      log(value.toString());
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(value.toString()),
+                        ),
+                      );
+                      Navigator.pop(context);
+                    }).onError(
+                      (error, stackTrace) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(error.toString()),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
+            );
+          },
+        );
+      },
+    ),
+    const SizedBox(width: 20),
+    ElevatedButton(
+      child: const Text('Update Dish'),
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              scrollable: true,
+              title: const Text('Update Dish'),
+              content: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: UpdateDishForm(
+                  (dish) => {
+                    dishService.updateDish(dish).then((value) async => {
+                          log(value.toString()),
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(value.toString()),
+                            ),
+                          ),
+                          Navigator.pop(context),
+                        }),
+                  },
+                ),
+              ),
+            );
+          },
+        );
+      },
+    ),
+    const SizedBox(width: 20),
+    ElevatedButton(
+      child: const Text('Delete Dish'),
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              scrollable: true,
+              title: const Text('Delete Dish'),
+              content: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DeleteDishForm(
+                  (dish) => {
+                    dishService.deleteDish(dish).then((value) async => {
+                          log(value.toString()),
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(value.toString()),
+                            ),
+                          ),
+                          Navigator.pop(context),
+                        }),
+                  },
+                ),
+              ),
+            );
+          },
+        );
+      },
+    ),
+  ];
 }
