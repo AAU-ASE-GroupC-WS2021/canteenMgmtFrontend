@@ -1,10 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+
 import '../cubits/canteen_cubit.dart';
 import '../models/canteen.dart';
 import '../services/canteen_service.dart';
-import 'package:get_it/get_it.dart';
-
 import '../widgets/canteen_form.dart';
-import 'package:flutter/material.dart';
 
 class EditCanteenButton extends StatelessWidget {
   const EditCanteenButton(this.canteen, {Key? key}) : super(key: key);

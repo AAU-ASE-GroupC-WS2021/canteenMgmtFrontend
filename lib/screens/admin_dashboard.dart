@@ -1,22 +1,18 @@
-import '../cubits/filtered_users_cubit.dart';
-
-import '../cubits/canteen_cubit.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import '../models/user.dart';
-import '../services/owner_user_service.dart';
-import '../widgets/user_listview.dart';
-
-import '../widgets/create_user_button.dart';
 import 'package:get_it/get_it.dart';
 
-import '../widgets/create_canteen_button.dart';
-import '../widgets/text_heading.dart';
-
-import '../widgets/canteen_listview.dart';
+import '../cubits/canteen_cubit.dart';
+import '../cubits/filtered_users_cubit.dart';
 import '../models/canteen.dart';
+import '../models/user.dart';
 import '../services/canteen_service.dart';
-import 'package:flutter/material.dart';
+import '../services/owner_user_service.dart';
+import '../widgets/canteen_listview.dart';
+import '../widgets/create_canteen_button.dart';
+import '../widgets/create_user_button.dart';
+import '../widgets/text_heading.dart';
+import '../widgets/user_listview.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
   const AdminDashboardScreen({Key? key}) : super(key: key);
@@ -103,8 +99,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                                       MediaQuery.of(context).size.height * 0.8,
                                   width:
                                       MediaQuery.of(context).size.width * 0.45,
-                                  child: CanteenListview(showAdmins,
-                                      canteens: state.canteens!,),
+                                  child: CanteenListview(
+                                    showAdmins,
+                                    canteens: state.canteens!,
+                                  ),
                                 ),
                     ),
                   ],
@@ -130,7 +128,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               CreateUserButton(
-                                  defaultCanteen: _selectedCanteen,),
+                                defaultCanteen: _selectedCanteen,
+                              ),
                             ],
                           ),
                         ],

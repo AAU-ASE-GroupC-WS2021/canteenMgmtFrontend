@@ -1,7 +1,7 @@
-import 'edit_user_button.dart';
+import 'package:flutter/material.dart';
 
 import '../models/user.dart';
-import 'package:flutter/material.dart';
+import 'edit_user_button.dart';
 
 class UserListview extends StatefulWidget {
   const UserListview({Key? key, required this.users}) : super(key: key);

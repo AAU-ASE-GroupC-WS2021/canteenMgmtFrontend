@@ -40,57 +40,71 @@ void main() {
     expect(_getTextFromTextFormInputAt(2), "");
   });
 
-  testWidgets('When fields empty and button pressed then no submit',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(testWidgetEmpty);
+  testWidgets(
+    'When fields empty and button pressed then no submit',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(testWidgetEmpty);
 
-    await tester.tap(find.byType(ElevatedButton));
-    await tester.pumpAndSettle(); // wait until error messages are displayed
-    expect(null, _returnedCanteen);
-  },);
+      await tester.tap(find.byType(ElevatedButton));
+      await tester.pumpAndSettle(); // wait until error messages are displayed
+      expect(null, _returnedCanteen);
+    },
+  );
 
   testWidgets(
-      'When fields filled in and button pressed then submit correct data',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(testWidgetEmpty);
+    'When fields filled in and button pressed then submit correct data',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(testWidgetEmpty);
 
-    await tester.enterText(
-        find.byType(TextFormField).at(0), _initialCanteen.name,);
-    await tester.enterText(
-        find.byType(TextFormField).at(1), _initialCanteen.address,);
-    await tester.enterText(
-        find.byType(TextFormField).at(2), _initialCanteen.numTables.toString(),);
+      await tester.enterText(
+        find.byType(TextFormField).at(0),
+        _initialCanteen.name,
+      );
+      await tester.enterText(
+        find.byType(TextFormField).at(1),
+        _initialCanteen.address,
+      );
+      await tester.enterText(
+        find.byType(TextFormField).at(2),
+        _initialCanteen.numTables.toString(),
+      );
 
-    await tester.tap(find.byType(ElevatedButton));
-    await tester.pumpAndSettle();
+      await tester.tap(find.byType(ElevatedButton));
+      await tester.pumpAndSettle();
 
-    expect(_returnedCanteen, isNot(null));
-    expect(_returnedCanteen!.name, _initialCanteen.name);
-    expect(_returnedCanteen!.address, _initialCanteen.address);
-    expect(_returnedCanteen!.numTables, _initialCanteen.numTables);
-  },);
-
-  testWidgets('When initial canteen passed then fields are set',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(testWidgetFilledIn);
-
-    expect(_getTextFromTextFormInputAt(0), _initialCanteen.name);
-    expect(_getTextFromTextFormInputAt(1), _initialCanteen.address);
-    expect(
-        _getTextFromTextFormInputAt(2), _initialCanteen.numTables.toString(),);
-
-    await tester.tap(find.byType(ElevatedButton));
-    await tester.pumpAndSettle(); // wait until error messages are displayed
-  },);
+      expect(_returnedCanteen, isNot(null));
+      expect(_returnedCanteen!.name, _initialCanteen.name);
+      expect(_returnedCanteen!.address, _initialCanteen.address);
+      expect(_returnedCanteen!.numTables, _initialCanteen.numTables);
+    },
+  );
 
   testWidgets(
-      'When non-numeric characters entered into numTables field then no action',
-      (WidgetTester tester) async {
-    await tester.pumpWidget(testWidgetEmpty);
+    'When initial canteen passed then fields are set',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(testWidgetFilledIn);
 
-    await tester.enterText(find.byType(TextFormField).at(2), 'abc34#yd!');
-    expect(_getTextFromTextFormInputAt(2), '34');
-  },);
+      expect(_getTextFromTextFormInputAt(0), _initialCanteen.name);
+      expect(_getTextFromTextFormInputAt(1), _initialCanteen.address);
+      expect(
+        _getTextFromTextFormInputAt(2),
+        _initialCanteen.numTables.toString(),
+      );
+
+      await tester.tap(find.byType(ElevatedButton));
+      await tester.pumpAndSettle(); // wait until error messages are displayed
+    },
+  );
+
+  testWidgets(
+    'When non-numeric characters entered into numTables field then no action',
+    (WidgetTester tester) async {
+      await tester.pumpWidget(testWidgetEmpty);
+
+      await tester.enterText(find.byType(TextFormField).at(2), 'abc34#yd!');
+      expect(_getTextFromTextFormInputAt(2), '34');
+    },
+  );
 
   tearDown(() {
     _returnedCanteen = null;

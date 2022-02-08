@@ -1,9 +1,9 @@
+import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+
 import '../models/canteen.dart';
 import '../services/canteen_service.dart';
 import 'create_user_form.dart';
-import 'package:get_it/get_it.dart';
-
-import 'package:flutter/material.dart';
 
 class CreateUserButton extends StatefulWidget {
   const CreateUserButton({Key? key, this.defaultCanteen}) : super(key: key);
@@ -23,27 +23,27 @@ class _CreateUserButtonState extends State<CreateUserButton> {
       icon: const Icon(Icons.add),
       onPressed: () async {
         canteenService.getCanteens().then((allCanteens) {
-              showDialog(
-                context: context,
-                builder: (context) {
-                  return AlertDialog(
-                    title: const Text('Create User'),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.5,
-                          child: CreateUserForm(
-                            canteens: allCanteens,
-                            defaultCanteen: widget.defaultCanteen,
-                          ),
-                        ),
-                      ],
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Create User'),
+                content: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.5,
+                      child: CreateUserForm(
+                        canteens: allCanteens,
+                        defaultCanteen: widget.defaultCanteen,
+                      ),
                     ),
-                  );
-                },
+                  ],
+                ),
               );
-            });
+            },
+          );
+        });
       },
     );
   }

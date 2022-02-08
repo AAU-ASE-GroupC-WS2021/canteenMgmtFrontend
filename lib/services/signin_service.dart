@@ -1,10 +1,9 @@
 import 'dart:convert';
 
-import 'util/password_encoder.dart';
-
 import '../models/signup.dart';
 import 'abstract_service.dart';
 import 'auth_token.dart';
+import 'util/password_encoder.dart';
 
 class SignInService extends AbstractService {
   Future<String?> login(String username, String password) async {

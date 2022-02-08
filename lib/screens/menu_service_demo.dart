@@ -1,47 +1,105 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
 
-import '../models/dish.dart';
-import '../services/dish_service.dart';
-import '../widgets/create_dish_from.dart';
-import '../widgets/delete_dish_from.dart';
-import '../widgets/dish_table.dart';
-import '../widgets/update_dish_from.dart';
+import '../models/menu.dart';
+import '../services/menu_service.dart';
+import '../widgets/create_menu_from.dart';
+import '../widgets/delete_menu_from.dart';
+import '../widgets/menu_table.dart';
+import '../widgets/update_menu_from.dart';
 
-class DishDemoScreen extends StatefulWidget {
-  const DishDemoScreen({Key? key}) : super(key: key);
+class MenuDemoScreen extends StatefulWidget {
+  const MenuDemoScreen({Key? key}) : super(key: key);
 
   @override
-  State<DishDemoScreen> createState() => _DishDemoScreenState();
+  State<MenuDemoScreen> createState() => _MenuDemoScreenState();
 }
 
-class _DishDemoScreenState extends State<DishDemoScreen> {
-  final DishService dishService = GetIt.I<DishService>();
-  late Future<List<Dish>> futureDishes;
+class _MenuDemoScreenState extends State<MenuDemoScreen> {
+  final MenuService menuService = MenuService();
+  late Future<List<Menu>> futureMenus;
 
   @override
   void initState() {
     super.initState();
-    futureDishes = dishService.fetchDishes();
+    futureMenus = menuService.fetchMenus();
+  }
+
+  void _myfunc([String dishDay = "MONDAY"]) {
+    final newDishes = menuService.fetchMenus(menuDay: dishDay);
+    setState(() {
+      futureMenus = newDishes;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Dish Service Demo')),
+      appBar: AppBar(title: const Text('Menu Service Demo')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            PopupMenuButton(
+              child: const Text("Filter by Day"),
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  child: Text("MONDAY"),
+                  value: "MONDAY",
+                ),
+                const PopupMenuItem(
+                  child: Text("TUESDAY"),
+                  value: "TUESDAY",
+                ),
+                const PopupMenuItem(
+                  child: Text("WEDNESDAY"),
+                  value: "WEDNESDAY",
+                ),
+                const PopupMenuItem(
+                  child: Text("THURSDAY"),
+                  value: "THURSDAY",
+                ),
+                const PopupMenuItem(
+                  child: Text("FRIDAY"),
+                  value: "FRIDAY",
+                ),
+              ],
+              onSelected: (value) {
+                _myfunc(value.toString());
+                log("value:$value");
+              },
+            ),
+            const SizedBox(height: 20),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     final newDishes = menuService.fetchMenus("MONDAY");
+            //     setState(() {
+            //       futureMenus = newDishes;
+            //     });
+            //   },
+            //   child: const Text('Sort by Monday'),
+            // ),
+            // const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                final newDishes = dishService.fetchDishes();
+                final newDishes = menuService.fetchMenus();
                 setState(() {
-                  futureDishes = newDishes;
+                  futureMenus = newDishes;
                 });
               },
-              child: const Text('Refresh'),
+              child: const Text('Show all Menu'),
             ),
+            // const SizedBox(height: 20),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     menuService.createMenu(const Menu( name: "ss",
+            //       menuDishNames: ["Pea soup",],
+            //       menuDay: "MONDAY",
+            //       price: 2,));
+            //   },
+            //   child: const Text('Create Menu test'),
+            // ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
@@ -50,48 +108,15 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       scrollable: true,
-                      title: const Text('Create Dish'),
+                      title: const Text('Create Menu'),
                       content: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: CreateDishForm(
-                          (dish) => {
-                            GetIt.I
-                                .get<DishService>()
-                                .createDish(dish)
-                                .then((value) => {Navigator.pop(context)})
-                                .onError(
-                                  (error, stackTrace) => {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(content: Text(error.toString())),
-                                    ),
-                                  },
-                                ),
-                          },
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-              child: const Text('Create Dish'),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                      scrollable: true,
-                      title: const Text("Update Dish"),
-                      content: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: UpdateDishForm(
-                          (dish) => {
-                            GetIt.I
-                                .get<DishService>()
-                                .updateDish(dish)
+                        child: CreateMenuForm(
+                          (menu) => {
+                            menuService
+                                .createMenu(menu)
                                 .then((value) => {
+                                      log(value.toString()),
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
@@ -114,7 +139,7 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
                   },
                 );
               },
-              child: const Text("Update Dish"),
+              child: const Text('Create Menu'),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -124,15 +149,15 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       scrollable: true,
-                      title: const Text("Delete Dish"),
+                      title: const Text('Update Menu'),
                       content: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: DeleteDishForm(
-                          (dish) => {
-                            GetIt.I
-                                .get<DishService>()
-                                .deleteDish(dish)
-                                .then((value) async => {
+                        child: UpdateMenuForm(
+                          (menu) => {
+                            menuService
+                                .updateMenu(menu)
+                                .then((value) => {
+                                      log(value.toString()),
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
                                         SnackBar(
@@ -155,16 +180,57 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
                   },
                 );
               },
-              child: const Text("Delete Dish"),
+              child: const Text('Update Menu'),
             ),
             const SizedBox(height: 20),
-            FutureBuilder<List<Dish>>(
-              future: futureDishes,
+            ElevatedButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      scrollable: true,
+                      title: const Text('Delete Menu'),
+                      content: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: DeleteMenuForm(
+                          (menu) => {
+                            menuService
+                                .deleteMenu(menu)
+                                .then((value) => {
+                                      log(value.toString()),
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(value.toString()),
+                                        ),
+                                      ),
+                                      Navigator.pop(context),
+                                    })
+                                .onError(
+                                  (error, stackTrace) => {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(content: Text(error.toString())),
+                                    ),
+                                  },
+                                ),
+                          },
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+              child: const Text('Delete Menu'),
+            ),
+            const SizedBox(height: 20),
+            FutureBuilder<List<Menu>>(
+              future: futureMenus,
               builder: (context, snapshot) {
                 if (snapshot.hasData) {
                   return Expanded(
                     child: SingleChildScrollView(
-                      child: DishTable(dishes: snapshot.data!),
+                      child: MenuTable(menus: snapshot.data!),
                     ),
                   );
                 } else if (snapshot.hasError) {
@@ -175,7 +241,6 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
                 }
               },
             ),
-            const SizedBox(height: 20),
           ],
         ),
       ),

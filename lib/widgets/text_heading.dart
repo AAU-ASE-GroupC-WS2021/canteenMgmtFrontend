@@ -9,6 +9,7 @@ class TextHeading extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Text(
         content,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: color),
+        style:
+            TextStyle(fontWeight: FontWeight.bold, fontSize: 20, color: color),
       );
 }

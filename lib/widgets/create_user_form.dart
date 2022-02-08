@@ -1,10 +1,11 @@
-import '../cubits/filtered_users_cubit.dart';
-import '../services/owner_user_service.dart';
-import 'package:get_it/get_it.dart';
-import '../models/user.dart';
-import '../models/canteen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:get_it/get_it.dart';
+
+import '../cubits/filtered_users_cubit.dart';
+import '../models/canteen.dart';
+import '../models/user.dart';
+import '../services/owner_user_service.dart';
 
 class CreateUserForm extends StatefulWidget {
   const CreateUserForm({Key? key, required this.canteens, this.defaultCanteen})
@@ -92,7 +93,8 @@ class _CreateUserFormState extends State<CreateUserForm> {
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               minimumSize: const Size.fromHeight(
-                  40,), // fromHeight use double.infinity as width and 40 is the height
+                40,
+              ), // fromHeight use double.infinity as width and 40 is the height
             ),
             onPressed: () {
               // Validate returns true if the form is valid, or false otherwise.
@@ -145,17 +147,13 @@ class _CreateUserFormState extends State<CreateUserForm> {
       type: UserType.ADMIN,
     );
 
-    GetIt.I
-        .get<OwnerUserService>()
-        .createUser(currentUserInput)
-        .then((value) {
-              Navigator.pop(context);
-              GetIt.I.get<FilteredUsersCubit>().refresh();
-            })
-        .onError((error, stackTrace) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(error.toString())),
-              );
-            });
+    GetIt.I.get<OwnerUserService>().createUser(currentUserInput).then((value) {
+      Navigator.pop(context);
+      GetIt.I.get<FilteredUsersCubit>().refresh();
+    }).onError((error, stackTrace) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(error.toString())),
+      );
+    });
   }
 }
