@@ -34,8 +34,6 @@ void main() {
     expect(find.text('Refresh'), findsOneWidget);
     expect(find.text(_exampleDish.name), findsNothing);
 
-    await tester.tap(find.byTooltip('Open navigation menu'));
-    await tester.pumpAndSettle();
     await tester.tap(find.text('Create Dish'));
     await tester.pumpAndSettle();
 

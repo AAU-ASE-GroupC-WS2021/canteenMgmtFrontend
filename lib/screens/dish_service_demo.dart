@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -9,7 +8,6 @@ import '../services/dish_service.dart';
 import '../widgets/create_dish_from.dart';
 import '../widgets/delete_dish_from.dart';
 import '../widgets/dish_table.dart';
-import '../widgets/text_heading.dart';
 import '../widgets/update_dish_from.dart';
 
 class DishDemoScreen extends StatefulWidget {
@@ -42,7 +40,6 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
       appBar: AppBar(
         title: const Text('Dish Service Demo'),
       ),
-      drawer: const DishManagement(),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -56,6 +53,11 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
                 });
               },
               child: const Text('Refresh'),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: _getButtons(context, dishService),
             ),
             const SizedBox(height: 20),
             FutureBuilder<List<Dish>>(
@@ -83,170 +85,107 @@ class _DishDemoScreenState extends State<DishDemoScreen> {
   }
 }
 
-class DishManagement extends StatelessWidget {
-  const DishManagement({Key? key}) : super(key: key);
-
-  get dishService => DishService();
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          DrawerHeader(
-            decoration: const BoxDecoration(
-              color: Colors.blue,
-            ),
-            child: Align(
-              alignment: Alignment.center,
-              child: Wrap(
-                crossAxisAlignment: WrapCrossAlignment.center,
-                children: const [
-                  TextHeading(
-                    'Dish Management',
-                    color: Colors.white,
-                  ),
-                ],
+List<Widget> _getButtons(BuildContext context, DishService dishService) {
+  return [
+    ElevatedButton(
+      child: const Text('Create Dish'),
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              scrollable: true,
+              title: const Text('Create Dish'),
+              content: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CreateDishForm(
+                  (Dish dish) {
+                    dishService.createDish(dish).then((value) {
+                      log(value.toString());
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(value.toString()),
+                        ),
+                      );
+                      Navigator.pop(context);
+                    }).onError(
+                      (error, stackTrace) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(error.toString()),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
-            ),
-          ),
-          ListTile(
-            title: const Text('Home'),
-            leading: const Icon(
-              Icons.home,
-              color: Colors.black,
-            ),
-            onTap: () async {
-              context.beamToNamed("/");
-            },
-          ),
-          ListTile(
-            title: const Text('Create Dish'),
-            leading: const Icon(
-              Icons.my_library_add,
-              color: Colors.black,
-            ),
-            onTap: () {
-              Navigator.pop(context);
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    scrollable: true,
-                    title: const Text('Create Dish'),
-                    content: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CreateDishForm(
-                        (Dish dish) {
-                          dishService.createDish(dish).then((value) {
-                            log(value.toString());
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(value.toString()),
-                              ),
-                            );
-                            Navigator.pop(context);
-                          }).onError(
-                            (error, stackTrace) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(error.toString()),
-                                ),
-                              );
-                            },
-                          );
-                        },
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-          ListTile(
-            title: const Text('Update Dish'),
-            leading: const Icon(
-              Icons.update,
-              color: Colors.black,
-            ),
-            onTap: () {
-              Navigator.pop(context);
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    scrollable: true,
-                    title: const Text('Update Dish'),
-                    content: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: UpdateDishForm(
-                        (dish) => {
-                          dishService
-                              .updateDish(dish)
-                              .then((value) async => {
-                                    log(value.toString()),
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(value.toString()),
-                                      ),
-                                    ),
-                                    Navigator.pop(context),
-                                  })
-                              .onError(
-                                (error) => {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(error.toString()),
-                                    ),
-                                  ),
-                                },
-                              ),
-                        },
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-          ListTile(
-            title: const Text('Delete Dish'),
-            leading: const Icon(
-              Icons.delete,
-              color: Colors.black,
-            ),
-            onTap: () {
-              Navigator.pop(context);
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    scrollable: true,
-                    title: const Text('Delete Dish'),
-                    content: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: DeleteDishForm(
-                        (dish) => {
-                          dishService.deleteDish(dish).then((value) async => {
-                                log(value.toString()),
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(value.toString()),
-                                  ),
-                                ),
-                                Navigator.pop(context),
-                              }),
-                        },
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
+            );
+          },
+        );
+      },
+    ),
+    const SizedBox(width: 20),
+    ElevatedButton(
+      child: const Text('Update Dish'),
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              scrollable: true,
+              title: const Text('Update Dish'),
+              content: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: UpdateDishForm(
+                  (dish) => {
+                    dishService.updateDish(dish).then((value) async => {
+                          log(value.toString()),
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(value.toString()),
+                            ),
+                          ),
+                          Navigator.pop(context),
+                        }),
+                  },
+                ),
+              ),
+            );
+          },
+        );
+      },
+    ),
+    const SizedBox(width: 20),
+    ElevatedButton(
+      child: const Text('Delete Dish'),
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              scrollable: true,
+              title: const Text('Delete Dish'),
+              content: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: DeleteDishForm(
+                  (dish) => {
+                    dishService.deleteDish(dish).then((value) async => {
+                          log(value.toString()),
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(value.toString()),
+                            ),
+                          ),
+                          Navigator.pop(context),
+                        }),
+                  },
+                ),
+              ),
+            );
+          },
+        );
+      },
+    ),
+  ];
 }

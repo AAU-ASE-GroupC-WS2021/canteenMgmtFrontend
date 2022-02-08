@@ -76,8 +76,6 @@ void main() {
     // the createDish method should not have been called up to now, so we check that
     verifyNever(dishService.createDish(any));
 
-    await tester.tap(find.byTooltip('Open navigation menu'));
-    await tester.pumpAndSettle();
     await tester.tap(find.text('Create Dish'));
     await tester.pumpAndSettle();
 
