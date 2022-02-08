@@ -99,8 +99,10 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                                       MediaQuery.of(context).size.height * 0.8,
                                   width:
                                       MediaQuery.of(context).size.width * 0.45,
-                                  child: CanteenListview(showAdmins,
-                                      canteens: state.canteens!,),
+                                  child: CanteenListview(
+                                    showAdmins,
+                                    canteens: state.canteens!,
+                                  ),
                                 ),
                     ),
                   ],
@@ -126,7 +128,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               CreateUserButton(
-                                  defaultCanteen: _selectedCanteen,),
+                                defaultCanteen: _selectedCanteen,
+                              ),
                             ],
                           ),
                         ],

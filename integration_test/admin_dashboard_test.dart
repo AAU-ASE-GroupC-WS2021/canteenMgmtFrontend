@@ -69,13 +69,17 @@ Future<void> _createUser(WidgetTester tester, User user) async {
 }
 
 Future<void> _verifyCanteenHasNoUsers(
-    WidgetTester tester, Canteen canteen,) async {
+  WidgetTester tester,
+  Canteen canteen,
+) async {
   expect(find.textContaining('[filtered]'), findsWidgets);
   expect(find.textContaining('No users currently'), findsWidgets);
 }
 
 Future<void> _toggleCanteenSelection(
-    WidgetTester tester, Canteen canteen,) async {
+  WidgetTester tester,
+  Canteen canteen,
+) async {
   await tester.tap(find.text(canteen.name).first);
   await tester.pumpAndSettle();
 }
@@ -89,7 +93,9 @@ Future<void> _homeToAdminDashboard(WidgetTester tester) async {
 }
 
 Future<void> _verifyCanteenIsDisplayed(
-    WidgetTester tester, Canteen canteen,) async {
+  WidgetTester tester,
+  Canteen canteen,
+) async {
   expect(find.text(canteen.name), findsWidgets);
   expect(find.textContaining(canteen.address), findsWidgets);
 }

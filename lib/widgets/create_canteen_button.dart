@@ -29,16 +29,15 @@ class CreateCanteenButton extends StatelessWidget {
                             .get<CanteenService>()
                             .createCanteen(canteen)
                             .then(
-                              (value) {
-                                Navigator.pop(context);
+                          (value) {
+                            Navigator.pop(context);
                             GetIt.I.get<CanteensCubit>().refresh();
                           },
-                            )
-                            .onError((error, stackTrace) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(content: Text(error.toString())),
-                                  );
-                                });
+                        ).onError((error, stackTrace) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(error.toString())),
+                          );
+                        });
                       },
                     ),
                   ),

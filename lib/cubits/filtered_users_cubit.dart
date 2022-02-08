@@ -1,7 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:get_it/get_it.dart';
+
 import '../models/user.dart';
 import '../services/owner_user_service.dart';
-import 'package:get_it/get_it.dart';
 
 class FilteredUsersCubit extends Cubit<FilteredUsersState> {
   final OwnerUserService _userService;

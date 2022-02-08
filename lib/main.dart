@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 import 'beamer_locations.dart';
 import 'cubits/auth.dart';
@@ -41,6 +42,7 @@ Future<void> main() async {
 
   // remove .../#/... from url
   Beamer.setPathUrlStrategy();
+  GetIt.I.registerLazySingleton<http.Client>(() => http.Client());
 
   runApp(MyApp());
 }

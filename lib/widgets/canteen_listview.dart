@@ -1,12 +1,14 @@
-import '../models/canteen.dart';
 import 'package:flutter/material.dart';
 
+import '../models/canteen.dart';
 import 'edit_canteen_button.dart';
 
 class CanteenListview extends StatefulWidget {
-  const CanteenListview(this.selectionChangedCallback,
-      {Key? key, required this.canteens,})
-      : super(key: key);
+  const CanteenListview(
+    this.selectionChangedCallback, {
+    Key? key,
+    required this.canteens,
+  }) : super(key: key);
 
   final List<Canteen> canteens;
   final Function(Canteen?) selectionChangedCallback;
@@ -30,7 +32,8 @@ class _CanteenListviewState extends State<CanteenListview> {
                   child: ListTile(
                     title: Text(widget.canteens[index].name),
                     subtitle: Text(
-                        "${widget.canteens[index].address}\n${widget.canteens[index].numTables} Tables",),
+                      "${widget.canteens[index].address}\n${widget.canteens[index].numTables} Tables",
+                    ),
                     trailing: EditCanteenButton(widget.canteens[index]),
                     selected: _selectedIndex == index ? true : false,
                     selectedTileColor: Colors.blue[100],
