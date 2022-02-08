@@ -8,9 +8,9 @@ import 'package:integration_test/integration_test.dart';
 import 'util/auth_helper.dart';
 import 'util/widget_tester_tap_and_wait.dart';
 
-const _userCredentials = Signup(
-  username: 'SomeTestUser',
-  password: 'SomeTestPassword123',
+const _adminCredentials = Signup(
+  username: 'adminUsername',
+  password: 'adminPassword123',
 );
 
 const _exampleDish = Dish(name: 'Some Test Dish', price: 123, type: 'MAIN');
@@ -24,16 +24,18 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Canteen Management'), findsOneWidget);
 
-    await signUp(tester, _userCredentials);
-    await logIn(tester, _userCredentials);
+    await logIn(tester, _adminCredentials);
 
-    await tester.tap(find.text('Dish Service Demo'));
+    await tester.tap(find.byTooltip('Open navigation menu'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Dish Management').first);
     await tester.pumpAndSettle();
 
     expect(find.text('Refresh'), findsOneWidget);
-    expect(find.text('Create Dish'), findsOneWidget);
     expect(find.text(_exampleDish.name), findsNothing);
 
+    await tester.tap(find.byTooltip('Open navigation menu'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Create Dish'));
     await tester.pumpAndSettle();
 
