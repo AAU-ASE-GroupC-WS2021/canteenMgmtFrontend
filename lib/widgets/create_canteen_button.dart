@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-import '../cubits/canteen_cubit.dart';
+import '../cubits/canteens_cubit.dart';
 import '../services/canteen_service.dart';
 import '../widgets/canteen_form.dart';
 

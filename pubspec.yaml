@@ -47,6 +47,16 @@ dev_dependencies:
   # code generation, required for mockito
   build_runner: ^2.1.7
 
+  # state management
+  bloc: ^8.0.2
+  flutter_bloc: ^8.0.1
+
+  # qr scanner
+  qr_flutter: ^4.0.0
+
+  # datetime picker
+  date_time_picker: ^2.1.0
+
 flutter:
   uses-material-design: true
   assets:

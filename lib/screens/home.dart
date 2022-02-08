@@ -32,6 +32,21 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
+              onPressed: () => context.beamToNamed('/dish'),
+              child: const Text('Dish Service Demo'),
+            ),
+            const SizedBox(height: 20),
+            BlocBuilder<AuthCubit, AuthState>(
+              builder: (context, state) => Offstage(
+                offstage: !state.authenticated,
+                child: ElevatedButton(
+                  onPressed: () => context.beamToNamed('/order'),
+                  child: const Text('Your Orders'),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20), // space between buttons
+            ElevatedButton(
               onPressed: () => context.beamToNamed('/qr-demo'),
               child: const Text('QR Scanner Demo'),
             ),
