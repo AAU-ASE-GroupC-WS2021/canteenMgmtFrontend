@@ -11,7 +11,6 @@ class OrderService extends AbstractService {
 
     if (response.statusCode == 200) {
       final stringData = response.body;
-      // TODO: ORDER-MODEL creation
       var responseJson = json.decode(stringData);
       return Order.fromJson(responseJson);
     } else {
@@ -22,9 +21,7 @@ class OrderService extends AbstractService {
   }
 
   Future<List<Order>> getOrders() async {
-    // TODO get user
-    int userId = 1;
-    final response = await get('api/order?userId=$userId');
+    final response = await get('api/order');
 
     if (response.statusCode == 200) {
       var responseJson = json.decode(response.body);

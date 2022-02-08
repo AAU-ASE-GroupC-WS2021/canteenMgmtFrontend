@@ -35,10 +35,15 @@ class HomeScreen extends StatelessWidget {
               onPressed: () => context.beamToNamed('/dish'),
               child: const Text('Dish Service Demo'),
             ),
-            const SizedBox(height: 20), // space between buttons
-            ElevatedButton(
-              onPressed: () => context.beamToNamed('/order'),
-              child: const Text('Your Orders'),
+            const SizedBox(height: 20),
+            BlocBuilder<AuthCubit, AuthState>(
+              builder: (context, state) => Offstage(
+                offstage: !state.authenticated,
+                child: ElevatedButton(
+                  onPressed: () => context.beamToNamed('/order'),
+                  child: const Text('Your Orders'),
+                ),
+              ),
             ),
             const SizedBox(height: 20), // space between buttons
             ElevatedButton(
@@ -71,9 +76,13 @@ class HomeMenu extends StatelessWidget {
                 child: Wrap(
                   crossAxisAlignment: WrapCrossAlignment.center,
                   children: const [
-                    TextHeading('Canteen Management', color: Colors.white,),
+                    TextHeading(
+                      'Canteen Management',
+                      color: Colors.white,
+                    ),
                   ],
-                ),),
+                ),
+              ),
             ),
             Offstage(
               offstage: state.type != 'OWNER',

@@ -1,4 +1,4 @@
-import 'package:canteen_mgmt_frontend/cubits/canteens_state_cubit.dart';
+import 'package:canteen_mgmt_frontend/cubits/canteens_cubit.dart';
 import 'package:canteen_mgmt_frontend/cubits/filtered_users_cubit.dart';
 import 'package:canteen_mgmt_frontend/models/canteen.dart';
 import 'package:canteen_mgmt_frontend/models/user.dart';
@@ -41,7 +41,7 @@ void main() {
   GetIt.I.registerSingleton<OwnerUserService>(userService);
   final canteenService = MockCanteenService();
   GetIt.I.registerSingleton<CanteenService>(canteenService);
-  GetIt.I.registerLazySingleton<CanteensStateCubit>(() => CanteensStateCubit());
+  GetIt.I.registerLazySingleton<CanteensCubit>(() => CanteensCubit());
   GetIt.I.registerLazySingleton<FilteredUsersCubit>(() => FilteredUsersCubit());
 
   setUp(() {

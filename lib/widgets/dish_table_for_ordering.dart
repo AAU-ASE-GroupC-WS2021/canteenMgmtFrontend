@@ -27,77 +27,86 @@ class _DishTableForOrderState extends State<DishTableForOrder> {
   @override
   Widget build(BuildContext context) => BlocBuilder<DishCubit, List<Dish>>(
         bloc: GetIt.I.get<DishCubit>(),
-        builder: (context, dishes) => Table(
-          defaultColumnWidth: const FixedColumnWidth(150.0),
-          border: TableBorder.all(
-            color: Colors.black,
-            style: BorderStyle.solid,
-            width: 1,
+        builder: (context, dishes) => SizedBox(
+          height: 200,
+          width: 1000,
+          child: ListView(
+            scrollDirection: Axis.vertical,
+            children: <Widget>[
+              Table(
+                defaultColumnWidth: const FixedColumnWidth(150.0),
+                border: TableBorder.all(
+                  color: Colors.black,
+                  style: BorderStyle.solid,
+                  width: 1,
+                ),
+                children: [
+                  TableRow(children: [
+                    Column(children: const [
+                      Text(
+                        'ID',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ]),
+                    Column(children: const [
+                      Text(
+                        'Name',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ]),
+                    Column(children: const [
+                      Text(
+                        'Type',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ]),
+                    Column(children: const [
+                      Text(
+                        'Price',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ]),
+                    Column(children: const [
+                      Text(
+                        'Add to order',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ]),
+                  ]),
+                  for (var dish in dishes)
+                    TableRow(children: [
+                      Column(children: [Text(dish.id.toString())]),
+                      Column(children: [Text(dish.name)]),
+                      Column(children: [Text(dish.type)]),
+                      Column(children: [Text(dish.price.toString())]),
+                      Column(children: [
+                        TextButton(
+                          child: const Text('+'),
+                          onPressed: () {
+                            widget.addOrderCallback(dish);
+                          },
+                        ),
+                      ]),
+                    ]),
+                ],
+              ),
+            ],
           ),
-          children: [
-            TableRow(children: [
-              Column(children: const [
-                Text(
-                  'ID',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ]),
-              Column(children: const [
-                Text(
-                  'Name',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ]),
-              Column(children: const [
-                Text(
-                  'Type',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ]),
-              Column(children: const [
-                Text(
-                  'Price',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ]),
-              Column(children: const [
-                Text(
-                  'Add to order',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ]),
-            ]),
-            for (var dish in dishes)
-              TableRow(children: [
-                Column(children: [Text(dish.id.toString())]),
-                Column(children: [Text(dish.name)]),
-                Column(children: [Text(dish.type)]),
-                Column(children: [Text(dish.price.toString())]),
-                Column(children: [
-                  TextButton(
-                    child: const Text('+'),
-                    onPressed: () {
-                      widget.addOrderCallback(dish);
-                    },
-                  ),
-                ]),
-              ]),
-          ],
         ),
       );
 }

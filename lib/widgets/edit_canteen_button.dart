@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
-import '../cubits/canteens_state_cubit.dart';
+import '../cubits/canteens_cubit.dart';
 import '../models/canteen.dart';
 import '../services/canteen_service.dart';
 import '../widgets/canteen_form.dart';
@@ -31,9 +31,10 @@ class EditCanteenButton extends StatelessWidget {
                         GetIt.I
                             .get<CanteenService>()
                             .updateCanteen(canteen)
-                            .then((value) => {
+                            .then((value) =>
+                        {
                                   Navigator.pop(context),
-                                  GetIt.I.get<CanteensStateCubit>().refresh(),
+                                  GetIt.I.get<CanteensCubit>().refresh(),
                                 })
                             .onError((error, stackTrace) => {
                                   ScaffoldMessenger.of(context).showSnackBar(

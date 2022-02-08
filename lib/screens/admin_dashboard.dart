@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-import '../cubits/canteens_state_cubit.dart';
+import '../cubits/canteens_cubit.dart';
 import '../cubits/filtered_users_cubit.dart';
 import '../models/canteen.dart';
 import '../models/user.dart';
@@ -24,8 +24,7 @@ class AdminDashboardScreen extends StatefulWidget {
 class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   final CanteenService canteenService = GetIt.I<CanteenService>();
   final OwnerUserService userService = GetIt.I<OwnerUserService>();
-  final CanteensStateCubit canteensStateCubit =
-      GetIt.I.get<CanteensStateCubit>();
+  final CanteensCubit canteensCubit = GetIt.I.get<CanteensCubit>();
   final FilteredUsersCubit usersCubit = GetIt.I.get<FilteredUsersCubit>();
 
   Canteen? _selectedCanteen;
@@ -36,7 +35,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     usersCubit.setCanteenIDFilter(null);
     usersCubit.setTypeFilter(UserType.ADMIN);
     usersCubit.refresh();
-    canteensStateCubit.refresh();
+    canteensCubit.refresh();
   }
 
   void showAdmins(Canteen? c) {
@@ -87,8 +86,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
                         ],
                       ),
                     ),
-                    BlocBuilder<CanteensStateCubit, CanteensState>(
-                      bloc: GetIt.I.get<CanteensStateCubit>(),
+                    BlocBuilder<CanteensCubit, CanteensState>(
+                      bloc: GetIt.I.get<CanteensCubit>(),
                       builder: (context, state) => state.exception != null
                           ? Center(
                               child: Text('${state.exception}'),
