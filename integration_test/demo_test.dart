@@ -6,7 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
 import 'util/auth_helper.dart';
-import 'util/widget_tester_wait_for.dart';
+import 'util/widget_tester_tap_and_wait.dart';
 
 const _userCredentials = Signup(
   username: 'SomeTestUser',
@@ -46,14 +46,19 @@ void main() {
     await tester.tap(find.text('MONDAY').hitTestable());
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Create Dish').hitTestable().last);
-    await tester.pumpAndSettle();
+    await tester.tapAndWait(
+      find.ancestor(
+        of: find.widgetWithText(ElevatedButton, 'Create Dish'),
+        matching: find.byType(Form),
+      ),
+      waitUntil: find.byType(Form),
+      isNoLongerVisible: true,
+    );
 
-    await tester.tap(find.text('Refresh'));
-    await tester.pumpAndSettle();
-
-    await tester.waitFor(find.text(_exampleDish.name));
-    expect(find.text(_exampleDish.name), findsWidgets);
+    await tester.tapAndWait(
+      find.text('Refresh'),
+      waitUntil: find.text(_exampleDish.name),
+    );
 
     expect(find.text('This text appears nowhere in the app!'), findsNothing);
   });
