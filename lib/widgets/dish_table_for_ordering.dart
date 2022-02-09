@@ -21,7 +21,7 @@ class _DishTableForOrderState extends State<DishTableForOrder> {
   @override
   void initState() {
     super.initState();
-    dishCubit.refresh(null);
+    dishCubit.refresh();
   }
 
   @override
