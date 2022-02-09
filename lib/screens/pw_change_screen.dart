@@ -1,4 +1,5 @@
 import 'package:beamer/beamer.dart';
+import 'package:canteen_mgmt_frontend/screens/password_finished.dart';
 import 'package:canteen_mgmt_frontend/screens/signup_finished.dart';
 import 'package:canteen_mgmt_frontend/services/signup_service.dart';
 import 'package:canteen_mgmt_frontend/utils/auth_token.dart';
@@ -112,7 +113,7 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
                           signupService.updatePassword(value.username, passwordControllerOld.text, passwordControllerNe2.text)
                               .then((value) => {
                             if (value == null) {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignupFinishedScreen())),
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => PasswordFinishedScreen())),
                             }
                             else {
                               showAlertDialog(value)
