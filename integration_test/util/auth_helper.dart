@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'widget_tester_tap_and_wait.dart';
+import 'widget_tester_wait_for.dart';
 
 /// Log in with passed credentials.
 /// This function assumes a pumped and settled home page and
@@ -14,9 +15,14 @@ Future<void> logIn(WidgetTester tester, Signup credentials) async {
   await tester.enterText(textField.at(0), credentials.username);
   await tester.enterText(textField.at(1), credentials.password);
 
-  await tester.tapAndWait(
-    find.widgetWithText(ElevatedButton, 'Log in'),
-    waitUntil: find.text('Canteen Management'),
+  await tester.tapAndWait(find.widgetWithText(ElevatedButton, 'Log in'));
+  
+  if (find.text('Could not log in').evaluate().isNotEmpty) {
+    throw Exception('Could not log in');
+  }
+  
+  await tester.waitFor(
+    find.text('Canteen Management'),
     timeout: const Duration(seconds: 10),
   );
 
