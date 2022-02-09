@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
-import 'package:canteen_mgmt_frontend/services/signin_service.dart';
+import 'package:canteen_mgmt_frontend/screens/signup_finished.dart';
+import 'package:canteen_mgmt_frontend/services/signup_service.dart';
 import 'package:canteen_mgmt_frontend/utils/auth_token.dart';
 import 'package:canteen_mgmt_frontend/widgets/about_button.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class PwChangeScreen extends StatefulWidget {
 }
 
 class _PwChangeScreenState extends State<PwChangeScreen> {
-  final SignInService signupService = SignInService();
+  final SignupService signupService = SignupService();
 
   @override
   void initState() {
@@ -104,7 +105,27 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
                     ElevatedButton(
                       onPressed: () => {
                       if (_formKey.currentState!.validate()) {
-                        // UPDATE PW
+
+                        signupService.getUserSelfInfo().then((value) =>
+                        {
+
+                          signupService.updatePassword(value.username, passwordControllerOld.text, passwordControllerNe2.text)
+                              .then((value) => {
+                            if (value == null) {
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignupFinishedScreen())),
+                            }
+                            else {
+                              showAlertDialog(value)
+                            },
+                          })
+                              .onError((error, stackTrace) => {
+                            showAlertDialog("Unknown error occurred while trying to change password.\nPlease refresh the page and try again!"),
+                          }),
+                        })
+                            .onError((error, stackTrace) => {
+                          showAlertDialog("Unknown error occurred while trying to read user credentials.\nPlease refresh the page and try again!"),
+                        }),
+
                       },
                       },
                       child: const Text('Update password'),
