@@ -52,7 +52,7 @@ class _CreateUserFormState extends State<CreateUserForm> {
               hintText: 'Enter password',
               labelText: 'Password',
             ),
-            validator: (value) => validatePassword(value, "password"),
+            validator: (value) => validatePassword(value),
             textInputAction: TextInputAction.next,
             obscureText: true,
             enableSuggestions: false,
@@ -123,10 +123,16 @@ class _CreateUserFormState extends State<CreateUserForm> {
     return null;
   }
 
-  String? validatePassword(String? value, String label) {
-    String? notEmptyValidate = validateInputNotEmpty(value, label);
-    // TODO: add validation
-    return notEmptyValidate;
+  String? validatePassword(String? password) {
+    if (password == null || password.isEmpty) {
+      return 'Password field cannot be empty.';
+    } else if (password.length < 9) {
+      return 'Password has to be at least 9 characters long.';
+    } else if (password.length > 64) {
+      return 'Password cannot be longer than 64 characters.';
+    }
+
+    return null;
   }
 
   String? validatePasswordRepeat(String? value, String label) {
