@@ -8,12 +8,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'beamer_locations.dart';
 import 'cubits/auth.dart';
-import 'cubits/canteen_cubit.dart';
+import 'cubits/canteens_cubit.dart';
+import 'cubits/dish_cubit.dart';
 import 'cubits/filtered_users_cubit.dart';
+import 'cubits/menu_cubit.dart';
+import 'cubits/order_cubit.dart';
+import 'cubits/single_order_cubit.dart';
 import 'services/canteen_service.dart';
 import 'services/dish_service.dart';
 import 'services/key_value_shared_prefs.dart';
 import 'services/key_value_store.dart';
+import 'services/menu_service.dart';
+import 'services/order_service.dart';
 import 'services/owner_user_service.dart';
 import 'services/web/key_value_store_web_stub.dart'
 // ignore: uri_does_not_exist
@@ -22,6 +28,7 @@ import 'services/web/key_value_store_web_stub.dart'
 
 Future<void> main() async {
   GetIt.I.registerFactory<DishService>(() => DishService());
+  GetIt.I.registerFactory<MenuService>(() => MenuService());
   GetIt.I.registerSingleton<KeyValueStore>(
     kDebugMode && kIsWeb
         ? getKeyValueStoreWeb()
@@ -31,6 +38,11 @@ Future<void> main() async {
   GetIt.I.registerFactory<OwnerUserService>(() => OwnerUserService());
   GetIt.I.registerLazySingleton<CanteensCubit>(() => CanteensCubit());
   GetIt.I.registerLazySingleton<FilteredUsersCubit>(() => FilteredUsersCubit());
+  GetIt.I.registerLazySingleton<OrderService>(() => OrderService());
+  GetIt.I.registerLazySingleton<OrderCubit>(() => OrderCubit());
+  GetIt.I.registerLazySingleton<DishCubit>(() => DishCubit());
+  GetIt.I.registerLazySingleton<MenuCubit>(() => MenuCubit());
+  GetIt.I.registerLazySingleton<SingleOrderCubit>(() => SingleOrderCubit());
   GetIt.I.registerLazySingleton<http.Client>(() => http.Client());
 
   runApp(MyApp());

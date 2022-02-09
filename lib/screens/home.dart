@@ -32,8 +32,18 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () => context.beamToNamed('/qr-demo'),
-              child: const Text('QR Scanner Demo'),
+              onPressed: () => context.beamToNamed('/dish'),
+              child: const Text('Dish Service Demo'),
+            ),
+            const SizedBox(height: 20),
+            BlocBuilder<AuthCubit, AuthState>(
+              builder: (context, state) => Offstage(
+                offstage: !state.authenticated,
+                child: ElevatedButton(
+                  onPressed: () => context.beamToNamed('/order'),
+                  child: const Text('Your Orders'),
+                ),
+              ),
             ),
           ],
         ),
@@ -100,6 +110,17 @@ class HomeMenu extends StatelessWidget {
                   color: Colors.black,
                 ),
                 onTap: () => context.beamToNamed('/dish'),
+              ),
+            ),
+            Offstage(
+              offstage: !{'ADMIN', 'OWNER'}.contains(state.type),
+              child: ListTile(
+                title: const Text('Scan Order'),
+                leading: const Icon(
+                  Icons.qr_code,
+                  color: Colors.black,
+                ),
+                onTap: () => context.beamToNamed('/scan-order'),
               ),
             ),
             Offstage(

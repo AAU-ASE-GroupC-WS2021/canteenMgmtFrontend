@@ -1,5 +1,6 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../cubits/auth.dart';
@@ -20,6 +21,17 @@ class _SignInScreenState extends State<SignInScreen> {
 
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    if (AuthTokenUtils.isLoggedIn()) {
+      // to avoid inconsistent state. see https://stackoverflow.com/a/44271936/9335596
+      SchedulerBinding.instance?.addPostFrameCallback((_) {
+        context.beamToNamed('/');
+      });
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
