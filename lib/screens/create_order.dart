@@ -39,7 +39,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   @override
   void initState() {
     super.initState();
-    selectedPickuptime = DateTime.now().add(const Duration(hours: 1));
+    updatePickupTime(DateTime.now().add(const Duration(hours: 1)));
   }
 
   @override
@@ -47,7 +47,8 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Create Order')),
       body: Center(
-        child: Column(
+        child: SingleChildScrollView(
+          child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const SizedBox(height: 10),
@@ -226,6 +227,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
             getSubmitWidget(context),
           ],
         ),
+        ),
       ),
     );
   }
@@ -337,10 +339,9 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   };
 
   updatePickupTime(DateTime newPickupTime) {
-    if (selectedPickuptime.weekday != newPickupTime.weekday) {
-      dishCubit.refresh(dayMapping[newPickupTime.weekday]);
-      menuCubit.refresh(dayMapping[newPickupTime.weekday]);
-    }
+    dishCubit.dishDay = dayMapping[newPickupTime.weekday];
+    dishCubit.refresh();
+    menuCubit.refresh(dayMapping[newPickupTime.weekday]);
     setState(() {
       selectedPickuptime = newPickupTime;
     });

@@ -6,13 +6,14 @@ import '../services/dish_service.dart';
 
 class DishCubit extends Cubit<List<Dish>> {
   final DishService _dishService;
+  String? dishDay;
 
   DishCubit()
       : _dishService = GetIt.I.get<DishService>(),
         super([]) {
-    refresh(null);
+    refresh();
   }
 
-  Future<void> refresh(String? dishDay) async =>
+  Future<void> refresh() async =>
       emit(await _dishService.fetchDishes(dishDay: dishDay));
 }
