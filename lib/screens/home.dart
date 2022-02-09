@@ -1,6 +1,12 @@
 import 'package:beamer/beamer.dart';
+import 'package:canteen_mgmt_frontend/cubits/menu_cubit.dart';
+import 'package:canteen_mgmt_frontend/services/util/day_mapping.dart';
+import 'package:canteen_mgmt_frontend/widgets/menu_table_for_ordering.dart';
+import 'package:canteen_mgmt_frontend/widgets/prev_next_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 
 import '../cubits/auth.dart';
 import '../widgets/about_button.dart';
@@ -10,8 +16,26 @@ import '../widgets/signup_button.dart';
 import '../widgets/text_heading.dart';
 import '../widgets/user_info_button.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late String _headingText;
+  late DateTime _selectedDateTime;
+  final MenuCubit menuCubit = GetIt.I.get<MenuCubit>();
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDateTime = DateTime.now();
+    _updateHeadingText();
+    menuCubit.menuDay = getDayName(_selectedDateTime.weekday);
+    menuCubit.refresh();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,26 +53,46 @@ class HomeScreen extends StatelessWidget {
       drawer: const HomeMenu(),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            ElevatedButton(
-              onPressed: () => context.beamToNamed('/dish'),
-              child: const Text('Dish Service Demo'),
+            const SizedBox(
+              height: 30,
             ),
-            const SizedBox(height: 20),
-            BlocBuilder<AuthCubit, AuthState>(
-              builder: (context, state) => Offstage(
-                offstage: !state.authenticated,
-                child: ElevatedButton(
-                  onPressed: () => context.beamToNamed('/order'),
-                  child: const Text('Your Orders'),
-                ),
-              ),
+            PrevNextText(_headingText, callback: updateMenuDate),
+            const SizedBox(
+              height: 30,
+            ),
+            MenuTableForOrder(
+              addOrderCallback: (_) => {},
+              showAdd: false,
+            ),
+            const SizedBox(
+              height: 30,
             ),
           ],
         ),
       ),
     );
+  }
+
+  void updateMenuDate(Direction dir) {
+    setState(() {
+      do {
+        _selectedDateTime = dir == Direction.next
+            ? _selectedDateTime.add(const Duration(days: 1))
+            : _selectedDateTime.subtract(const Duration(days: 1));
+      } while ({6, 7}.contains(_selectedDateTime.weekday));
+    });
+    _updateHeadingText();
+    menuCubit.menuDay = getDayName(_selectedDateTime.weekday);
+    menuCubit.refresh();
+  }
+
+  void _updateHeadingText() {
+    setState(() {
+      _headingText =
+          'Menu for ${DateFormat('EEEE, d. LLL y').format(_selectedDateTime)}';
+    });
   }
 }
 
@@ -91,7 +135,7 @@ class HomeMenu extends StatelessWidget {
               ),
             ),
             Offstage(
-              offstage: state.type != 'OWNER' && state.type != 'ADMIN',
+              offstage: !{'ADMIN', 'OWNER'}.contains(state.type),
               child: ListTile(
                 title: const Text('Menu Management'),
                 leading: const Icon(
@@ -102,7 +146,7 @@ class HomeMenu extends StatelessWidget {
               ),
             ),
             Offstage(
-              offstage: state.type != 'OWNER' && state.type != 'ADMIN',
+              offstage: !{'ADMIN', 'OWNER'}.contains(state.type),
               child: ListTile(
                 title: const Text('Dish Management'),
                 leading: const Icon(
@@ -121,6 +165,17 @@ class HomeMenu extends StatelessWidget {
                   color: Colors.black,
                 ),
                 onTap: () => context.beamToNamed('/scan-order'),
+              ),
+            ),
+            Offstage(
+              offstage: !state.authenticated,
+              child: ListTile(
+                title: const Text('Your Orders'),
+                leading: const Icon(
+                  Icons.featured_play_list_outlined,
+                  color: Colors.black,
+                ),
+                onTap: () => context.beamToNamed('/order'),
               ),
             ),
             Offstage(

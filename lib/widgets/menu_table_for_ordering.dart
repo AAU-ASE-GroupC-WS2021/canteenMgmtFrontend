@@ -7,8 +7,10 @@ import '../models/menu.dart';
 
 class MenuTableForOrder extends StatefulWidget {
   final Function(Menu) addOrderCallback;
+  final bool showAdd;
 
-  const MenuTableForOrder({Key? key, required this.addOrderCallback})
+  const MenuTableForOrder(
+      {Key? key, required this.addOrderCallback, this.showAdd = true,})
       : super(key: key);
 
   @override
@@ -21,7 +23,7 @@ class _MenuTableForOrderState extends State<MenuTableForOrder> {
   @override
   void initState() {
     super.initState();
-    menuCubit.refresh(null);
+    menuCubit.refresh();
   }
 
   @override
@@ -83,15 +85,16 @@ class _MenuTableForOrderState extends State<MenuTableForOrder> {
                         ),
                       ),
                     ]),
-                    Column(children: const [
-                      Text(
-                        'Add to order',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                    if (widget.showAdd)
+                      Column(children: const [
+                        Text(
+                          'Add to order',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                    ]),
+                      ]),
                   ]),
                   for (var menu in menus)
                     TableRow(children: [
@@ -99,14 +102,15 @@ class _MenuTableForOrderState extends State<MenuTableForOrder> {
                       Column(children: [Text(menu.name)]),
                       Column(children: [Text(menu.menuDishNames.toString())]),
                       Column(children: [Text(menu.price.toString())]),
-                      Column(children: [
-                        TextButton(
-                          child: const Icon(Icons.add),
-                          onPressed: () {
-                            widget.addOrderCallback(menu);
-                          },
-                        ),
-                      ]),
+                      if (widget.showAdd)
+                        Column(children: [
+                          TextButton(
+                            child: const Icon(Icons.add),
+                            onPressed: () {
+                              widget.addOrderCallback(menu);
+                            },
+                          ),
+                        ]),
                     ]),
                 ],
               ),
