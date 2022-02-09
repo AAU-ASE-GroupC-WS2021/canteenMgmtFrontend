@@ -20,6 +20,7 @@ dependencies:
 
   flutter_form_builder: ^7.1.0 # various form widgets
   date_time_picker: ^2.1.0 # TODO a date-time-picker is included in flutter_form_builder. is this import necessary?
+  intl: ^0.17.0 # date/time formatter
 
   qr_code_scanner: ^0.6.1
   qr_flutter: ^4.0.0 # qr code generator
