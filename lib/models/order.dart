@@ -10,7 +10,7 @@ class Order {
   final DateTime pickupDate;
   final bool reserveTable;
 
-  Order({
+  const Order({
     this.id,
     required this.canteenId,
     required this.userId,
