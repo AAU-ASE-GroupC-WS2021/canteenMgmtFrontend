@@ -18,7 +18,7 @@ class UserInfoButton extends StatelessWidget {
           onPressed: () => {
             // Do some action: either show a popup or dropdown, or go to the user profile page.
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const ProfileManagementScreen())),
+                builder: (context) => const ProfileManagementScreen(),)),
           },
         ),
       ),

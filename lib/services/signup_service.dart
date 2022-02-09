@@ -31,7 +31,7 @@ class SignupService extends AbstractService {
   }
 
   Future<String?> updatePassword(
-      String username, String oldPassword, String newPassword) async {
+      String username, String oldPassword, String newPassword,) async {
     var bytesOld = utf8.encode(oldPassword);
     var hashOld = sha256.convert(bytesOld).toString();
 

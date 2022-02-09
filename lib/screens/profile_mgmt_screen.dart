@@ -65,7 +65,7 @@ class _ProfileManagementScreenState extends State<ProfileManagementScreen> {
           UserInfoButton(),
           SignOutButton(),
           SignUpButton(),
-          AboutButton()
+          AboutButton(),
         ],
       ),
       body: Center(

@@ -115,7 +115,7 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
                               Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PasswordFinishedScreen())),
                             }
                             else {
-                              showAlertDialog(value)
+                              showAlertDialog(value),
                             },
                           })
                               .onError((error, stackTrace) => {

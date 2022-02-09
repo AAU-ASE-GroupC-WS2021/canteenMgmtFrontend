@@ -70,9 +70,9 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
           },
           child: _hasAvatar
               ? Image.memory(base64Decode(_base64Avatar),
-                  height: 100, fit: BoxFit.contain)
+                  height: 100, fit: BoxFit.contain,)
               : Image.asset('assets/graphics/blank-avatar.png',
-                  height: 100, fit: BoxFit.contain),
+                  height: 100, fit: BoxFit.contain,),
         ),
 
         const SizedBox(height: 10), // space between buttons
@@ -81,7 +81,7 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
         Text('@' + _username,
             style: TextStyle(
                 fontWeight: FontWeight.w500,
-                color: Colors.primaries.first.shade500)),
+                color: Colors.primaries.first.shade500),),
 
         const SizedBox(height: 5), // space between buttons
 
@@ -90,17 +90,17 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
           children: [
             const Text('Type: ',
                 style:
-                    TextStyle(fontWeight: FontWeight.w400, color: Colors.grey)),
+                    TextStyle(fontWeight: FontWeight.w400, color: Colors.grey),),
             Text(_type,
                 style: const TextStyle(
-                    fontWeight: FontWeight.w500, color: Colors.blueAccent)),
+                    fontWeight: FontWeight.w500, color: Colors.blueAccent,),),
           ],
           mainAxisAlignment: MainAxisAlignment.center,
         ),
 
         const SizedBox(height: 20), //
         const Text('Profile management',
-            style: TextStyle(fontWeight: FontWeight.w400, color: Colors.grey)),
+            style: TextStyle(fontWeight: FontWeight.w400, color: Colors.grey),),
 
         const SizedBox(height: 10), // space between buttons
 
@@ -108,7 +108,7 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
         ElevatedButton(
           onPressed: () => {
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const PwChangeScreen())),
+                builder: (context) => const PwChangeScreen(),)),
           },
           child: const Text('Change password', style: TextStyle(fontSize: 10)),
         ),
