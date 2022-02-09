@@ -51,25 +51,33 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       drawer: const HomeMenu(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: 30,
-            ),
-            PrevNextText(_headingText, callback: updateMenuDate),
-            const SizedBox(
-              height: 30,
-            ),
-            MenuTableForOrder(
-              addOrderCallback: (_) => {},
-              showAdd: false,
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-          ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 30,
+              ),
+              PrevNextText(_headingText, callback: updateMenuDate),
+              const SizedBox(
+                height: 30,
+              ),
+              MenuTableForOrder(
+                addOrderCallback: (_) => {},
+                showAdd: false,
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              ElevatedButton(
+                child: const Text('Place Order'),
+                onPressed: () {
+                  context.beamToNamed('/order-select-canteen');
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
