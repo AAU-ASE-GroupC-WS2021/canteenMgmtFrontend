@@ -1,5 +1,8 @@
 import 'package:beamer/beamer.dart';
+import 'package:canteen_mgmt_frontend/cubits/auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'screens/admin_dashboard.dart';
 import 'screens/dish_service_demo.dart';
@@ -13,6 +16,8 @@ import 'screens/signup_screen.dart';
 
 //ignore:long-method
 BeamerDelegate getBeamerDelegate() => BeamerDelegate(
+      initialPath: '/',
+      notFoundRedirectNamed: '/',
       locationBuilder: RoutesLocationBuilder(
         routes: {
           '/': (context, state, data) => const BeamPage(
@@ -62,4 +67,45 @@ BeamerDelegate getBeamerDelegate() => BeamerDelegate(
               ),
         },
       ),
+      guards: [
+        // secure all routes except base and login/registration related
+        BeamGuard(
+          guardNonMatching: true, // guard all routes except the following
+          pathPatterns: ['/', '/sign*'],
+          check: (context, beamLocation) =>
+              context.read<AuthCubit>().state.authenticated,
+          beamToNamed: (from, to) => '/signin',
+        ),
+        // redirect away from login/registration pages when already logged in
+        BeamGuard(
+          pathPatterns: ['/sign*'],
+          check: (context, beamLocation) =>
+              !context.read<AuthCubit>().state.authenticated,
+          beamToNamed: (from, to) => '/',
+        ),
+        // give only staff and owners access to management
+        BeamGuard(
+          pathPatterns: ['/dish', '/menu', '/scan-order'],
+          check: (context, beamLocation) =>
+              {'ADMIN', 'OWNER'}.contains(context.read<AuthCubit>().state.type),
+          beamToNamed: (from, to) => '/',
+          onCheckFailed: (context, beamLocation) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('You are not allowed to access this.'),
+            ));
+          },
+        ),
+        // only owners can access the canteen management panel
+        BeamGuard(
+          pathPatterns: ['/admin'],
+          check: (context, beamLocation) =>
+              context.read<AuthCubit>().state.type == 'OWNER',
+          beamToNamed: (from, to) => '/',
+          onCheckFailed: (context, beamLocation) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('You are not allowed to access this.'),
+            ));
+          },
+        ),
+      ],
     );
