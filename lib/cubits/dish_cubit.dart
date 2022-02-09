@@ -10,8 +10,9 @@ class DishCubit extends Cubit<List<Dish>> {
   DishCubit()
       : _dishService = GetIt.I.get<DishService>(),
         super([]) {
-    refresh();
+    refresh(null);
   }
 
-  Future<void> refresh() async => emit(await _dishService.fetchDishes());
+  Future<void> refresh(String? dishDay) async =>
+      emit(await _dishService.fetchDishes(dishDay: dishDay));
 }

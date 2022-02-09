@@ -2,41 +2,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-import '../cubits/dish_cubit.dart';
-import '../models/dish.dart';
+import '../cubits/menu_cubit.dart';
+import '../models/menu.dart';
 
-class DishTableForOrder extends StatefulWidget {
-  final Function(Dish) addOrderCallback;
+class MenuTableForOrder extends StatefulWidget {
+  final Function(Menu) addOrderCallback;
 
-  const DishTableForOrder({Key? key, required this.addOrderCallback})
+  const MenuTableForOrder({Key? key, required this.addOrderCallback})
       : super(key: key);
 
   @override
-  State<DishTableForOrder> createState() => _DishTableForOrderState();
+  State<MenuTableForOrder> createState() => _MenuTableForOrderState();
 }
 
-class _DishTableForOrderState extends State<DishTableForOrder> {
-  final DishCubit dishCubit = GetIt.I.get<DishCubit>();
+class _MenuTableForOrderState extends State<MenuTableForOrder> {
+  final MenuCubit menuCubit = GetIt.I.get<MenuCubit>();
 
   @override
   void initState() {
     super.initState();
-    dishCubit.refresh(null);
+    menuCubit.refresh(null);
   }
 
   @override
-  Widget build(BuildContext context) => BlocBuilder<DishCubit, List<Dish>>(
-        bloc: GetIt.I.get<DishCubit>(),
-        builder: (context, dishes) => SizedBox(
+  Widget build(BuildContext context) => BlocBuilder<MenuCubit, List<Menu>>(
+        bloc: GetIt.I.get<MenuCubit>(),
+        builder: (context, menus) => SizedBox(
           height: 200,
           width: 1000,
           child: ListView(
-            scrollDirection: Axis.vertical,
             controller: ScrollController(
               initialScrollOffset: 0.0,
               keepScrollOffset: true,
-              debugLabel: 'dish_table_for_ordering_scroll_controller',
+              debugLabel: 'menu_table_for_ordering_scroll_controller',
             ),
+            scrollDirection: Axis.vertical,
             children: <Widget>[
               Table(
                 defaultColumnWidth: const FixedColumnWidth(150.0),
@@ -67,7 +67,7 @@ class _DishTableForOrderState extends State<DishTableForOrder> {
                     ]),
                     Column(children: const [
                       Text(
-                        'Type',
+                        'Dishes',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -93,17 +93,17 @@ class _DishTableForOrderState extends State<DishTableForOrder> {
                       ),
                     ]),
                   ]),
-                  for (var dish in dishes)
+                  for (var menu in menus)
                     TableRow(children: [
-                      Column(children: [Text(dish.id.toString())]),
-                      Column(children: [Text(dish.name)]),
-                      Column(children: [Text(dish.type)]),
-                      Column(children: [Text(dish.price.toString())]),
+                      Column(children: [Text(menu.id.toString())]),
+                      Column(children: [Text(menu.name)]),
+                      Column(children: [Text(menu.menuDishNames.toString())]),
+                      Column(children: [Text(menu.price.toString())]),
                       Column(children: [
                         TextButton(
                           child: const Text('+'),
                           onPressed: () {
-                            widget.addOrderCallback(dish);
+                            widget.addOrderCallback(menu);
                           },
                         ),
                       ]),

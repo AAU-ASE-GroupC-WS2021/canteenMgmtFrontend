@@ -53,6 +53,16 @@ class _SingleOrderScreenState extends State<SingleOrderScreen> {
                               '${dishEntry.value * dishEntry.key.price}',
                             ),
                           ),
+                        for (final menuEntry in state.getOrderMenus())
+                          ListTile(
+                            title: Text(menuEntry.key.name),
+                            subtitle: Text(
+                              '${menuEntry.value} × \$${menuEntry.key.price}',
+                            ),
+                            trailing: Text(
+                              '${menuEntry.value * menuEntry.key.price}',
+                            ),
+                          ),
                       ]),
                     ),
         ),
