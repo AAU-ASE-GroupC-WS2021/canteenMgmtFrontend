@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../models/dish.dart';
+import '../models/menu.dart';
 
-class DishTable extends StatelessWidget {
-  const DishTable({Key? key, required this.dishes}) : super(key: key);
+// import '../models/dish.dart';
 
-  final List<Dish> dishes;
+class MenuTable extends StatelessWidget {
+  const MenuTable({Key? key, required this.menus}) : super(key: key);
+
+  final List<Menu> menus;
 
   @override
   Widget build(BuildContext context) => DataTable(
@@ -21,17 +23,17 @@ class DishTable extends StatelessWidget {
   static const List<DataColumn> _columns = [
     DataColumn(label: Text('Name')),
     DataColumn(label: Text('Price')),
-    DataColumn(label: Text('Type')),
+    DataColumn(label: Text('Dishes')),
     DataColumn(label: Text('Day')),
   ];
 
   List<DataRow> get _rows => [
-        for (var dish in dishes)
+        for (var menu in menus)
           DataRow(cells: [
-            DataCell(Text(dish.name)),
-            DataCell(Text(dish.price.toString())),
-            DataCell(Text(dish.type)),
-            DataCell(Text(dish.dishDay)),
+            DataCell(Text(menu.name)),
+            DataCell(Text(menu.price.toString())),
+            DataCell(Text(menu.menuDishNames.toString())),
+            DataCell(Text(menu.menuDay)),
           ]),
       ];
 }

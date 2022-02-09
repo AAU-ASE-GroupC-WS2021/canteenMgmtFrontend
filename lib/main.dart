@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'beamer_locations.dart';
 import 'cubits/auth.dart';
@@ -39,9 +39,6 @@ Future<void> main() async {
   GetIt.I.registerLazySingleton<OrderCubit>(() => OrderCubit());
   GetIt.I.registerLazySingleton<DishCubit>(() => DishCubit());
   GetIt.I.registerLazySingleton<SingleOrderCubit>(() => SingleOrderCubit());
-
-  // remove .../#/... from url
-  Beamer.setPathUrlStrategy();
   GetIt.I.registerLazySingleton<http.Client>(() => http.Client());
 
   runApp(MyApp());

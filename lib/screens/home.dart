@@ -96,6 +96,28 @@ class HomeMenu extends StatelessWidget {
               ),
             ),
             Offstage(
+              offstage: state.type != 'OWNER' && state.type != 'ADMIN',
+              child: ListTile(
+                title: const Text('Menu Management'),
+                leading: const Icon(
+                  Icons.menu_book,
+                  color: Colors.black,
+                ),
+                onTap: () => context.beamToNamed('/menu'),
+              ),
+            ),
+            Offstage(
+              offstage: state.type != 'OWNER' && state.type != 'ADMIN',
+              child: ListTile(
+                title: const Text('Dish Management'),
+                leading: const Icon(
+                  Icons.local_restaurant,
+                  color: Colors.black,
+                ),
+                onTap: () => context.beamToNamed('/dish'),
+              ),
+            ),
+            Offstage(
               offstage: !state.authenticated,
               child: ListTile(
                 title: const Text('Log out'),
