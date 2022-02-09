@@ -1,15 +1,13 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:canteen_mgmt_frontend/screens/pw_change_screen.dart';
-
-import '../services/avatar_service.dart';
-
-import '../services/signin_service.dart';
-import '../services/signup_service.dart';
-import '../services/auth_token.dart';
+import '../screens/pw_change_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
+import '../services/auth_token.dart';
+import '../services/avatar_service.dart';
+import '../services/signin_service.dart';
+import '../services/signup_service.dart';
 
 class ProfileImageWidget extends StatefulWidget {
   const ProfileImageWidget({Key? key}) : super(key: key);
@@ -40,25 +38,24 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
     }
 
     SignupService().getUserSelfInfo().then((value) => {
-      super.setState(() {
-        _username = value.username;
-        _type = value.type;
-      }),
-
-      AvatarService().getAvatar(_username).then((value) => {
-        if (value != null) {
           super.setState(() {
-            _base64Avatar = value.avatar;
-            _hasAvatar = true;
+            _username = value.username;
+            _type = value.type;
           }),
-        },
-      }),
-    });
+          AvatarService().getAvatar(_username).then((value) => {
+                if (value != null)
+                  {
+                    super.setState(() {
+                      _base64Avatar = value.avatar;
+                      _hasAvatar = true;
+                    }),
+                  },
+              }),
+        });
   }
 
   @override
   Widget build(BuildContext context) {
-
     if (!AuthTokenUtils.isLoggedIn()) {
       return const Offstage(
         offstage: true,
@@ -71,55 +68,66 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
           onTap: () {
             pickNewImage();
           },
-          child: _hasAvatar ?
-          Image.memory(base64Decode(_base64Avatar), height: 100, fit: BoxFit.contain)
-          :
-          Image.asset('assets/graphics/blank-avatar.png', height: 100, fit: BoxFit.contain),
+          child: _hasAvatar
+              ? Image.memory(base64Decode(_base64Avatar),
+                  height: 100, fit: BoxFit.contain)
+              : Image.asset('assets/graphics/blank-avatar.png',
+                  height: 100, fit: BoxFit.contain),
         ),
 
         const SizedBox(height: 10), // space between buttons
 
         // Username
-        Text('@' + _username, style: TextStyle(fontWeight: FontWeight.w500, color: Colors.primaries.first.shade500)),
+        Text('@' + _username,
+            style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.primaries.first.shade500)),
 
         const SizedBox(height: 5), // space between buttons
 
         // User type
         Row(
           children: [
-            const Text('Type: ', style: TextStyle(fontWeight: FontWeight.w400, color: Colors.grey)),
-            Text(_type, style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.blueAccent)),
+            const Text('Type: ',
+                style:
+                    TextStyle(fontWeight: FontWeight.w400, color: Colors.grey)),
+            Text(_type,
+                style: const TextStyle(
+                    fontWeight: FontWeight.w500, color: Colors.blueAccent)),
           ],
           mainAxisAlignment: MainAxisAlignment.center,
         ),
 
         const SizedBox(height: 20), //
-        const Text('Profile management', style: TextStyle(fontWeight: FontWeight.w400, color: Colors.grey)),
+        const Text('Profile management',
+            style: TextStyle(fontWeight: FontWeight.w400, color: Colors.grey)),
 
         const SizedBox(height: 10), // space between buttons
 
         // Change password button
         ElevatedButton(
           onPressed: () => {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PwChangeScreen())),
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const PwChangeScreen())),
           },
-          child: const Text('Change password', style: TextStyle(fontSize: 10)),),
+          child: const Text('Change password', style: TextStyle(fontSize: 10)),
+        ),
 
         // Button: Remove avatar
-        if (_hasAvatar) ... [
+        if (_hasAvatar) ...[
           const SizedBox(height: 10), // space between buttons
 
           ElevatedButton(
             onPressed: () => {
               AvatarService().deleteAvatar(_username).then((value) => {
-                super.setState(() {
-                  _hasAvatar = false;
-                }),
-              }),
+                    super.setState(() {
+                      _hasAvatar = false;
+                    }),
+                  }),
             },
-            child: const Text('Delete avatar', style: TextStyle(fontSize: 10)),),
+            child: const Text('Delete avatar', style: TextStyle(fontSize: 10)),
+          ),
         ],
-
       ],
     );
   }
@@ -135,13 +143,14 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
     final String imageBase64 = base64Encode(imageBytes);
 
     AvatarService().updateAvatar(_username, imageBase64).then((value) => {
-      if (value) {
-        super.setState(() {
-          _base64Avatar = imageBase64;
-          _hasAvatar = true;
-        }),
-      },
-    });
+          if (value)
+            {
+              super.setState(() {
+                _base64Avatar = imageBase64;
+                _hasAvatar = true;
+              }),
+            },
+        });
 
     return true;
   }

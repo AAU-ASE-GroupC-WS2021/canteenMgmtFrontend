@@ -15,9 +15,9 @@ class Avatar {
   }
 
   Map<String, dynamic> toJson() => {
-    'username': username,
-    'avatar': avatar,
-  };
+        'username': username,
+        'avatar': avatar,
+      };
 
   @override
   String toString() {

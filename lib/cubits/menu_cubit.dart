@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:canteen_mgmt_frontend/models/menu.dart';
-import 'package:canteen_mgmt_frontend/services/menu_service.dart';
+import '../models/menu.dart';
+import '../services/menu_service.dart';
 import 'package:get_it/get_it.dart';
 
 class MenuCubit extends Cubit<List<Menu>> {

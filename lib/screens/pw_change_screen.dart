@@ -1,9 +1,7 @@
-import 'package:beamer/beamer.dart';
-import 'package:canteen_mgmt_frontend/screens/password_finished.dart';
-import 'package:canteen_mgmt_frontend/screens/signup_finished.dart';
-import 'package:canteen_mgmt_frontend/services/signup_service.dart';
-import 'package:canteen_mgmt_frontend/services/auth_token.dart';
-import 'package:canteen_mgmt_frontend/widgets/about_button.dart';
+import 'password_finished.dart';
+import '../services/auth_token.dart';
+import '../services/signup_service.dart';
+import '../widgets/about_button.dart';
 import 'package:flutter/material.dart';
 
 import 'home.dart';
@@ -45,7 +43,9 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
               ),
               const SizedBox(height: 20), // space between buttons
               ElevatedButton(
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen())),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                ),
                 child: const Text('Go to the Homepage'),
               ),
             ],
@@ -55,18 +55,17 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
     }
 
     return Form(
-        key: _formKey,
-        child:
-        Scaffold(
-      appBar: AppBar(
-        title: const Text('Change password'),
-        actions: const [AboutButton()],
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            SizedBox(
+      key: _formKey,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Change password'),
+          actions: const [AboutButton()],
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
                 width: 350.0,
                 child: Column(
                   children: [
@@ -113,7 +112,7 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
                           signupService.updatePassword(value.username, passwordControllerOld.text, passwordControllerNe2.text)
                               .then((value) => {
                             if (value == null) {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => PasswordFinishedScreen())),
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PasswordFinishedScreen())),
                             }
                             else {
                               showAlertDialog(value)
@@ -133,11 +132,11 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
                     ),
                   ],
                 ),
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
-    ),
     );
   }
 
@@ -145,7 +144,9 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
     // set up the button
     Widget okButton = TextButton(
       child: const Text("Close"),
-      onPressed: () { Navigator.pop(context); },
+      onPressed: () {
+        Navigator.pop(context);
+      },
     );
 
     // set up the AlertDialog
@@ -169,11 +170,9 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
   String? validateOldPassword(String? password) {
     if (password == null || password.isEmpty) {
       return 'Password field cannot be empty.';
-    }
-    else if (password.length < 9) {
+    } else if (password.length < 9) {
       return 'Password has to be at least 9 characters long.';
-    }
-    else if (password.length > 64) {
+    } else if (password.length > 64) {
       return 'Password cannot be longer than 64 characters.';
     }
 
@@ -188,49 +187,47 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
   String? validatePassword(String? password) {
     if (password == null || password.isEmpty) {
       return 'Password field cannot be empty.';
-    }
-    else if (password.length < 9) {
+    } else if (password.length < 9) {
       return 'Password has to be at least 9 characters long.';
-    }
-    else if (password.length > 64) {
+    } else if (password.length > 64) {
       return 'Password cannot be longer than 64 characters.';
     }
 
     String otherRequirements = "";
 
     if (!regexAtLeastOneUppercaseLetter.hasMatch(password)) {
-      otherRequirements += 'Password must contain at least one uppercase letter.\n';
+      otherRequirements +=
+          'Password must contain at least one uppercase letter.\n';
     }
 
     if (!regexAtLeastOneLowercaseLetter.hasMatch(password)) {
-      otherRequirements += 'Password must contain at least one lowercase letter.\n';
+      otherRequirements +=
+          'Password must contain at least one lowercase letter.\n';
     }
 
     if (!regexAtLeastOneDigit.hasMatch(password)) {
       otherRequirements += 'Password must contain at least one digit.\n';
     }
 
-    return otherRequirements.length > 0 ? otherRequirements : null;
+    return otherRequirements.isNotEmpty ? otherRequirements : null;
   }
 
   String? validateNewPassword(String? password) {
     if (validatePassword(password) != null) {
       return validatePassword(password);
-    }
-    else if (passwordControllerOld.text == passwordControllerNe1.text) {
+    } else if (passwordControllerOld.text == passwordControllerNe1.text) {
       return 'New password cannot be the same as the current one!';
     }
 
     return null;
   }
 
-    String? validateNewPasswordRepeated(String? password) {
-      if (validatePassword(password) != null) {
-        return validatePassword(password);
-      }
-      else if (passwordControllerNe1.text != passwordControllerNe2.text) {
-        return 'Repeated password does not match the new one!';
-      }
+  String? validateNewPasswordRepeated(String? password) {
+    if (validatePassword(password) != null) {
+      return validatePassword(password);
+    } else if (passwordControllerNe1.text != passwordControllerNe2.text) {
+      return 'Repeated password does not match the new one!';
+    }
 
     return null;
   }

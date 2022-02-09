@@ -1,7 +1,6 @@
-import 'package:beamer/beamer.dart';
-import 'package:canteen_mgmt_frontend/services/auth_token.dart';
 import 'package:flutter/material.dart';
 
+import '../services/auth_token.dart';
 import '../widgets/about_button.dart';
 import 'home.dart';
 
@@ -22,7 +21,9 @@ class PasswordFinishedScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20), // space between buttons
               ElevatedButton(
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen())),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                ),
                 child: const Text('Go to the Homepage'),
               ),
             ],
@@ -46,7 +47,9 @@ class PasswordFinishedScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20), // space between buttons
             ElevatedButton(
-              onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen())),
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
+              ),
               child: const Text('Go to the Homepage'),
             ),
           ],

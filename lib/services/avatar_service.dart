@@ -1,14 +1,11 @@
 import 'dart:convert';
-import 'package:canteen_mgmt_frontend/models/avatar.dart';
-import 'package:crypto/crypto.dart';
 
-import '../models/signup.dart';
+import '../models/avatar.dart';
+
 import 'abstract_service.dart';
 
 class AvatarService extends AbstractService {
-
   Future<bool> updateAvatar(String username, String avatar) async {
-
     var body = json.encode(Avatar(
       username: username,
       avatar: avatar,

@@ -10,10 +10,10 @@ class PasswordChange {
   });
 
   Map<String, dynamic> toJson() => {
-    'username': username,
-    'passwordOld': passwordOld,
-    'passwordNew': passwordNew,
-  };
+        'username': username,
+        'passwordOld': passwordOld,
+        'passwordNew': passwordNew,
+      };
 
   @override
   String toString() {

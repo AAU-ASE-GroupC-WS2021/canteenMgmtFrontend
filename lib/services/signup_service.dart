@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:canteen_mgmt_frontend/models/passwordChange.dart';
+
+import '../models/passwordChange.dart';
 import 'package:crypto/crypto.dart';
 
 import '../models/signup.dart';
@@ -29,8 +30,8 @@ class SignupService extends AbstractService {
     }
   }
 
-  Future<String?> updatePassword(String username, String oldPassword, String newPassword) async {
-
+  Future<String?> updatePassword(
+      String username, String oldPassword, String newPassword) async {
     var bytesOld = utf8.encode(oldPassword);
     var hashOld = sha256.convert(bytesOld).toString();
 
@@ -47,5 +48,4 @@ class SignupService extends AbstractService {
 
     return response.statusCode == 200 ? null : response.body.toString();
   }
-
 }

@@ -1,15 +1,13 @@
-import 'package:beamer/beamer.dart';
-import 'package:canteen_mgmt_frontend/screens/signin_screen.dart';
-import 'package:canteen_mgmt_frontend/services/signin_service.dart';
-import 'package:canteen_mgmt_frontend/services/auth_token.dart';
-import 'package:canteen_mgmt_frontend/widgets/about_button.dart';
-import 'package:canteen_mgmt_frontend/widgets/profile_image_widget.dart';
-import 'package:canteen_mgmt_frontend/widgets/signin_button.dart';
-import 'package:canteen_mgmt_frontend/widgets/signout_button.dart';
-import 'package:canteen_mgmt_frontend/widgets/signup_button.dart';
-import 'package:canteen_mgmt_frontend/widgets/user_info_button.dart';
 import 'package:flutter/material.dart';
 
+import '../services/auth_token.dart';
+import '../services/signin_service.dart';
+import '../widgets/about_button.dart';
+import '../widgets/profile_image_widget.dart';
+import '../widgets/signin_button.dart';
+import '../widgets/signout_button.dart';
+import '../widgets/signup_button.dart';
+import '../widgets/user_info_button.dart';
 import 'home.dart';
 
 class ProfileManagementScreen extends StatefulWidget {
@@ -48,7 +46,9 @@ class _ProfileManagementScreenState extends State<ProfileManagementScreen> {
               ),
               const SizedBox(height: 20), // space between buttons
               ElevatedButton(
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen())),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                ),
                 child: const Text('Go to the Homepage'),
               ),
             ],
@@ -60,7 +60,13 @@ class _ProfileManagementScreenState extends State<ProfileManagementScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('User profile management'),
-        actions: const [SignInButton(), UserInfoButton(), SignOutButton(), SignUpButton(), AboutButton()],
+        actions: const [
+          SignInButton(),
+          UserInfoButton(),
+          SignOutButton(),
+          SignUpButton(),
+          AboutButton()
+        ],
       ),
       body: Center(
         child: Column(
@@ -77,7 +83,9 @@ class _ProfileManagementScreenState extends State<ProfileManagementScreen> {
     // set up the button
     Widget okButton = TextButton(
       child: const Text("Close"),
-      onPressed: () { Navigator.pop(context); },
+      onPressed: () {
+        Navigator.pop(context);
+      },
     );
 
     // set up the AlertDialog
@@ -101,11 +109,9 @@ class _ProfileManagementScreenState extends State<ProfileManagementScreen> {
   String? validatePassword(String? password) {
     if (password == null || password.isEmpty) {
       return 'Password field cannot be empty.';
-    }
-    else if (password.length < 9) {
+    } else if (password.length < 9) {
       return 'Password has to be at least 9 characters long.';
-    }
-    else if (password.length > 64) {
+    } else if (password.length > 64) {
       return 'Password cannot be longer than 64 characters.';
     }
 
@@ -115,11 +121,9 @@ class _ProfileManagementScreenState extends State<ProfileManagementScreen> {
   String? validateUsername(String? username) {
     if (username == null || username.isEmpty) {
       return 'Username field cannot be empty.';
-    }
-    else if (username.length < 3) {
+    } else if (username.length < 3) {
       return 'Username has to be at least 3 characters long.';
-    }
-    else if (username.length > 24) {
+    } else if (username.length > 24) {
       return 'Username cannot be longer than 24 characters.';
     }
 
