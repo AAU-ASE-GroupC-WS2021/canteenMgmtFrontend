@@ -1,4 +1,5 @@
 import 'package:beamer/beamer.dart';
+import 'package:canteen_mgmt_frontend/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -15,8 +16,9 @@ class SignOutButton extends StatelessWidget {
         child: ElevatedButton(
           child: const Text("Log out"),
           onPressed: () async {
-            context.read<AuthCubit>().logout();
-            context.beamToNamed('/');
+            context.read<AuthCubit>().logout().then((value) => {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomeScreen())),
+            });
           },
         ),
       ),
