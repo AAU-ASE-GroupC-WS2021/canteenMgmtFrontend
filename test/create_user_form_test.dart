@@ -24,7 +24,7 @@ void main() {
     type: UserType.ADMIN,
     id: 1,
     canteenID: _canteens[_defaultCanteenIndex].id,
-    password: "password",
+    password: "mySuperSophisticatedP4SSW0RD",
   );
 
   Widget testWidget = const MaterialApp(
