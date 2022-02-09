@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+
+import 'qr_display.dart';
 
 class QrPopup extends StatelessWidget {
   const QrPopup({
@@ -13,9 +14,9 @@ class QrPopup extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text('Some Order'),
-      content: SizedBox(
-        width: 200,
-        child: QrImage(data: token),
+      content: QrCodeDisplay(
+        data: token,
+        size: 200,
       ),
     );
   }
