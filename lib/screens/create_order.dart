@@ -39,7 +39,7 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   @override
   void initState() {
     super.initState();
-    selectedPickuptime = DateTime.now().add(const Duration(hours: 1));
+    updatePickupTime(DateTime.now().add(const Duration(hours: 1)));
   }
 
   @override
@@ -339,11 +339,9 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
   };
 
   updatePickupTime(DateTime newPickupTime) {
-    if (selectedPickuptime.weekday != newPickupTime.weekday) {
-      dishCubit.dishDay = dayMapping[newPickupTime.weekday];
-      dishCubit.refresh();
-      menuCubit.refresh(dayMapping[newPickupTime.weekday]);
-    }
+    dishCubit.dishDay = dayMapping[newPickupTime.weekday];
+    dishCubit.refresh();
+    menuCubit.refresh(dayMapping[newPickupTime.weekday]);
     setState(() {
       selectedPickuptime = newPickupTime;
     });
