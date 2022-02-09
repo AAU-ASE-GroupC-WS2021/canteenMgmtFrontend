@@ -13,6 +13,7 @@ class MyOrdersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    GetIt.I.get<OrderCubit>().refresh();
     return Scaffold(
       appBar: AppBar(title: const Text('My Orders')),
       body: BlocBuilder<OrderCubit, List<Order>>(

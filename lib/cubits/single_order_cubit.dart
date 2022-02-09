@@ -30,4 +30,8 @@ class OrderState {
   getOrderDishes() {
     return order == null ? [] : order?.dishes.entries;
   }
+
+  getOrderMenus() {
+    return order == null ? [] : order?.menus.entries;
+  }
 }
