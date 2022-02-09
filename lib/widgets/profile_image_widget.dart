@@ -82,14 +82,7 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
         // Username
         Text('@' + _username, style: TextStyle(fontWeight: FontWeight.w500, color: Colors.primaries.first.shade500)),
 
-        // Display name
-        Row(
-          children: [
-            const Text('Name: ', style: TextStyle(fontWeight: FontWeight.w400, color: Colors.grey)),
-            Text(_username, style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.blueAccent)),
-          ],
-          mainAxisAlignment: MainAxisAlignment.center,
-        ),
+        const SizedBox(height: 5), // space between buttons
 
         // User type
         Row(
