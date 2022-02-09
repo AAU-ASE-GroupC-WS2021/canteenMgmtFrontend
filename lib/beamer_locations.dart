@@ -11,6 +11,7 @@ import 'screens/menu_service_demo.dart';
 import 'screens/my_orders.dart';
 import 'screens/order_qr_scan.dart';
 import 'screens/order_select_canteen.dart';
+import 'screens/profile_mgmt_screen.dart';
 import 'screens/signin_screen.dart';
 import 'screens/signup_finished.dart';
 import 'screens/signup_screen.dart';
@@ -46,6 +47,10 @@ BeamerDelegate getBeamerDelegate() => BeamerDelegate(
                 title: 'Profile creation confirmation',
                 child: SignupFinishedScreen(),
                 key: ValueKey('SignupFinishedScreen'),
+              ),
+          '/profile': (context, state, data) => const BeamPage(
+                child: ProfileManagementScreen(),
+                title: 'Profile creation confirmation',
               ),
           '/admin': (context, state, data) => const BeamPage(
                 title: 'Admin Dashboard',
