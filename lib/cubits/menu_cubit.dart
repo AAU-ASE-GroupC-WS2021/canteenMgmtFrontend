@@ -5,13 +5,14 @@ import 'package:get_it/get_it.dart';
 
 class MenuCubit extends Cubit<List<Menu>> {
   final MenuService _menuService;
+  String? menuDay;
 
   MenuCubit()
       : _menuService = GetIt.I.get<MenuService>(),
         super([]) {
-    refresh(null);
+    refresh();
   }
 
-  Future<void> refresh(String? menuDay) async =>
+  Future<void> refresh() async =>
       emit(await _menuService.fetchMenus(menuDay: menuDay));
 }

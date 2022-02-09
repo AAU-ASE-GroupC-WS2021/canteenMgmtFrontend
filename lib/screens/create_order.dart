@@ -1,6 +1,7 @@
 import 'package:beamer/beamer.dart';
-import '../models/create_order_menu.dart';
-import '../widgets/menu_table_for_ordering.dart';
+import 'package:canteen_mgmt_frontend/models/create_order_menu.dart';
+import 'package:canteen_mgmt_frontend/services/util/day_mapping.dart';
+import 'package:canteen_mgmt_frontend/widgets/menu_table_for_ordering.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -330,18 +331,11 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
     }
   }
 
-  Map<int, String> dayMapping = {
-    DateTime.monday: "MONDAY",
-    DateTime.tuesday: "TUESDAY",
-    DateTime.wednesday: "WEDNESDAY",
-    DateTime.thursday: "THURSDAY",
-    DateTime.friday: "FRIDAY",
-  };
-
   updatePickupTime(DateTime newPickupTime) {
-    dishCubit.dishDay = dayMapping[newPickupTime.weekday];
+    dishCubit.dishDay = getDayName(newPickupTime.weekday);
     dishCubit.refresh();
-    menuCubit.refresh(dayMapping[newPickupTime.weekday]);
+    menuCubit.menuDay = getDayName(newPickupTime.weekday);
+    menuCubit.refresh();
     setState(() {
       selectedPickuptime = newPickupTime;
     });
