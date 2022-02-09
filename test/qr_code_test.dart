@@ -2,16 +2,15 @@ import 'dart:async';
 
 import 'package:canteen_mgmt_frontend/cubits/order_cubit.dart';
 import 'package:canteen_mgmt_frontend/models/dish.dart';
+import 'package:canteen_mgmt_frontend/models/menu.dart';
 import 'package:canteen_mgmt_frontend/models/order.dart';
 import 'package:canteen_mgmt_frontend/screens/my_orders.dart';
-import 'package:canteen_mgmt_frontend/services/key_value_store.dart';
 import 'package:canteen_mgmt_frontend/services/order_qr_code.dart';
 import 'package:canteen_mgmt_frontend/widgets/qr_display.dart';
 import 'package:canteen_mgmt_frontend/widgets/qr_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
@@ -22,6 +21,14 @@ final _order = Order(
   canteenId: 1,
   userId: 1,
   dishes: const {Dish(name: 'QR Dish', price: 123, type: 'MAIN'): 2},
+  menus: const {
+    Menu(
+        id: 1,
+        menuDishNames: ['Menu1', 'Menu2'],
+        name: 'First Menu',
+        price: 10,
+        menuDay: "MONDAY"): 3
+  },
   pickupDate: DateTime.now().add(const Duration(hours: 2)),
   reserveTable: false,
 );
@@ -30,6 +37,14 @@ final _orderNoId = Order(
   canteenId: 1,
   userId: 1,
   dishes: const {Dish(name: 'QR Dish', price: 123, type: 'MAIN'): 2},
+  menus: const {
+    Menu(
+        id: 1,
+        menuDishNames: ['Menu1', 'Menu2'],
+        name: 'First Menu',
+        price: 10,
+        menuDay: "MONDAY"): 3
+  },
   pickupDate: DateTime.now().add(const Duration(hours: 2)),
   reserveTable: false,
 );

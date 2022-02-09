@@ -101,7 +101,7 @@ class _MenuTableForOrderState extends State<MenuTableForOrder> {
                       Column(children: [Text(menu.price.toString())]),
                       Column(children: [
                         TextButton(
-                          child: const Text('+'),
+                          child: const Icon(Icons.add),
                           onPressed: () {
                             widget.addOrderCallback(menu);
                           },

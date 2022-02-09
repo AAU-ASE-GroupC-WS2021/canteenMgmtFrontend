@@ -101,7 +101,7 @@ class _DishTableForOrderState extends State<DishTableForOrder> {
                       Column(children: [Text(dish.price.toString())]),
                       Column(children: [
                         TextButton(
-                          child: const Text('+'),
+                          child: const Icon(Icons.add),
                           onPressed: () {
                             widget.addOrderCallback(dish);
                           },
