@@ -22,7 +22,7 @@ do
   if [ -f "$FIXTURE_DIR/${filename}.sql" ]; then
     echo "Setting up fixture for $TEST_FILE"
     cat "$FIXTURE_DIR/reset.sql" "$FIXTURE_DIR/${filename}.sql" | PGPASSWORD=mysecretpassword psql \
-      -h 127.0.0.1 -p 5432 -d postgres -U postgres -f - > /dev/null
+      -h 127.0.0.1 -p 5432 -d postgres -U postgres -q -f -
   else
     echo "Found no fixture for $TEST_FILE. Only resetting to default"
     PGPASSWORD=mysecretpassword psql -h 127.0.0.1 -p 5432 -d postgres -U postgres \

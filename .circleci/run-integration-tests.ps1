@@ -2,8 +2,8 @@ $TestDir = "integration_test"
 $DriverDir = "$TestDir/test_driver"
 $FixtureDir = "$TestDir/fixtures"
 
-$Passed = @()
-$Failed = @()
+$global:Passed = @()
+$global:Failed = @()
 
 Function Run-FlutterIntegrationTest {
     param(
@@ -13,8 +13,19 @@ Function Run-FlutterIntegrationTest {
         [Switch]$IgnoreResult = $false,
         [String]$Args = ""
     )
+    $TargetFile = Get-Item $Target
+    $TestName = $TargetFile.BaseName
 
-    $TestName = (Get-Item $Target).Name
+    Write-Host "Applying fixtures for $TestName" -ForegroundColor DarkYellow
+
+    $SqlFixtures = @("$FixtureDir/reset.sql")
+    if (Test-Path "$FixtureDir/$TestName.sql") {
+        $SqlFixtures += "$FixtureDir/$TestName.sql"
+    }
+    $env:PGPASSWORD="mysecretpassword"
+    cat $SqlFixtures | psql -h 127.0.0.1 -p 5432 -d postgres -U postgres -q -f -
+    $env:PGPASSWORD=""
+
     Write-Host "Running $TestName" -ForegroundColor DarkYellow
 
     flutter drive --driver=`"$Driver`" --target=`"$Target`" `
@@ -27,17 +38,17 @@ Function Run-FlutterIntegrationTest {
 
     If (-not $IgnoreResult) {
         If ($LASTEXITCODE -ne 0) {
-            $Failed += $Target
+            $global:Failed += "$TestName"
             Write-Host "$TestName failed" -ForegroundColor DarkRed
         } Else {
-            $Passed += $Target
+            $global:Passed += "$TestName"
             Write-Host "$TestName passed" -ForegroundColor DarkGreen
         }
     }
 }
 
 Run-FlutterIntegrationTest -Target "$TestDir/qr_scan_test.dart" -Driver "$DriverDir/screenshot_test.dart" `
-    -Args "--dart-define=SCREENSHOT=ON"
+    -Args "--dart-define=SCREENSHOT=ON" -IgnoreResult
 
 
 Get-Item "$TestDir/*_test.dart" -Include $IncludeIntegrationTests -Exclude $ExcludeIntegrationTests `
@@ -51,6 +62,6 @@ If ($Failed.Length -eq 0) {
     }
 } Else {
     Write-Host "`n`nResults:`n" -ForegroundColor DarkYellow
-    $Passed |ForEach-Object { Write-Host "$( $_.Name ) passed" -ForegroundColor DarkGreen }
-    $Failed |ForEach-Object { Write-Host "$( $_.Name ) failed" -ForegroundColor DarkRed }
+    $Passed |ForEach-Object { Write-Host "$_ passed" -ForegroundColor DarkGreen }
+    $Failed |ForEach-Object { Write-Host "$_ failed" -ForegroundColor DarkRed }
 }

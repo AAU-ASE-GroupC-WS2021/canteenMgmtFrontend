@@ -53,3 +53,5 @@ app.*.map.json
 # generated dart files (by build_runner)
 *.g.dart
 *.mocks.dart
+
+screenshots/
