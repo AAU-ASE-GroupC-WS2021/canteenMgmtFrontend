@@ -1,4 +1,4 @@
-import 'package:canteen_mgmt_frontend/cubits/canteen_cubit.dart';
+import 'package:canteen_mgmt_frontend/cubits/canteens_cubit.dart';
 import 'package:canteen_mgmt_frontend/cubits/filtered_users_cubit.dart';
 import 'package:canteen_mgmt_frontend/models/canteen.dart';
 import 'package:canteen_mgmt_frontend/models/user.dart';

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-import '../cubits/canteen_cubit.dart';
+import '../cubits/canteens_cubit.dart';
 import '../cubits/filtered_users_cubit.dart';
 import '../models/canteen.dart';
 import '../models/user.dart';
