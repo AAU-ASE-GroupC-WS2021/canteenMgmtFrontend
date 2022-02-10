@@ -53,9 +53,17 @@ class AuthCubit extends Cubit<AuthState> {
   /// Try to log in with credentials.
   ///
   /// If the request fails, the response is passed through.
-  Future<String?> login(String username, String password) async {
+  Future<String?> login(
+    String username,
+    String password, {
+    bool awaitRefresh = false,
+  }) async {
     final response = await _signInService.login(username, password);
-    refresh();
+    if (awaitRefresh) {
+      await refresh();
+    } else {
+      refresh();
+    }
     return response;
   }
 

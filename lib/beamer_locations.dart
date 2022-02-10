@@ -40,11 +40,20 @@ BeamerDelegate getBeamerDelegate() => BeamerDelegate(
                 child: SignupScreen(),
                 key: ValueKey('SignupScreen'),
               ),
-          '/signin': (context, state, data) => const BeamPage(
-                title: 'Log in',
-                child: SignInScreen(),
-                key: ValueKey('SignInScreen'),
-              ),
+          '/signin': (context, state, data) {
+            var redirectTo = '/';
+            final redirectToEncoded = state.queryParameters['to'];
+            if (redirectToEncoded != null) {
+              redirectTo = Uri.decodeQueryComponent(redirectToEncoded);
+            }
+            print('redirect to (encoded) $redirectToEncoded');
+            print('redirect to $redirectTo');
+            return BeamPage(
+              title: 'Log in',
+              child: SignInScreen(redirectToNamed: redirectTo),
+              key: ValueKey('SignInScreen_$redirectTo'),
+            );
+          },
           '/signup/finished': (context, state, data) => const BeamPage(
                 title: 'Profile creation confirmation',
                 child: SignupFinishedScreen(),
@@ -98,7 +107,13 @@ BeamerDelegate getBeamerDelegate() => BeamerDelegate(
           pathPatterns: ['/', '/sign*'],
           check: (context, beamLocation) =>
               context.read<AuthCubit>().state.authenticated,
-          beamToNamed: (from, to) => '/signin',
+          beamToNamed: (from, to) {
+            final url = to.state.routeInformation.location;
+            if (url == null) return '/signin';
+
+            final encodedUrl = Uri.encodeQueryComponent(url);
+            return '/signin?to=$encodedUrl';
+          },
         ),
         // redirect away from login/registration pages when already logged in
         BeamGuard(

@@ -1,14 +1,17 @@
 import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../cubits/auth.dart';
-import '../../services/auth/auth_token.dart';
 import '../../widgets/about_button.dart';
 
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+  const SignInScreen({Key? key, this.redirectToNamed = '/'}) : super(key: key);
+
+  /// Redirect after login
+  ///
+  /// Useful when reloading the page (or from bookmark)
+  final String redirectToNamed;
 
   @override
   State<StatefulWidget> createState() {
@@ -23,39 +26,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final passwordController = TextEditingController();
 
   @override
-  void initState() {
-    if (AuthTokenUtils.isLoggedIn()) {
-      // to avoid inconsistent state. see https://stackoverflow.com/a/44271936/9335596
-      SchedulerBinding.instance?.addPostFrameCallback((_) {
-        context.beamToNamed('/');
-      });
-    }
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    if (AuthTokenUtils.isLoggedIn()) {
-      return Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                "You are already logged in!",
-                style: TextStyle(fontSize: 25),
-              ),
-              const SizedBox(height: 20), // space between buttons
-              ElevatedButton(
-                onPressed: () => context.beamToNamed('/'),
-                child: const Text('Go to the Homepage'),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
     return Form(
       key: _formKey,
       child: Scaffold(
@@ -88,6 +59,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       decoration: const InputDecoration(
                         labelText: 'Password',
                       ),
+                      textInputAction: TextInputAction.done,
                     ),
                     const SizedBox(height: 20), // space between buttons
                     ElevatedButton(
@@ -99,9 +71,12 @@ class _SignInScreenState extends State<SignInScreen> {
                             .login(
                               usernameController.text,
                               passwordController.text,
+                              awaitRefresh: widget.redirectToNamed != '/',
                             )
                             .then((value) => value == null
-                                ? context.popToNamed('/')
+                                ? context.beamToNamed(
+                                    widget.redirectToNamed,
+                                  )
                                 : showAlertDialog(value))
                             .onError((error, stackTrace) => showAlertDialog(
                                   "Unknown error occurred while trying to log you in."
