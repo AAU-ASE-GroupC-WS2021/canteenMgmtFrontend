@@ -24,8 +24,11 @@ class AuthCubit extends Cubit<AuthState> {
   final _signInService = SignInService();
   final _signUpService = SignupService();
 
-  AuthCubit() : super(_loggedOut) {
-    refresh();
+  AuthCubit({
+    AuthState? initialState,
+    bool refreshNow = true,
+  }) : super(initialState ?? _loggedOut) {
+    if (refreshNow) refresh();
   }
 
   /// Reload authentication state

@@ -49,19 +49,31 @@ Future<void> main() async {
   GetIt.I.registerLazySingleton<SignupService>(() => SignupService());
   GetIt.I.registerLazySingleton<AvatarService>(() => AvatarService());
 
-  runApp(MyApp());
+  // wait for the connection to be established (with a timeout of 3s)
+  // so that routing will not prematurely assume that the user is not authenticated.
+  // needs to run after some of the getIt registrations, as it depends on them
+  final initAuthCubit = AuthCubit(refreshNow: false);
+  final authEstablished =
+      initAuthCubit.refresh().timeout(const Duration(seconds: 3));
+  // if there is other async stuff that runs before the app starts, put it here
+  await authEstablished;
+
+  runApp(MyApp(initialAuthState: initAuthCubit.state));
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key, this.initialAuthState}) : super(key: key);
 
   final beamerDelegate = getBeamerDelegate();
+  final AuthState? initialAuthState;
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<AuthCubit>(create: (context) => AuthCubit()),
+        BlocProvider<AuthCubit>(
+          create: (context) => AuthCubit(initialState: initialAuthState),
+        ),
       ],
       child: MaterialApp.router(
         title: 'Canteen Management',
