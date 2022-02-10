@@ -101,7 +101,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               passwordController.text,
                             )
                             .then((value) => value == null
-                                ? context.beamToNamed('/')
+                                ? context.popToNamed('/')
                                 : showAlertDialog(value))
                             .onError((error, stackTrace) => showAlertDialog(
                                   "Unknown error occurred while trying to log you in."

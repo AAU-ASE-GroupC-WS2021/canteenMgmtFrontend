@@ -17,7 +17,7 @@ class SignOutButton extends StatelessWidget {
           child: const Text("Log out"),
           onPressed: () async {
             context.read<AuthCubit>().logout().then((value) => {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const HomeScreen())),
+              context.popToNamed("/"),
             });
           },
         ),

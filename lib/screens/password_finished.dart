@@ -1,37 +1,13 @@
+import 'package:beamer/src/beamer.dart';
 import 'package:flutter/material.dart';
 
-import '../services/auth_token.dart';
 import '../widgets/about_button.dart';
-import 'home.dart';
 
 class PasswordFinishedScreen extends StatelessWidget {
   const PasswordFinishedScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    if (!AuthTokenUtils.isLoggedIn()) {
-      return Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                "You are not logged in!",
-                style: TextStyle(fontSize: 25),
-              ),
-              const SizedBox(height: 20), // space between buttons
-              ElevatedButton(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                ),
-                child: const Text('Go to the Homepage'),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Update password'),
@@ -47,9 +23,7 @@ class PasswordFinishedScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20), // space between buttons
             ElevatedButton(
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const HomeScreen()),
-              ),
+              onPressed: () => context.popToNamed("/profile"),
               child: const Text('Go to the Homepage'),
             ),
           ],
