@@ -60,29 +60,11 @@ class _SignInScreenState extends State<SignInScreen> {
                         labelText: 'Password',
                       ),
                       textInputAction: TextInputAction.done,
+                      onEditingComplete: submit,
                     ),
                     const SizedBox(height: 20), // space between buttons
                     ElevatedButton(
-                      onPressed: () {
-                        if (!_formKey.currentState!.validate()) return;
-
-                        context
-                            .read<AuthCubit>()
-                            .login(
-                              usernameController.text,
-                              passwordController.text,
-                              awaitRefresh: widget.redirectToNamed != '/',
-                            )
-                            .then((value) => value == null
-                                ? context.beamToNamed(
-                                    widget.redirectToNamed,
-                                  )
-                                : showAlertDialog(value))
-                            .onError((error, stackTrace) => showAlertDialog(
-                                  "Unknown error occurred while trying to log you in."
-                                  "\nPlease refresh the page and try again.!",
-                                ));
-                      },
+                      onPressed: submit,
                       child: const Text('Log in'),
                     ),
                   ],
@@ -92,6 +74,33 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  submit() {
+    if (!_formKey.currentState!.validate()) return;
+
+    context
+        .read<AuthCubit>()
+        .login(
+          usernameController.text,
+          passwordController.text,
+          awaitRefresh: widget.redirectToNamed != '/',
+        )
+        .then(
+          (value) {
+            if (value == null) {
+              context.beamToNamed(widget.redirectToNamed);
+            } else {
+              showAlertDialog(value);
+            }
+          },
+        )
+        .onError(
+          (error, stackTrace) => showAlertDialog(
+            "Unknown error occurred while trying to log you in."
+            "\nPlease refresh the page and try again.!",
+        ),
     );
   }
 
