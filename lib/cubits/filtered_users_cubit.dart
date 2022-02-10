@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:get_it/get_it.dart';
 
-import '../models/user.dart';
+import '../models/users/user.dart';
 import '../services/owner_user_service.dart';
 
 class FilteredUsersCubit extends Cubit<FilteredUsersState> {
@@ -12,9 +12,7 @@ class FilteredUsersCubit extends Cubit<FilteredUsersState> {
 
   FilteredUsersCubit()
       : _userService = GetIt.I.get<OwnerUserService>(),
-        super(FilteredUsersState(isLoading: true)) {
-    refresh();
-  }
+        super(FilteredUsersState(isLoading: true));
 
   Future<void> refresh() async {
     try {

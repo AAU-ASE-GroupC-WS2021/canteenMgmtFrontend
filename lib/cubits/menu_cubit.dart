@@ -9,9 +9,7 @@ class MenuCubit extends Cubit<List<Menu>> {
 
   MenuCubit()
       : _menuService = GetIt.I.get<MenuService>(),
-        super([]) {
-    refresh();
-  }
+        super([]);
 
   Future<void> refresh() async =>
       emit(await _menuService.fetchMenus(menuDay: menuDay));

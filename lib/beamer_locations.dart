@@ -1,23 +1,23 @@
 import 'package:beamer/beamer.dart';
-import 'package:canteen_mgmt_frontend/screens/password_finished.dart';
-import 'package:canteen_mgmt_frontend/screens/pw_change_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'cubits/auth.dart';
-import 'screens/admin_dashboard.dart';
-import 'screens/create_order.dart';
-import 'screens/dish_service_demo.dart';
+import 'screens/canteens/admin_dashboard.dart';
+import 'screens/dish_mgmt.dart';
 import 'screens/home.dart';
-import 'screens/menu_service_demo.dart';
-import 'screens/my_orders.dart';
-import 'screens/order_qr_scan.dart';
-import 'screens/order_select_canteen.dart';
-import 'screens/profile_mgmt_screen.dart';
-import 'screens/signin_screen.dart';
-import 'screens/signup_finished.dart';
-import 'screens/signup_screen.dart';
-import 'screens/single_order.dart';
+import 'screens/menu_mgmt.dart';
+import 'screens/orders/create_order.dart';
+import 'screens/orders/my_orders.dart';
+import 'screens/orders/order_qr_scan.dart';
+import 'screens/orders/order_select_canteen.dart';
+import 'screens/orders/single_order.dart';
+import 'screens/users/password_finished.dart';
+import 'screens/users/profile_mgmt_screen.dart';
+import 'screens/users/pw_change_screen.dart';
+import 'screens/users/signin_screen.dart';
+import 'screens/users/signup_finished.dart';
+import 'screens/users/signup_screen.dart';
 
 //ignore:long-method
 BeamerDelegate getBeamerDelegate() => BeamerDelegate(
@@ -31,8 +31,8 @@ BeamerDelegate getBeamerDelegate() => BeamerDelegate(
                 key: ValueKey('HomeScreen'),
               ),
           '/dish': (context, state, data) => const BeamPage(
-                title: 'Dish Demo',
-                child: DishDemoScreen(),
+                title: 'Dish Management',
+                child: DishMgmtScreen(),
                 key: ValueKey('DishScreen'),
               ),
           '/signup': (context, state, data) => const BeamPage(
@@ -40,11 +40,20 @@ BeamerDelegate getBeamerDelegate() => BeamerDelegate(
                 child: SignupScreen(),
                 key: ValueKey('SignupScreen'),
               ),
-          '/signin': (context, state, data) => const BeamPage(
-                title: 'Log in',
-                child: SignInScreen(),
-                key: ValueKey('SignInScreen'),
-              ),
+          '/signin': (context, state, data) {
+            var redirectTo = '/';
+            final redirectToEncoded = state.queryParameters['to'];
+            if (redirectToEncoded != null) {
+              redirectTo = Uri.decodeQueryComponent(redirectToEncoded);
+            }
+            print('redirect to (encoded) $redirectToEncoded');
+            print('redirect to $redirectTo');
+            return BeamPage(
+              title: 'Log in',
+              child: SignInScreen(redirectToNamed: redirectTo),
+              key: ValueKey('SignInScreen_$redirectTo'),
+            );
+          },
           '/signup/finished': (context, state, data) => const BeamPage(
                 title: 'Profile creation confirmation',
                 child: SignupFinishedScreen(),
@@ -55,22 +64,22 @@ BeamerDelegate getBeamerDelegate() => BeamerDelegate(
                 title: 'Profile creation confirmation',
               ),
           '/profile/password': (context, state, data) => const BeamPage(
-            child: PwChangeScreen(),
-            title: 'Change password',
-          ),
+                child: PwChangeScreen(),
+                title: 'Change password',
+              ),
           '/profile/password/changed': (context, state, data) => const BeamPage(
-            child: PasswordFinishedScreen(),
-            title: 'Password changed',
-          ),
+                child: PasswordFinishedScreen(),
+                title: 'Password changed',
+              ),
           '/admin': (context, state, data) => const BeamPage(
                 title: 'Admin Dashboard',
                 child: AdminDashboardScreen(),
                 key: ValueKey('AdminDashboardScreen'),
               ),
           '/menu': (context, state, data) => const BeamPage(
-                title: 'Menu Demo',
-                child: MenuDemoScreen(),
-                key: ValueKey('MenuDemoScreen'),
+                title: 'Menu Management',
+                child: MenuMgmtScreen(),
+                key: ValueKey('MenuMgmtScreen'),
               ),
           '/order': (context, state, data) => const BeamPage(
                 title: 'My Orders',
@@ -98,7 +107,13 @@ BeamerDelegate getBeamerDelegate() => BeamerDelegate(
           pathPatterns: ['/', '/sign*'],
           check: (context, beamLocation) =>
               context.read<AuthCubit>().state.authenticated,
-          beamToNamed: (from, to) => '/signin',
+          beamToNamed: (from, to) {
+            final url = to.state.routeInformation.location;
+            if (url == null) return '/signin';
+
+            final encodedUrl = Uri.encodeQueryComponent(url);
+            return '/signin?to=$encodedUrl';
+          },
         ),
         // redirect away from login/registration pages when already logged in
         BeamGuard(

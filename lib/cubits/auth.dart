@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 
-import '../models/signup.dart';
-import '../services/auth_token.dart';
-import '../services/signin_service.dart';
-import '../services/signup_service.dart';
+import '../models/users/signup.dart';
+import '../services/auth/auth_token.dart';
+import '../services/auth/signin_service.dart';
+import '../services/auth/signup_service.dart';
 
 class AuthState {
   final bool authenticated;
@@ -24,8 +24,11 @@ class AuthCubit extends Cubit<AuthState> {
   final _signInService = SignInService();
   final _signUpService = SignupService();
 
-  AuthCubit() : super(_loggedOut) {
-    refresh();
+  AuthCubit({
+    AuthState? initialState,
+    bool refreshNow = true,
+  }) : super(initialState ?? _loggedOut) {
+    if (refreshNow) refresh();
   }
 
   /// Reload authentication state
@@ -50,9 +53,17 @@ class AuthCubit extends Cubit<AuthState> {
   /// Try to log in with credentials.
   ///
   /// If the request fails, the response is passed through.
-  Future<String?> login(String username, String password) async {
+  Future<String?> login(
+    String username,
+    String password, {
+    bool awaitRefresh = false,
+  }) async {
     final response = await _signInService.login(username, password);
-    refresh();
+    if (awaitRefresh) {
+      await refresh();
+    } else {
+      refresh();
+    }
     return response;
   }
 

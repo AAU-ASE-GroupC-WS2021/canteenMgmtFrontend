@@ -1,7 +1,7 @@
 import 'package:canteen_mgmt_frontend/cubits/menu_cubit.dart';
 import 'package:canteen_mgmt_frontend/main.dart';
 import 'package:canteen_mgmt_frontend/models/menu.dart';
-import 'package:canteen_mgmt_frontend/services/key_value_store.dart';
+import 'package:canteen_mgmt_frontend/services/util/key_value_store.dart';
 import 'package:canteen_mgmt_frontend/services/menu_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';

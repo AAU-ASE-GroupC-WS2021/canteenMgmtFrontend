@@ -95,6 +95,7 @@ jobs:
           name: Generate JUnit XML report
           # see https://pub.dev/packages/junitreport
           command: flutter pub run junitreport:tojunit -i reports/tests.jsonl -o reports/tests.xml
+          when: always # especially when the tests fail
       - store_test_results:
           path: reports/tests.xml
       - store_artifacts:
@@ -106,6 +107,7 @@ jobs:
       - run:
           name: Set up GPG agent (for codecov signature verification)
           command: sudo apt-get -y update && sudo apt-get -y install gpg-agent
+          when: always
       - codecov/upload:
           file: coverage/lcov.info
 
