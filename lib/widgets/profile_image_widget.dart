@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:beamer/src/beamer.dart';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -69,11 +68,20 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
           onTap: () {
             pickNewImage();
           },
-          child: _hasAvatar
-              ? Image.memory(base64Decode(_base64Avatar),
-                  height: 100, fit: BoxFit.contain,)
-              : Image.asset('assets/graphics/blank-avatar.png',
-                  height: 100, fit: BoxFit.contain,),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(8.0),
+            child: _hasAvatar
+                ? Image.memory(
+                    base64Decode(_base64Avatar),
+                    height: 100,
+                    fit: BoxFit.contain,
+                  )
+                : Image.asset(
+                    'assets/graphics/blank-avatar.png',
+                    height: 100,
+                    fit: BoxFit.contain,
+                  ),
+          ),
         ),
 
         const SizedBox(height: 10), // space between buttons
