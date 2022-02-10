@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../models/avatar.dart';
+import '../models/users/avatar.dart';
 
 import 'abstract_service.dart';
 

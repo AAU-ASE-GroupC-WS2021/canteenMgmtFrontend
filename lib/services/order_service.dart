@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import '../models/create_order.dart';
-import '../models/order.dart';
+import '../models/orders/create_order.dart';
+import '../models/orders/order.dart';
 import 'abstract_service.dart';
 
 class OrderService extends AbstractService {
