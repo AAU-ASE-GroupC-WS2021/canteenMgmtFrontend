@@ -119,7 +119,6 @@ class _MenuMgmtScreenState extends State<MenuMgmtScreen> {
   }
 }
 
-//ignore:long-method
 List<Widget> _getButtons(BuildContext context, MenuService menuService) {
   return [
     ElevatedButton(
