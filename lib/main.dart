@@ -1,4 +1,6 @@
 import 'package:beamer/beamer.dart';
+import 'package:canteen_mgmt_frontend/services/avatar_service.dart';
+import 'package:canteen_mgmt_frontend/services/signup_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,6 +46,8 @@ Future<void> main() async {
   GetIt.I.registerLazySingleton<MenuCubit>(() => MenuCubit());
   GetIt.I.registerLazySingleton<SingleOrderCubit>(() => SingleOrderCubit());
   GetIt.I.registerLazySingleton<http.Client>(() => http.Client());
+  GetIt.I.registerLazySingleton<SignupService>(() => SignupService());
+  GetIt.I.registerLazySingleton<AvatarService>(() => AvatarService());
 
   runApp(MyApp());
 }
