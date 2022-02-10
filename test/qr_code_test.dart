@@ -23,11 +23,12 @@ final _order = Order(
   dishes: const {Dish(name: 'QR Dish', price: 123, type: 'MAIN'): 2},
   menus: const {
     Menu(
-        id: 1,
-        menuDishNames: ['Menu1', 'Menu2'],
-        name: 'First Menu',
-        price: 10,
-        menuDay: "MONDAY"): 3
+      id: 1,
+      menuDishNames: ['Menu1', 'Menu2'],
+      name: 'First Menu',
+      price: 10,
+      menuDay: "MONDAY",
+    ): 3,
   },
   pickupDate: DateTime.now().add(const Duration(hours: 2)),
   reserveTable: false,
@@ -39,11 +40,12 @@ final _orderNoId = Order(
   dishes: const {Dish(name: 'QR Dish', price: 123, type: 'MAIN'): 2},
   menus: const {
     Menu(
-        id: 1,
-        menuDishNames: ['Menu1', 'Menu2'],
-        name: 'First Menu',
-        price: 10,
-        menuDay: "MONDAY"): 3
+      id: 1,
+      menuDishNames: ['Menu1', 'Menu2'],
+      name: 'First Menu',
+      price: 10,
+      menuDay: "MONDAY",
+    ): 3,
   },
   pickupDate: DateTime.now().add(const Duration(hours: 2)),
   reserveTable: false,

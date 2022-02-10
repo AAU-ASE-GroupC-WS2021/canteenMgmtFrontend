@@ -50,184 +50,184 @@ class _CreateOrderScreenState extends State<CreateOrderScreen> {
       body: Center(
         child: SingleChildScrollView(
           child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const SizedBox(height: 10),
-            getTimePickerWidget(context),
-            const SizedBox(height: 10),
-            const Text(
-              "Dishes",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            DishTableForOrder(addOrderCallback: addDish),
-            const SizedBox(height: 20),
-            const Text(
-              "Menus",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            MenuTableForOrder(addOrderCallback: addMenu),
-            const SizedBox(height: 20),
-            SizedBox(
-              height: 150,
-              width: 1000,
-              child: ListView(
-                controller: ScrollController(
-                  initialScrollOffset: 0.0,
-                  keepScrollOffset: true,
-                  debugLabel: 'selected_menues_scroller',
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const SizedBox(height: 10),
+              getTimePickerWidget(context),
+              const SizedBox(height: 10),
+              const Text(
+                "Dishes",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
-                scrollDirection: Axis.vertical,
-                children: <Widget>[
-                  Table(
-                    defaultColumnWidth: const FixedColumnWidth(150.0),
-                    border: TableBorder.all(
-                      color: Colors.black,
-                      style: BorderStyle.solid,
-                      width: 1,
-                    ),
-                    children: [
-                      TableRow(children: [
-                        Column(children: const [
-                          Text(
-                            'TYPE',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ]),
-                        Column(children: const [
-                          Text(
-                            'Name',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ]),
-                        Column(children: const [
-                          Text(
-                            'Price',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ]),
-                        Column(children: const [
-                          Text(
-                            'Count',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ]),
-                        Column(children: const [
-                          Text(
-                            'Change Count',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ]),
-                      ]),
-                      for (var dish in selectedDishes)
-                        TableRow(children: [
-                          Column(children: const [Text('DISH')]),
-                          Column(children: [Text(dish.name)]),
-                          Column(children: [Text(dish.price.toString())]),
-                          Column(children: [
-                            Text(
-                              dish.count.toString(),
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ]),
-                          Column(
-                            children: [
-                              Row(
-                                children: [
-                                  TextButton(
-                                    child: const Text('-'),
-                                    onPressed: () {
-                                      changeCount(dish, false);
-                                    },
-                                  ),
-                                  const Text(' | '),
-                                  TextButton(
-                                    child: const Text('+'),
-                                    onPressed: () {
-                                      changeCount(dish, true);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ]),
-                      for (var menu in selectedMenues)
-                        TableRow(children: [
-                          Column(children: const [Text('MENU')]),
-                          Column(children: [Text(menu.name)]),
-                          Column(children: [Text(menu.price.toString())]),
-                          Column(children: [
-                            Text(
-                              menu.count.toString(),
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ]),
-                          Column(
-                            children: [
-                              Row(
-                                children: [
-                                  TextButton(
-                                    child: const Text('-'),
-                                    onPressed: () {
-                                      changeMenuCount(menu, false);
-                                    },
-                                  ),
-                                  const Text(' | '),
-                                  TextButton(
-                                    child: const Text('+'),
-                                    onPressed: () {
-                                      changeMenuCount(menu, true);
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ]),
-                    ],
+              ),
+              DishTableForOrder(addOrderCallback: addDish),
+              const SizedBox(height: 20),
+              const Text(
+                "Menus",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              MenuTableForOrder(addOrderCallback: addMenu),
+              const SizedBox(height: 20),
+              SizedBox(
+                height: 150,
+                width: 1000,
+                child: ListView(
+                  controller: ScrollController(
+                    initialScrollOffset: 0.0,
+                    keepScrollOffset: true,
+                    debugLabel: 'selected_menues_scroller',
                   ),
-                ],
+                  scrollDirection: Axis.vertical,
+                  children: <Widget>[
+                    Table(
+                      defaultColumnWidth: const FixedColumnWidth(150.0),
+                      border: TableBorder.all(
+                        color: Colors.black,
+                        style: BorderStyle.solid,
+                        width: 1,
+                      ),
+                      children: [
+                        TableRow(children: [
+                          Column(children: const [
+                            Text(
+                              'TYPE',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ]),
+                          Column(children: const [
+                            Text(
+                              'Name',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ]),
+                          Column(children: const [
+                            Text(
+                              'Price',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ]),
+                          Column(children: const [
+                            Text(
+                              'Count',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ]),
+                          Column(children: const [
+                            Text(
+                              'Change Count',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ]),
+                        ]),
+                        for (var dish in selectedDishes)
+                          TableRow(children: [
+                            Column(children: const [Text('DISH')]),
+                            Column(children: [Text(dish.name)]),
+                            Column(children: [Text(dish.price.toString())]),
+                            Column(children: [
+                              Text(
+                                dish.count.toString(),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ]),
+                            Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    TextButton(
+                                      child: const Text('-'),
+                                      onPressed: () {
+                                        changeCount(dish, false);
+                                      },
+                                    ),
+                                    const Text(' | '),
+                                    TextButton(
+                                      child: const Text('+'),
+                                      onPressed: () {
+                                        changeCount(dish, true);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ]),
+                        for (var menu in selectedMenues)
+                          TableRow(children: [
+                            Column(children: const [Text('MENU')]),
+                            Column(children: [Text(menu.name)]),
+                            Column(children: [Text(menu.price.toString())]),
+                            Column(children: [
+                              Text(
+                                menu.count.toString(),
+                                style: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ]),
+                            Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    TextButton(
+                                      child: const Text('-'),
+                                      onPressed: () {
+                                        changeMenuCount(menu, false);
+                                      },
+                                    ),
+                                    const Text(' | '),
+                                    TextButton(
+                                      child: const Text('+'),
+                                      onPressed: () {
+                                        changeMenuCount(menu, true);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ]),
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Total: ' + total.toString(),
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
+              const SizedBox(height: 10),
+              Text(
+                'Total: ' + total.toString(),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22,
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            getSubmitWidget(context),
-          ],
-        ),
+              const SizedBox(height: 10),
+              getSubmitWidget(context),
+            ],
+          ),
         ),
       ),
     );

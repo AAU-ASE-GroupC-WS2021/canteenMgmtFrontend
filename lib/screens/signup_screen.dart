@@ -40,7 +40,7 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
               const SizedBox(height: 20), // space between buttons
               ElevatedButton(
-                onPressed: () => context.beamToNamed('/'),
+                onPressed: () => context.popToNamed('/'),
                 child: const Text('Go to the Homepage'),
               ),
             ],
