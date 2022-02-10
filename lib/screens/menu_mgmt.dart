@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:canteen_mgmt_frontend/cubits/menu_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 import '../models/menu.dart';
 import '../services/menu_service.dart';
@@ -117,6 +119,7 @@ class _MenuMgmtScreenState extends State<MenuMgmtScreen> {
   }
 }
 
+//ignore:long-method
 List<Widget> _getButtons(BuildContext context, MenuService menuService) {
   return [
     ElevatedButton(
@@ -142,6 +145,7 @@ List<Widget> _getButtons(BuildContext context, MenuService menuService) {
                                 ),
                               ),
                               Navigator.pop(context),
+                              GetIt.I.get<MenuCubit>().refresh(),
                             })
                         .onError(
                           (error, stackTrace) => {
@@ -184,6 +188,7 @@ List<Widget> _getButtons(BuildContext context, MenuService menuService) {
                                 ),
                               ),
                               Navigator.pop(context),
+                              GetIt.I.get<MenuCubit>().refresh(),
                             })
                         .onError(
                           (error, stackTrace) => {
@@ -224,6 +229,7 @@ List<Widget> _getButtons(BuildContext context, MenuService menuService) {
                             ),
                           ),
                           Navigator.pop(context),
+                          GetIt.I.get<MenuCubit>().refresh(),
                         }),
                   },
                 ),

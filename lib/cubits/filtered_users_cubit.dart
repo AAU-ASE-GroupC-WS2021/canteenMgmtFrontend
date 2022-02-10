@@ -7,13 +7,12 @@ import '../services/owner_user_service.dart';
 class FilteredUsersCubit extends Cubit<FilteredUsersState> {
   final OwnerUserService _userService;
 
-  UserType? typeFilter = UserType.ADMIN;
+  UserType? typeFilter;
   int? canteenIDFilter;
 
   FilteredUsersCubit()
       : _userService = GetIt.I.get<OwnerUserService>(),
         super(FilteredUsersState(isLoading: true)) {
-    refresh();
   }
 
   Future<void> refresh() async {
