@@ -16,7 +16,7 @@ import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'demo_test.mocks.dart'; // if this fails run build_runner (see readme)
+import 'dish_mgmt_test.mocks.dart'; // if this fails run build_runner (see readme)
 
 const _exampleDish = Dish(name: 'Some Test Dish', price: 123, type: 'MAIN');
 

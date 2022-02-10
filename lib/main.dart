@@ -25,7 +25,7 @@ import 'services/util/key_value_shared_prefs.dart';
 import 'services/util/key_value_store.dart';
 import 'services/util/web/key_value_store_web_stub.dart'
 // ignore: uri_does_not_exist
-    if (dart.library.html) 'services/web/key_value_store_web.dart'
+    if (dart.library.html) 'services/util/web/key_value_store_web.dart'
     show getKeyValueStoreWeb;
 
 Future<void> main() async {

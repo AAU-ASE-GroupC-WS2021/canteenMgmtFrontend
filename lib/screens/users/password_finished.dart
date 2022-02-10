@@ -1,4 +1,4 @@
-import 'package:beamer/src/beamer.dart';
+import 'package:beamer/beamer.dart';
 import 'package:flutter/material.dart';
 
 import '../../widgets/about_button.dart';
