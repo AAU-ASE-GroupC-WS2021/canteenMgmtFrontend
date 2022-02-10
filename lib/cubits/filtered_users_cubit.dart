@@ -7,7 +7,7 @@ import '../services/owner_user_service.dart';
 class FilteredUsersCubit extends Cubit<FilteredUsersState> {
   final OwnerUserService _userService;
 
-  UserType? typeFilter;
+  UserType? typeFilter = UserType.ADMIN;
   int? canteenIDFilter;
 
   FilteredUsersCubit()
