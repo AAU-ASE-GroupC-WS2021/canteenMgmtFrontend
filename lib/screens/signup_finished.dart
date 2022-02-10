@@ -32,7 +32,7 @@ class SignupFinishedScreen extends StatelessWidget {
                 ),
               const SizedBox(height: 20), // space between buttons
               ElevatedButton(
-                onPressed: () => context.beamToNamed('/'),
+                onPressed: () => context.popToNamed('/'),
                 child: const Text('Go to the Homepage'),
               ),
             ],

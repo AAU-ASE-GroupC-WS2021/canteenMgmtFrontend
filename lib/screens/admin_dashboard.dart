@@ -44,6 +44,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
         _selectedCanteen = c;
       });
       usersCubit.setCanteenIDFilter(c?.id);
+      usersCubit.setTypeFilter(UserType.ADMIN);
       usersCubit.refresh();
     } catch (e) {
       showSnackbar(e.toString());

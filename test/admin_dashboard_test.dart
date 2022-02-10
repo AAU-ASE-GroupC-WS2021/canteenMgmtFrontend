@@ -3,6 +3,7 @@ import 'package:canteen_mgmt_frontend/cubits/filtered_users_cubit.dart';
 import 'package:canteen_mgmt_frontend/models/canteen.dart';
 import 'package:canteen_mgmt_frontend/models/user.dart';
 import 'package:canteen_mgmt_frontend/screens/admin_dashboard.dart';
+import 'package:canteen_mgmt_frontend/services/avatar_service.dart';
 import 'package:canteen_mgmt_frontend/services/canteen_service.dart';
 import 'package:canteen_mgmt_frontend/services/owner_user_service.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ import 'package:mockito/mockito.dart';
 import 'admin_dashboard_test.mocks.dart';
 import 'test_utils.dart';
 
-@GenerateMocks([OwnerUserService, CanteenService])
+@GenerateMocks([OwnerUserService, CanteenService, AvatarService])
 void main() {
   Widget testWidget = const MaterialApp(
     home: Scaffold(
@@ -39,6 +40,8 @@ void main() {
 
   final userService = MockOwnerUserService();
   GetIt.I.registerSingleton<OwnerUserService>(userService);
+  final avatarService = MockAvatarService();
+  GetIt.I.registerSingleton<AvatarService>(avatarService);
   final canteenService = MockCanteenService();
   GetIt.I.registerSingleton<CanteenService>(canteenService);
   GetIt.I.registerLazySingleton<CanteensCubit>(() => CanteensCubit());
@@ -53,6 +56,7 @@ void main() {
                 u.canteenID == i.positionalArguments[1]))
             .toList());
     when(canteenService.getCanteens()).thenAnswer((_) async => _canteens);
+    when(avatarService.getAvatar(any)).thenAnswer((realInvocation) async => null);
   });
 
   testWidgets(

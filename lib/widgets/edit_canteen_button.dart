@@ -31,8 +31,7 @@ class EditCanteenButton extends StatelessWidget {
                         GetIt.I
                             .get<CanteenService>()
                             .updateCanteen(canteen)
-                            .then((value) =>
-                        {
+                            .then((value) => {
                                   Navigator.pop(context),
                                   GetIt.I.get<CanteensCubit>().refresh(),
                                 })
