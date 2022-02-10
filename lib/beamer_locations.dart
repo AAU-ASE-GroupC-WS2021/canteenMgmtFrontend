@@ -54,11 +54,11 @@ BeamerDelegate getBeamerDelegate() => BeamerDelegate(
                 child: ProfileManagementScreen(),
                 title: 'Profile creation confirmation',
               ),
-          '/password': (context, state, data) => const BeamPage(
+          '/profile/password': (context, state, data) => const BeamPage(
             child: PwChangeScreen(),
             title: 'Change password',
           ),
-          '/password-changed': (context, state, data) => const BeamPage(
+          '/profile/password/changed': (context, state, data) => const BeamPage(
             child: PasswordFinishedScreen(),
             title: 'Password changed',
           ),

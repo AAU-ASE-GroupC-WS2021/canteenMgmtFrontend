@@ -82,7 +82,7 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
         Text('@' + _username,
             style: TextStyle(
                 fontWeight: FontWeight.w500,
-                color: Colors.primaries.first.shade500),),
+                color: Colors.primaries.first.shade500,),),
 
         const SizedBox(height: 5), // space between buttons
 
@@ -108,7 +108,7 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
         // Change password button
         ElevatedButton(
           onPressed: () => {
-            context.beamToNamed("/password"),
+            context.beamToNamed("/profile/password"),
           },
           child: const Text('Change password', style: TextStyle(fontSize: 10)),
         ),

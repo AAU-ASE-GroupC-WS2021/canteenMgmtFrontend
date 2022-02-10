@@ -1,6 +1,5 @@
 import 'package:beamer/src/beamer.dart';
 
-import '../screens/profile_mgmt_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

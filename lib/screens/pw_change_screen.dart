@@ -88,7 +88,7 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
                           signupService.updatePassword(value.username, passwordControllerOld.text, passwordControllerNe2.text)
                               .then((value) => {
                             if (value == null) {
-                              context.beamToNamed("/password-changed"),
+                              context.beamToNamed("/profile/password/changed"),
                             }
                             else {
                               showAlertDialog(value),
