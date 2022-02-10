@@ -1,8 +1,9 @@
 import 'dart:convert';
 
-import '../services/avatar_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+
+import '../services/avatar_service.dart';
 
 class UserAvatarDisplay extends StatefulWidget {
   const UserAvatarDisplay({Key? key, required this.username, this.height = 30})
@@ -33,16 +34,19 @@ class _UserAvatarDisplayState extends State<UserAvatarDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    return _base64Avatar != ""
-        ? Image.memory(
-            base64Decode(_base64Avatar),
-            height: widget.height,
-            fit: BoxFit.contain,
-          )
-        : Image.asset(
-            'assets/graphics/blank-avatar.png',
-            height: widget.height,
-            fit: BoxFit.contain,
-          );
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(8.0),
+      child: _base64Avatar != ""
+          ? Image.memory(
+              base64Decode(_base64Avatar),
+              height: widget.height,
+              fit: BoxFit.contain,
+            )
+          : Image.asset(
+              'assets/graphics/blank-avatar.png',
+              height: widget.height,
+              fit: BoxFit.contain,
+            ),
+    );
   }
 }

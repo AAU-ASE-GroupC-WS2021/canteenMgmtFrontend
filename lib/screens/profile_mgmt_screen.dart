@@ -34,27 +34,6 @@ class _ProfileManagementScreenState extends State<ProfileManagementScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (!AuthTokenUtils.isLoggedIn()) {
-      return Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                "You need to be logged in to see this page.",
-                style: TextStyle(fontSize: 25),
-              ),
-              const SizedBox(height: 20), // space between buttons
-              ElevatedButton(
-                onPressed: () => context.beamToNamed("/"),
-                child: const Text('Go to the Homepage'),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('User profile management'),
