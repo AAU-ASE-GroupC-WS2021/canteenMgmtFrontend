@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import '../models/user.dart';
+import '../models/users/user.dart';
 import 'abstract_service.dart';
-import 'util/password_encoder.dart';
+import '../util/password_encoder.dart';
 
 class OwnerUserService extends AbstractService {
   Future<List<User>> getAllUsers() async {

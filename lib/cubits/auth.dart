@@ -1,9 +1,9 @@
 import 'package:bloc/bloc.dart';
 
-import '../models/signup.dart';
-import '../services/auth_token.dart';
-import '../services/signin_service.dart';
-import '../services/signup_service.dart';
+import '../models/users/signup.dart';
+import '../services/auth/auth_token.dart';
+import '../services/auth/signin_service.dart';
+import '../services/auth/signup_service.dart';
 
 class AuthState {
   final bool authenticated;

@@ -1,8 +1,8 @@
 import 'package:beamer/beamer.dart';
-import 'package:canteen_mgmt_frontend/cubits/menu_cubit.dart';
-import 'package:canteen_mgmt_frontend/services/util/day_mapping.dart';
-import 'package:canteen_mgmt_frontend/widgets/menu_table_for_ordering.dart';
-import 'package:canteen_mgmt_frontend/widgets/prev_next_text.dart';
+import '../cubits/menu_cubit.dart';
+import '../util/day_mapping.dart';
+import '../widgets/menus/menu_table_for_ordering.dart';
+import '../widgets/prev_next_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -10,11 +10,11 @@ import 'package:intl/intl.dart';
 
 import '../cubits/auth.dart';
 import '../widgets/about_button.dart';
-import '../widgets/signin_button.dart';
-import '../widgets/signout_button.dart';
-import '../widgets/signup_button.dart';
+import '../widgets/users/signin_button.dart';
+import '../widgets/users/signout_button.dart';
+import '../widgets/users/signup_button.dart';
 import '../widgets/text_heading.dart';
-import '../widgets/user_info_button.dart';
+import '../widgets/users/user_info_button.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);

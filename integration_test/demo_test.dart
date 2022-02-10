@@ -1,6 +1,6 @@
 import 'package:canteen_mgmt_frontend/main.dart' as app;
 import 'package:canteen_mgmt_frontend/models/dish.dart';
-import 'package:canteen_mgmt_frontend/models/signup.dart';
+import 'package:canteen_mgmt_frontend/models/users/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
