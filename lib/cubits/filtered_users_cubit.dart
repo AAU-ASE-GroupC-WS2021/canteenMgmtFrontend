@@ -12,9 +12,7 @@ class FilteredUsersCubit extends Cubit<FilteredUsersState> {
 
   FilteredUsersCubit()
       : _userService = GetIt.I.get<OwnerUserService>(),
-        super(FilteredUsersState(isLoading: true)) {
-    refresh();
-  }
+        super(FilteredUsersState(isLoading: true));
 
   Future<void> refresh() async {
     try {
