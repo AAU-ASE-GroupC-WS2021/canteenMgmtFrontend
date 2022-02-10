@@ -22,6 +22,7 @@ class _UserListviewState extends State<UserListview> {
             itemCount: widget.users.length,
             itemBuilder: (context, index) {
               return InkWell(
+                key: ValueKey(widget.users[index].username),
                 child: Card(
                   child: ListTile(
                     title: Text(widget.users[index].username),
