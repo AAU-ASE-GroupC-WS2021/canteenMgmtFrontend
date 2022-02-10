@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import '../screens/pw_change_screen.dart';
+import 'package:beamer/src/beamer.dart';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -107,8 +108,7 @@ class _ProfileImageWidgetState extends State<ProfileImageWidget> {
         // Change password button
         ElevatedButton(
           onPressed: () => {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => const PwChangeScreen(),)),
+            context.beamToNamed("/password"),
           },
           child: const Text('Change password', style: TextStyle(fontSize: 10)),
         ),

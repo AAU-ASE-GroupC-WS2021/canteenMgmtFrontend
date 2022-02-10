@@ -1,10 +1,9 @@
-import 'password_finished.dart';
+import 'package:beamer/src/beamer.dart';
+
 import '../services/auth_token.dart';
 import '../services/signup_service.dart';
 import '../widgets/about_button.dart';
 import 'package:flutter/material.dart';
-
-import 'home.dart';
 
 class PwChangeScreen extends StatefulWidget {
   const PwChangeScreen({Key? key}) : super(key: key);
@@ -43,9 +42,7 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
               ),
               const SizedBox(height: 20), // space between buttons
               ElevatedButton(
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                ),
+                onPressed: () => context.beamToNamed("/"),
                 child: const Text('Go to the Homepage'),
               ),
             ],
@@ -112,14 +109,14 @@ class _PwChangeScreenState extends State<PwChangeScreen> {
                           signupService.updatePassword(value.username, passwordControllerOld.text, passwordControllerNe2.text)
                               .then((value) => {
                             if (value == null) {
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => const PasswordFinishedScreen())),
+                              context.beamToNamed("/password-changed"),
                             }
                             else {
                               showAlertDialog(value),
                             },
                           })
                               .onError((error, stackTrace) => {
-                            showAlertDialog("Unknown error occurred while trying to change password.\nPlease refresh the page and try again!"),
+                                showAlertDialog("Unknown error occurred while trying to change password.\nPlease refresh the page and try again!"),
                           }),
                         })
                             .onError((error, stackTrace) => {

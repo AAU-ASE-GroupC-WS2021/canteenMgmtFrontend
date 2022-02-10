@@ -1,4 +1,6 @@
 import 'package:beamer/beamer.dart';
+import 'package:canteen_mgmt_frontend/screens/password_finished.dart';
+import 'package:canteen_mgmt_frontend/screens/pw_change_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -52,6 +54,14 @@ BeamerDelegate getBeamerDelegate() => BeamerDelegate(
                 child: ProfileManagementScreen(),
                 title: 'Profile creation confirmation',
               ),
+          '/password': (context, state, data) => const BeamPage(
+            child: PwChangeScreen(),
+            title: 'Change password',
+          ),
+          '/password-changed': (context, state, data) => const BeamPage(
+            child: PasswordFinishedScreen(),
+            title: 'Password changed',
+          ),
           '/admin': (context, state, data) => const BeamPage(
                 title: 'Admin Dashboard',
                 child: AdminDashboardScreen(),
