@@ -103,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initSelectedDate() {
     _selectedDateTime = DateTime.now();
     while ({6, 7}.contains(_selectedDateTime.weekday)) {
-      _selectedDateTime.add(const Duration(days: 1));
+      _selectedDateTime = _selectedDateTime.add(const Duration(days: 1));
     }
 
     _updateHeadingText();
