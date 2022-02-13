@@ -1,5 +1,5 @@
 String getDayName(int i) {
-  return _dayMapping[i]!;
+  return _dayMapping[i] != null ? _dayMapping[i]! : "NOMENUDAY";
 }
 
 Map<int, String> _dayMapping = {
