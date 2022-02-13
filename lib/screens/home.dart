@@ -31,10 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedDateTime = DateTime.now();
-    _updateHeadingText();
-    menuCubit.menuDay = getDayName(_selectedDateTime.weekday);
-    menuCubit.refresh();
+    initSelectedDate();
   }
 
   @override
@@ -101,6 +98,17 @@ class _HomeScreenState extends State<HomeScreen> {
       _headingText =
           'Menu for ${DateFormat('EEEE, d. LLL y').format(_selectedDateTime)}';
     });
+  }
+
+  void initSelectedDate() {
+    _selectedDateTime = DateTime.now();
+    while ({6, 7}.contains(_selectedDateTime.weekday)) {
+      _selectedDateTime.add(const Duration(days: 1));
+    }
+
+    _updateHeadingText();
+    menuCubit.menuDay = getDayName(_selectedDateTime.weekday);
+    menuCubit.refresh();
   }
 }
 
